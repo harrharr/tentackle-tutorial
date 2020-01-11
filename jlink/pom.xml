@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.example</groupId>
+    <artifactId>tracker</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>jlink</artifactId>
+  <packaging>pom</packaging>
+  <name>Tracker JLink Images</name>
+  <description>Parent for the JLink Modules</description>
+
+  <profiles>
+    <profile>
+      <id>jlink</id>
+      <modules>
+        <module>server</module>
+        <module>client</module>
+        <module>daemon</module>
+      </modules>
+    </profile>
+  </profiles>
+
+  <properties>
+    <rootBasedir>${project.parent.basedir}</rootBasedir>
+    <cert.dname>cn=TrackerServer, ou=Tracker, o=Example, c=US</cert.dname>
+    <cert.password>didoedeldu</cert.password>
+    <cert.dir>${project.build.directory}/jks</cert.dir>
+    <cert.file>${project.parent.basedir}/target/server.cer</cert.file>
+    <cert.alias>server</cert.alias>
+  </properties>
+
+  <build>
+
+    <resources>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>${project.basedir}/src/main/filtered-resources</directory>
+        <filtering>true</filtering>
+      </resource>
+      <!--  additional resource directory for generated key- and truststores -->
+      <resource>
+        <directory>${project.build.directory}/jks</directory>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

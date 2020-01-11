@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="initdb suite">
+  <test name="initialize CI database">
+    <groups>
+      <run>
+        <include name="initdb" />
+      </run>
+    </groups>
+    <packages>
+      <package name="com.example.tracker.server" />
+    </packages>
+  </test>
+</suite>
