@@ -1,2 +1,4 @@
 # tentackle-tutorial
-Issue Tracking Application
+Issue Tracking Application.
+
+See the [Tentackle](https://tentackle.org/) website.
