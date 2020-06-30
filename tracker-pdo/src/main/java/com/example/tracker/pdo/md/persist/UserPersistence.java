@@ -25,9 +25,6 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
   /** relation name for 'composite list of User2Group nmLinks via User2Group#userId (NmLinks)'. */
   String RN_NMLINKS = "nmLinks";
 
-  /** attribute name for database column 'password'. */
-  String AN_PASSWORD = "password";
-
   /** attribute name for database column 'login_allowed'. */
   String AN_LOGINALLOWED = "loginAllowed";
 
