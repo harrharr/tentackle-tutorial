@@ -96,4 +96,5 @@ public class MessageRemoteDelegateImpl
 
   //</editor-fold>//GEN-END:inclrmi
 
+
 }

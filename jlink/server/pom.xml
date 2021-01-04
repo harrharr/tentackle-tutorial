@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>tracker-jlink-server</artifactId>
-  <packaging>jlink</packaging>
+  <packaging>jlink</packaging>     <!-- change to "jpackage" to create installer instead -->
   <name>Tracker JLink Server Image</name>
   <description>Server JLink Module for Tracker</description>
 
@@ -149,8 +149,9 @@
           <mainModule>com.example.tracker.server</mainModule>
           <mainClass>com.example.tracker.server.TrackerServer</mainClass>
           <addModules>
-            <addModule>java.desktop</addModule> <!-- necessary for groovy -->
+            <addModule>java.desktop</addModule> <!-- necessary for groovy (NoClassDefFoundError: java/beans/BeanInfo) -->
             <addModule>jdk.jcmd</addModule>
+            <addModule>jdk.localedata</addModule>
           </addModules>
           <excludeModules>
             <!-- slf4j: unsupported reference since java 12 -->

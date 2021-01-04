@@ -28,4 +28,5 @@ public interface User2GroupRemoteDelegate
 
   //</editor-fold>//GEN-END:inclrmi
 
+
 }

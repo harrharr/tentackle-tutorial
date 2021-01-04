@@ -82,6 +82,7 @@ public class MessageDomainImpl extends AbstractDomainObject<Message, MessageDoma
   //</editor-fold>//GEN-END:domainMethods
 
 
+
   /**
    * The refersToPdo doesnt change once the message is created.
    * Hence, we can cache it safely.

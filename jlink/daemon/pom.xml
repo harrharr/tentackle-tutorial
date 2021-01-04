@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>tracker-jlink-daemon</artifactId>
-  <packaging>jlink</packaging>
+  <packaging>jlink</packaging>     <!-- change to "jpackage" to create installer instead -->
   <name>Tracker JLink Daemon Image</name>
   <description>Daemon JLink Module for Tracker</description>
 
@@ -56,6 +56,7 @@
           <mainClass>com.example.tracker.daemon.TrackerDaemon</mainClass>
           <addModules>
             <addModule>jdk.jcmd</addModule>
+            <addModule>jdk.localedata</addModule>
           </addModules>
           <excludeModules>
             <!-- slf4j: unsupported reference since java 12 -->

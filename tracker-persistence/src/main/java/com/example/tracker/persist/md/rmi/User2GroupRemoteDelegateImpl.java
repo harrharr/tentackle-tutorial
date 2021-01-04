@@ -62,4 +62,5 @@ public class User2GroupRemoteDelegateImpl
 
   //</editor-fold>//GEN-END:inclrmi
 
+
 }

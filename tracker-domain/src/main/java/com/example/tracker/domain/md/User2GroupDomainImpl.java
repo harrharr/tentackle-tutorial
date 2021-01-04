@@ -45,4 +45,5 @@ public class User2GroupDomainImpl extends AbstractDomainObject<User2Group, User2
 
 
 //</editor-fold>//GEN-END:domainMethods
+
 }

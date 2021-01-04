@@ -26,4 +26,5 @@ public interface UserRemoteDelegate
 
   //</editor-fold>//GEN-END:inclrmi
 
+
 }

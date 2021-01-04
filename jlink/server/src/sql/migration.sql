@@ -11,7 +11,7 @@ COMMENT ON COLUMN migration.version IS 'deployment date';
 COMMENT ON COLUMN migration.since IS 'deployment date';
 COMMENT ON COLUMN migration.comment IS 'additional comments';
 
-INSERT INTO migration (version, since, comment) VALUES ('1.0-SNAPSHOT', '2020-01-11 17:26:38', 'Project Start');
+INSERT INTO migration (version, since, comment) VALUES ('1.0-SNAPSHOT', '2021-01-04 12:18:57', 'Project Start');
 
 
 

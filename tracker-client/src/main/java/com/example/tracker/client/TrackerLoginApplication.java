@@ -18,7 +18,9 @@ public class TrackerLoginApplication extends LoginApplication {
   @Override
   protected Login loadLoginController() {
     URL cssUrl = TrackerLoginApplication.class.getResource("/com/example/tracker/client/Login.css");
-    return FxFactory.getInstance().createController(Login.class, null, null, cssUrl);
+    Login loginController = FxFactory.getInstance().createController(Login.class, null, null, cssUrl);
+    loginController.setInactivityTimeout(30);
+    return loginController;
   }
 
 }

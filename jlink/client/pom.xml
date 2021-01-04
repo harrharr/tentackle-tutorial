@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>tracker-jlink-client</artifactId>
-  <packaging>jlink</packaging>
+  <packaging>jlink</packaging>    <!-- change to "jpackage" to create installer instead -->
   <name>Tracker JLink Client Image</name>
   <description>Client JLink Module for Tracker</description>
 
@@ -52,10 +52,12 @@
         <groupId>org.tentackle</groupId>
         <artifactId>tentackle-jlink-maven-plugin</artifactId>
         <configuration>
+          <withUpdater>true</withUpdater>
           <mainModule>com.example.tracker.client</mainModule>
           <mainClass>com.example.tracker.client.TrackerFxClient</mainClass>
           <addModules>
             <addModule>jdk.jcmd</addModule>
+            <addModule>jdk.localedata</addModule>
           </addModules>
           <excludeModules>
             <!-- slf4j: unsupported reference since java 12 -->

@@ -60,4 +60,5 @@ public class UserRemoteDelegateImpl
 
   //</editor-fold>//GEN-END:inclrmi
 
+
 }

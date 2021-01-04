@@ -34,4 +34,5 @@ public interface MessageRemoteDelegate
 
   //</editor-fold>//GEN-END:inclrmi
 
+
 }

@@ -44,4 +44,5 @@ public class UserGroupDomainImpl extends OrgUnitDomainImpl<UserGroup, UserGroupD
 
 
 //</editor-fold>//GEN-END:domainMethods
+
 }

@@ -74,4 +74,5 @@ public class OrgUnitDomainImpl<T extends OrgUnit<T>, D extends OrgUnitDomainImpl
   }
 
   //</editor-fold>//GEN-END:domainMethods
+
 }

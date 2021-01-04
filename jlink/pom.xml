@@ -29,7 +29,7 @@
     <cert.dname>cn=TrackerServer, ou=Tracker, o=Example, c=US</cert.dname>
     <cert.password>didoedeldu</cert.password>
     <cert.dir>${project.build.directory}/jks</cert.dir>
-    <cert.file>${project.parent.basedir}/target/server.cer</cert.file>
+    <cert.file>${project.parent.basedir}/server/target/server.cer</cert.file>
     <cert.alias>server</cert.alias>
   </properties>
 
@@ -50,6 +50,13 @@
     </resources>
 
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <configuration>
+          <attach>false</attach>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
