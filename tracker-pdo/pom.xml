@@ -11,24 +11,17 @@
   <artifactId>tracker-pdo</artifactId>
   <packaging>jar</packaging>
   <name>Tracker PDO</name>
-  <description>PDO Layer for ${pplication}</description>
+  <description>PDO Layer for Tracker</description>
 
   <properties>
     <rootBasedir>${project.parent.basedir}</rootBasedir>
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>com.example</groupId>
       <artifactId>tracker-common</artifactId>
       <version>${project.version}</version>
-    </dependency>
-
-    <!-- tests only -->
-    <dependency>
-      <groupId>org.reflections</groupId>
-      <artifactId>reflections</artifactId>
     </dependency>
   </dependencies>
 

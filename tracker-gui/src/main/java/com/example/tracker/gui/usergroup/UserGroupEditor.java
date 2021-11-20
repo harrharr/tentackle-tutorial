@@ -21,7 +21,6 @@ import org.tentackle.fx.component.FxTextArea;
 import org.tentackle.fx.component.FxTextField;
 import org.tentackle.fx.rdc.PdoEditor;
 import org.tentackle.fx.rdc.Rdc;
-import org.tentackle.fx.rdc.RdcFactory;
 import org.tentackle.fx.rdc.table.TablePopup;
 import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.Pdo;
@@ -53,6 +52,7 @@ public class UserGroupEditor extends PdoEditor<UserGroup> {
   private ResourceBundle resources;
 
   private TablePopup<User> popup;
+  private Label emptyLabel;
 
   @FXML
   private void initialize() {
@@ -61,11 +61,9 @@ public class UserGroupEditor extends PdoEditor<UserGroup> {
       row.setContextMenu(createContextMenu(row));
       return row;
     });
-    Label emptyLabel = new Label(resources.getString("no users"));
-    emptyLabel.setContextMenu(createContextMenu(null));
+    emptyLabel = new Label(resources.getString("no users"));
     groupUsersNode.setPlaceholder(emptyLabel);
-
-    popup = RdcFactory.getInstance().createTablePopup(groupUsersNode, "UserGroupEditor", resources.getString("Users"));
+    popup = Rdc.createTablePopup(groupUsersNode, "UserGroupEditor", resources.getString("Users"));
   }
 
   @Override
@@ -77,6 +75,7 @@ public class UserGroupEditor extends PdoEditor<UserGroup> {
   public void setPdo(UserGroup pdo) {
     this.group = pdo;
     getBinder().putBindingProperty(DomainContext.class, pdo.getDomainContext());
+    emptyLabel.setContextMenu(createContextMenu(null));
   }
 
   @Override
@@ -91,11 +90,11 @@ public class UserGroupEditor extends PdoEditor<UserGroup> {
 
   @SuppressWarnings("unchecked")
   private ContextMenu createContextMenu(TableRow<User> row) {
-    ContextMenu contextMenu = new ContextMenu();
-
-    MenuItem addMenuItem = new MenuItem(resources.getString("add user to group"));
-    addMenuItem.setOnAction(e -> {
-      Rdc.displaySearchStage(
+    ContextMenu contextMenu = null;
+    if (group != null && group.isEditAllowed()) {
+      contextMenu = new ContextMenu();
+      MenuItem addMenuItem = new MenuItem(resources.getString("add user to group"));
+      addMenuItem.setOnAction(e -> Rdc.displaySearchStage(
           Pdo.create(User.class, getBinder().getBindingProperty(DomainContext.class)),
           Modality.APPLICATION_MODAL, getStage(), true, users -> {
             if (!users.isEmpty()) {
@@ -105,20 +104,19 @@ public class UserGroupEditor extends PdoEditor<UserGroup> {
                 groupUsersNode.triggerViewModified();
               }
             }
-          });
-    });
-    contextMenu.getItems().add(addMenuItem);
+          }));
+      contextMenu.getItems().add(addMenuItem);
 
-    if (row != null) {
-      MenuItem removeMenuItem = new MenuItem(resources.getString("remove user from group"));
-      removeMenuItem.disableProperty().bind(row.emptyProperty());
-      removeMenuItem.setOnAction(e -> {
-        ((SortedList<User>) groupUsersNode.getItems()).getSource().remove(row.getItem());
-        groupUsersNode.triggerViewModified();
-      });
-      contextMenu.getItems().add(removeMenuItem);
+      if (row != null) {
+        MenuItem removeMenuItem = new MenuItem(resources.getString("remove user from group"));
+        removeMenuItem.disableProperty().bind(row.emptyProperty());
+        removeMenuItem.setOnAction(e -> {
+          ((SortedList<User>) groupUsersNode.getItems()).getSource().remove(row.getItem());
+          groupUsersNode.triggerViewModified();
+        });
+        contextMenu.getItems().add(removeMenuItem);
+      }
     }
-
     return contextMenu;
   }
 

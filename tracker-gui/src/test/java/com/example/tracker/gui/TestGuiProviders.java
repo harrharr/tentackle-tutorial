@@ -9,10 +9,4 @@ import org.tentackle.test.fx.rdc.GuiProviderTest;
 /**
  * Tests all GuiProviders.
  */
-public class TestGuiProviders extends GuiProviderTest {
-
-  public TestGuiProviders() {
-    super("com.example.tracker");
-  }
-
-}
+public class TestGuiProviders extends GuiProviderTest {}

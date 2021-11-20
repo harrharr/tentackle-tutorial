@@ -12,6 +12,7 @@ import ${persistencePackage}.${persistenceInterface};
 import ${persistenceImplPackage}.rmi.${pdoInterface}RemoteDelegate;
 </#if>
 
+import java.io.Serial;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +27,9 @@ import org.tentackle.common.Freezable;
 import org.tentackle.common.Time;
 import org.tentackle.common.Timestamp;
 import org.tentackle.common.RemoteMethod;
+import org.tentackle.dbms.DbModificationType;
 import org.tentackle.dbms.DbObjectClassVariables;
+import org.tentackle.dbms.ModificationType;
 import org.tentackle.dbms.PreparedStatementWrapper;
 import org.tentackle.dbms.ResultSetWrapper;
 import org.tentackle.dbms.StatementId;
@@ -43,6 +46,7 @@ import org.tentackle.session.PersistenceException;
 import org.tentackle.session.Session;
 import org.tentackle.sql.Backend;
 import org.tentackle.sql.JoinType;
+import org.tentackle.validate.ValidationFailedException;
 import org.tentackle.validate.ValidationResult;
 import org.tentackle.validate.ValidationScope;
 import org.tentackle.validate.ValidationUtilities;
@@ -59,8 +63,8 @@ public class ${persistenceImplementation}<T extends ${pdoInterface}<T>, P extend
 public class ${persistenceImplementation} extends ${superPersistenceImplementation}<${pdoInterface}, ${persistenceImplementation}> implements ${persistenceInterface} {
 </#if>
 
-  /** serial version UID. */
-  private static final long serialVersionUID = -1;
+  @Serial
+  private static final long serialVersionUID = 1L;
 
 
   // @wurblet classVariables ClassVariables

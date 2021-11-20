@@ -16,11 +16,7 @@ module com.example.tracker.client {
   requires org.tentackle.fx.rdc.update;
 
   requires javafx.graphics;
-  requires java.rmi;
+  requires java.prefs;
 
   provides org.tentackle.common.ModuleHook with com.example.tracker.client.service.Hook;
-
-  // SLF4J isnt a module yet. For some odd reason, we need a lookup scan for deps on the classpath.
-  // Otherwise non-modularized deps cannot be located via META-INF/services.
-  uses org.tentackle.log.Logger;
 }

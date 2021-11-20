@@ -14,18 +14,18 @@ import org.tentackle.dbms.rmi.RmiServer;
 import org.tentackle.session.SessionInfo;
 import org.tentackle.session.VersionIncompatibleException;
 
-import java.io.Serializable;
+import java.io.Serial;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
-import java.util.Objects;
 
 /**
  * Application specific remote connection.
  */
 public class TrackerRemoteDbConnectionImpl extends RemoteDbConnectionImpl implements TrackerConnection {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   /**
@@ -44,7 +44,7 @@ public class TrackerRemoteDbConnectionImpl extends RemoteDbConnectionImpl implem
 
   @Override
   public RemoteDbSession createSession(SessionInfo clientInfo) throws RemoteException {
-    return new TrackerRemoteDbSessionImpl(this, clientInfo, getRmiServer().getSessionInfo().clone());
+    return new TrackerRemoteDbSessionImpl(this, clientInfo, getRmiServer().getSessionInfo());
   }
 
   @Override

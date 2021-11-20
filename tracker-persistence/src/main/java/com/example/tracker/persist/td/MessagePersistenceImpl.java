@@ -30,6 +30,7 @@ import org.tentackle.session.PersistenceException;
 import org.tentackle.session.Session;
 import org.tentackle.sql.Backend;
 
+import java.io.Serial;
 import java.rmi.RemoteException;
 import java.util.Objects;
 
@@ -39,8 +40,8 @@ import java.util.Objects;
 @PersistentObjectService(Message.class)
 public class MessagePersistenceImpl extends AbstractPersistentTransactionData<Message, MessagePersistenceImpl> implements MessagePersistence {
 
-  /** serial version UID. */
-  private static final long serialVersionUID = -1;
+  @Serial
+  private static final long serialVersionUID = 1L;
 
   // @wurblet classVariables ClassVariables
 

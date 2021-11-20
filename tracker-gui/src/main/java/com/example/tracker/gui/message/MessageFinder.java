@@ -24,9 +24,7 @@ import org.tentackle.fx.translate.DateStringTranslator;
 import org.tentackle.common.DateHelper;
 import org.tentackle.pdo.DomainContext;
 
-import java.util.Date;
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * Finder for messages.
@@ -101,11 +99,12 @@ public class MessageFinder extends PdoFinder<Message> {
       }
     });
 
-    fromField.getProperties().put(DateStringTranslator.REFERENCE_DATE_SUPPLIER,
-                                  (Supplier<Date>) () -> until);
-    untilField.getProperties().put(DateStringTranslator.REFERENCE_DATE_SUPPLIER,
-                                   (Supplier<Date>) () -> from);
     from = DateHelper.now(-86400000); // -1 day
+  }
+
+  @Override
+  public void configure() {
+    DateStringTranslator.connectAsReferenceDateSuppliers(fromField, untilField);
   }
 
   @Override

@@ -31,10 +31,10 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <wurbelizer.version>11.3.1.0</wurbelizer.version>
+    <wurbelizer.version>17.3.2.1</wurbelizer.version>
     <wurbel.wurbelDir>${rootBasedir}/target/wurbel</wurbel.wurbelDir>
 
-    <tentackle.version>11.7.1.0</tentackle.version>
+    <tentackle.version>17.9.0.0</tentackle.version>
     <tentackle.serviceDir>${project.build.directory}/generated-resources/services</tentackle.serviceDir>
     <tentackle.testServiceDir>${project.build.directory}/generated-test-resources/services</tentackle.testServiceDir>
     <tentackle.manifestDirectory>${project.build.directory}/generated-resources/manifest</tentackle.manifestDirectory>
@@ -42,7 +42,7 @@
     <tentackle.sqlDir>${wurbel.wurbelDir}/sql</tentackle.sqlDir>
     <tentackle.modelDefaults>remote, bind, size, autoselect, tracked, root, rootid, rootclassid</tentackle.modelDefaults>
 
-    <postgres.version>42.2.18</postgres.version>
+    <postgres.version>42.3.1</postgres.version>
     <dbUrl>jdbc:postgresql://localhost/tracker</dbUrl>
     <dbUser>tracker</dbUser>
     <dbPasswd>tracker</dbPasswd>
@@ -66,7 +66,7 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.2.3</version>
+        <version>1.2.7</version>
         <scope>runtime</scope>
       </dependency>
 
@@ -80,7 +80,7 @@
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
-        <version>7.3.0</version>
+        <version>7.4.0</version>
         <scope>test</scope>
         <exclusions>
           <exclusion>
@@ -88,12 +88,6 @@
             <artifactId>junit</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.reflections</groupId>
-        <artifactId>reflections</artifactId>
-        <version>0.9.12</version>
-        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -368,11 +362,11 @@
           <version>3.8.1</version>
           <configuration>
             <encoding>UTF-8</encoding>
-            <release>11</release>
+            <release>17</release>
             <showWarnings>true</showWarnings>
             <showDeprecation>true</showDeprecation>
             <compilerArgs>
-              <arg>-Xlint:unchecked,deprecation,removal,requires-transitive-automatic,requires-automatic</arg>
+              <arg>-Xlint:auxiliaryclass,cast,classfile,deprecation,dep-ann,divzero,empty,fallthrough,finally,opens,overloads,options,overrides,path,rawtypes,removal,requires-transitive-automatic,requires-automatic,serial,static,try,varargs,unchecked</arg>
             </compilerArgs>
             <!-- necessary since Java 9, see https://issues.apache.org/jira/browse/MCOMPILER-310 -->
             <annotationProcessorPaths>
@@ -399,7 +393,7 @@
               <dependency>    <!-- necessary for fx-rdc processors because deps are not recognized here -->
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-controls</artifactId>
-                <version>15.0.1</version>
+                <version>17.0.1</version>
               </dependency>
             </annotationProcessorPaths>
           </configuration>
@@ -411,6 +405,7 @@
           <version>3.2.0</version>
           <configuration>
             <encoding>UTF-8</encoding>
+            <propertiesEncoding>UTF-8</propertiesEncoding>
             <escapeString>\</escapeString>
           </configuration>
         </plugin>
@@ -426,47 +421,32 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.0</version> <!-- Use newer version of ASM -->
+              <version>9.2</version> <!-- Use newer version of ASM -->
             </dependency>
           </dependencies>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.1.2</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.1.1</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>exec-maven-plugin</artifactId>
-          <version>1.6.0</version>
-          <configuration>
-            <classpathScope>test</classpathScope>
-          </configuration>
+          <version>3.2.0</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.2.1</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.3.1</version>
           <dependencies>
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.0</version>
+              <version>9.2</version>
             </dependency>
           </dependencies>
         </plugin>

@@ -5,7 +5,6 @@
 package com.example.tracker.gui.main;
 
 import com.example.tracker.common.TrackerDomainContext;
-import com.example.tracker.common.TrackerPreferences;
 import com.example.tracker.gui.TrackerImageProvider;
 import com.example.tracker.gui.about.AboutView;
 import com.example.tracker.gui.password.ChangePasswordView;
@@ -24,11 +23,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import org.tentackle.app.AbstractApplication;
-import org.tentackle.common.StringHelper;
-import org.tentackle.common.TentackleRuntimeException;
 import org.tentackle.fx.AbstractFxController;
 import org.tentackle.fx.Fx;
 import org.tentackle.fx.FxControllerService;
+import org.tentackle.fx.FxUtilities;
 import org.tentackle.fx.component.FxButton;
 import org.tentackle.fx.rdc.Rdc;
 import org.tentackle.fx.rdc.admin.SessionsView;
@@ -41,9 +39,6 @@ import org.tentackle.prefs.PersistedPreferencesFactory;
 import org.tentackle.security.SecurityFactory;
 import org.tentackle.security.pdo.Security;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
 import java.util.ResourceBundle;
 
 /**
@@ -186,21 +181,7 @@ public class MainController extends AbstractFxController implements DomainContex
    * Shows the help browser.
    */
   private void help() {
-    String helpUrl = TrackerPreferences.getInstance().getHelpUrl();
-    if (StringHelper.isAllWhitespace(helpUrl)) {
-      Fx.info("Help URL not configured. Please edit the Preferences!");
-    }
-    else {
-      // extra thread because Desktop blocks FX thread
-      new Thread(() -> {
-        try {
-          Desktop.getDesktop().browse(URI.create(helpUrl));
-        }
-        catch (IOException ex) {
-          throw new TentackleRuntimeException("could not open online help", ex);
-        }
-      }).start();
-    }
+    FxUtilities.getInstance().showHelp(null);
   }
 
 

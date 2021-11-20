@@ -4,7 +4,6 @@
 
 package com.example.tracker.pdo;
 
-import org.reflections.Reflections;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
@@ -18,20 +17,24 @@ import java.util.MissingResourceException;
  */
 public class EnumI18nTest {
 
+  private static final Class<?>[] ENUMS = {
+      MessageType.class
+      // to be cont'd ...
+  };
+
   @Test
   public void testEnums() {
-    Reflections reflections = new Reflections("com.example.tracker");
-    reflections.getSubTypesOf(Enum.class).forEach(c -> {
-      Reporter.log("enum " + c.getName() + "<br>");
-      for (Object constant: c.getEnumConstants()) {
+    for (Class<?> clazz : ENUMS) {
+      Reporter.log("testing enum " + clazz.getName() + "<br>", true);
+      for (Object constant: clazz.getEnumConstants()) {
         try {
           Reporter.log(constant.toString() + "<br>");    // this will use the bundle
         }
         catch (MissingResourceException mx) {
-          Assert.fail("missing resource for " + c.getName() + ": " + mx.getMessage());
+          Assert.fail("missing resource for " + clazz.getName() + ": " + mx.getMessage());
         }
       }
-    });
+    }
   }
 
 }

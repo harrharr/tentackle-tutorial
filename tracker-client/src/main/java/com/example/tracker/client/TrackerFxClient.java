@@ -4,7 +4,7 @@
 
 package com.example.tracker.client;
 
-import com.example.tracker.common.TrackerSessionInfo;
+import com.example.tracker.common.TrackerPreferences;
 import com.example.tracker.common.Version;
 import com.example.tracker.gui.GuiBundle;
 import com.example.tracker.gui.main.MainController;
@@ -12,6 +12,7 @@ import com.example.tracker.pdo.md.User;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import org.tentackle.fx.FxUtilities;
 import org.tentackle.fx.rdc.app.FxApplication;
 import org.tentackle.fx.rdc.update.UpdatableDesktopApplication;
 import org.tentackle.pdo.DomainContext;
@@ -59,6 +60,15 @@ public class TrackerFxClient extends UpdatableDesktopApplication<MainController>
     User user = getUser(getDomainContext());    // must exist!
     PersistedPreferencesFactory.getInstance().setSystemOnly(user.isSystemPreferencesOnly());
     PersistedPreferencesFactory.getInstance().setReadOnly(!user.isChangingPreferencesAllowed());
+    TrackerPreferences.getInstance().getSystemPrefs().addPreferenceChangeListener(evt -> {
+      switch (evt.getKey()) {
+        case TrackerPreferences.HELP_URL:
+          configureHelpURL();
+          break;
+        // other application specific pref changes go here...
+      }
+    });
+    configureHelpURL();
   }
 
   @Override
@@ -67,6 +77,10 @@ public class TrackerFxClient extends UpdatableDesktopApplication<MainController>
     return Pdo.create(User.class, context).selectCached(userId);
   }
 
+
+  private void configureHelpURL() {
+    FxUtilities.getInstance().setHelpURL(TrackerPreferences.getInstance().getHelpUrl());
+  }
 
   /**
    * Starts the FX client application.

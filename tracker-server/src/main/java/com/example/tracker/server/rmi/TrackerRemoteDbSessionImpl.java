@@ -14,7 +14,7 @@ import com.example.tracker.server.ServerBundle;
 
 import org.tentackle.app.AbstractApplication;
 import org.tentackle.common.LocaleProvider;
-import org.tentackle.common.StringHelper;
+import org.tentackle.dbms.Db;
 import org.tentackle.dbms.rmi.RemoteDbConnectionImpl;
 import org.tentackle.dbms.rmi.RemoteDbSessionImpl;
 import org.tentackle.log.Logger;
@@ -51,7 +51,6 @@ public class TrackerRemoteDbSessionImpl extends RemoteDbSessionImpl implements T
   @Override
   public void verifySessionInfo(SessionInfo sessionInfo) {
     String passwordHash = TrackerHelper.hash(sessionInfo.getPassword());
-    StringHelper.blank(sessionInfo.getPassword());
     DomainContext context = Pdo.createDomainContext(getSession());
     String username = sessionInfo.getUserName();
     User user = Pdo.create(User.class, context).selectByUniqueDomainKey(username);
@@ -86,45 +85,47 @@ public class TrackerRemoteDbSessionImpl extends RemoteDbSessionImpl implements T
       if (otherInfo != null) {
         throw new AlreadyLoggedInException(getSession(), otherInfo);
       }
-      String message = MessageFormat.format(ServerBundle.getString("user {0} logged in from {1} with {2}, session {3}"),
-                                            user, sessionInfo.getHostInfo(), sessionInfo.getApplicationName(), getSessionNumber());
-      Message.log(MessageType.LOGIN, user, message, user);
+      if (!getSession().isRemote()) {
+        String message=MessageFormat.format(ServerBundle.getString("user {0} logged in from {1} with {2}, session {3}"),
+        user,sessionInfo.getHostInfo(),sessionInfo.getApplicationName(),getSessionNumber());
+        Message.log(MessageType.LOGIN,user,message,user);
+      }
       loggedIn = true;
     }
   }
 
   @Override
   protected void closeDb(boolean cleanup) {
-    try {
-      TrackerSessionInfo sessionInfo = (TrackerSessionInfo) getClientSessionInfo();
-      if (!sessionInfo.isCloned() && getSession() != null) {    // if main session and not the finalizer
-        DomainContext context = Pdo.createDomainContext(getSession());
-        User user = AbstractApplication.getRunningApplication().getUser(context, sessionInfo.getUserId());
-        LocaleProvider.getInstance().setCurrentLocale(sessionInfo.getLocale());
-        getSession().makeCurrent();
-        String message = null;
-        if (user == null) {
-          message = MessageFormat.format(ServerBundle.getString("bad login attempt with {0} as {1} from {2}"),
-                                         sessionInfo.getApplicationName(), sessionInfo.getUserName(), sessionInfo.getHostInfo());
-        }
-        else if (loggedIn) {
-          message = MessageFormat.format(ServerBundle.getString("user {0} logged out from {1} with {2}, session {3}"),
-                                         user, sessionInfo.getHostInfo(), sessionInfo.getApplicationName(), getSessionNumber());
-        }
-
-        if (message != null) {
-          if (cleanup) {
-            message = MessageFormat.format(ServerBundle.getString("crashed {0}"), message);
+    Db session = getSession();
+    if (session != null && !session.isRemote()) {
+      try {
+        TrackerSessionInfo sessionInfo = (TrackerSessionInfo) getClientSessionInfo();
+        if (!sessionInfo.isCloned()) {    // if main session and not the finalizer
+          DomainContext context = Pdo.createDomainContext(session);
+          User user = AbstractApplication.getRunningApplication().getUser(context, sessionInfo.getUserId());
+          LocaleProvider.getInstance().setCurrentLocale(sessionInfo.getLocale());
+          session.makeCurrent();
+          String message = null;
+          if (user == null) {
+            message = MessageFormat.format(ServerBundle.getString("bad login attempt with {0} as {1} from {2}"),
+                                           sessionInfo.getApplicationName(), sessionInfo.getUserName(), sessionInfo.getHostInfo());
           }
-
-          Message.log(MessageType.LOGOUT, user, message, user);
+          else if (loggedIn) {
+            message = MessageFormat.format(ServerBundle.getString("user {0} logged out from {1} with {2}, session {3}"),
+                                           user, sessionInfo.getHostInfo(), sessionInfo.getApplicationName(), getSessionNumber());
+          }
+          if (message != null) {
+            if (cleanup) {
+              message = MessageFormat.format(ServerBundle.getString("crashed {0}"), message);
+            }
+            Message.log(MessageType.LOGOUT, user, message, user);
+          }
         }
       }
+      catch (RuntimeException rex) {
+        LOGGER.warning("could not create logout message for " + this, rex);
+      }
     }
-    catch (RuntimeException rex) {
-      LOGGER.warning("could not create logout message for " + this, rex);
-    }
-
     super.closeDb(cleanup);
   }
 

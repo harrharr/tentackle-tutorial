@@ -7,11 +7,14 @@ package com.example.tracker.common;
 import org.tentackle.pdo.DefaultDomainContext;
 import org.tentackle.session.Session;
 
+import java.io.Serial;
+
 /**
  * Application specific domain context.
  */
 public class TrackerDomainContext extends DefaultDomainContext {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   /**

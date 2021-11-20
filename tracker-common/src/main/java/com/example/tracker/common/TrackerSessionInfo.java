@@ -6,6 +6,7 @@ package com.example.tracker.common;
 
 import org.tentackle.session.DefaultSessionInfo;
 
+import java.io.Serial;
 import java.util.Properties;
 
 /**
@@ -13,6 +14,7 @@ import java.util.Properties;
  */
 public class TrackerSessionInfo extends DefaultSessionInfo {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
 
