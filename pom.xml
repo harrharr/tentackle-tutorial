@@ -42,7 +42,7 @@
     <tentackle.sqlDir>${wurbel.wurbelDir}/sql</tentackle.sqlDir>
     <tentackle.modelDefaults>remote, bind, size, autoselect, tracked, root, rootid, rootclassid</tentackle.modelDefaults>
 
-    <postgres.version>42.3.1</postgres.version>
+    <postgres.version>42.3.3</postgres.version>
     <dbUrl>jdbc:postgresql://localhost/tracker</dbUrl>
     <dbUser>tracker</dbUser>
     <dbPasswd>tracker</dbPasswd>
