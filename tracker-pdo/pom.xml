@@ -23,6 +23,12 @@
       <artifactId>tracker-common</artifactId>
       <version>${project.version}</version>
     </dependency>
+
+    <dependency>
+      <!-- logger binder for testng -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -34,6 +40,20 @@
       <plugin>
         <groupId>org.tentackle</groupId>
         <artifactId>tentackle-sql-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <verbosity>info</verbosity>
+          <dumpDir>${project.build.directory}/generated-resources/META-INF/model</dumpDir>
+          <dumpModelSource>true</dumpModelSource>
+          <dumpModelIndex>${project.build.directory}/generated-resources/META-INF/MODEL-INDEX.LIST</dumpModelIndex>
+        </configuration>
       </plugin>
     </plugins>
   </build>

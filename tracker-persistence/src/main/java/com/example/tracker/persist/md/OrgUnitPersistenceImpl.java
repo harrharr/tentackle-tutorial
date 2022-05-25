@@ -15,11 +15,13 @@ import com.example.tracker.persist.md.rmi.OrgUnitRemoteDelegate;
 import org.tentackle.common.StringHelper;
 import org.tentackle.dbms.DbModificationType;
 import org.tentackle.dbms.DbObjectClassVariables;
+import org.tentackle.dbms.ModificationType;
 import org.tentackle.dbms.PreparedStatementWrapper;
 import org.tentackle.dbms.ResultSetWrapper;
 import org.tentackle.dbms.StatementId;
 import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.Pdo;
+import org.tentackle.pdo.PdoCache;
 import org.tentackle.pdo.PersistentObjectService;
 import org.tentackle.persist.AbstractPersistentObject;
 import org.tentackle.persist.PersistentObjectClassVariables;
@@ -161,6 +163,11 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
   }
 
   @Override
+  public boolean isTokenLockProvided() {
+    return true;
+  }
+
+  @Override
   public boolean isNormTextProvided() {
     return true;
   }
@@ -183,6 +190,9 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
     if (rs.configureSection(CLASSVARIABLES)) {
       rs.configureColumn(CN_NORMTEXT);
       rs.configureColumn(CN_CLASSID);
+      rs.configureColumn(CN_EDITEDBY);
+      rs.configureColumn(CN_EDITEDSINCE);
+      rs.configureColumn(CN_EDITEDEXPIRY);
       rs.configureColumn(CN_NAME);
       rs.configureColumn(CN_COMMENT);
       rs.configureColumn(CN_ID);
@@ -193,6 +203,9 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
     }
     setNormText(rs.getString());
     setClassId(rs.getInt());
+    setEditedBy(rs.getLong());
+    setEditedSince(rs.getTimestamp());
+    setEditedExpiry(rs.getTimestamp());
     name = rs.getString();
     comment = rs.getString();
     setId(rs.getLong());
@@ -209,6 +222,9 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
     int ndx = 0;
     st.setString(++ndx, getNormText());
     st.setInt(++ndx, getClassId());
+    st.setLong(++ndx, getEditedBy());
+    st.setTimestamp(++ndx, getEditedSince());
+    st.setTimestamp(++ndx, getEditedExpiry());
     st.setString(++ndx, name);
     st.setString(++ndx, comment);
     st.setLong(++ndx, getId());
@@ -225,11 +241,17 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
     return Backend.SQL_INSERT_INTO + CLASSVARIABLES.getTableName() + Backend.SQL_LEFT_PARENTHESIS +
            CN_NORMTEXT + Backend.SQL_COMMA +
            CN_CLASSID + Backend.SQL_COMMA +
+           CN_EDITEDBY + Backend.SQL_COMMA +
+           CN_EDITEDSINCE + Backend.SQL_COMMA +
+           CN_EDITEDEXPIRY + Backend.SQL_COMMA +
            CN_NAME + Backend.SQL_COMMA +
            CN_COMMENT + Backend.SQL_COMMA +
            CN_ID + Backend.SQL_COMMA +
            CN_SERIAL +
            Backend.SQL_INSERT_VALUES +
+           Backend.SQL_PAR_COMMA +
+           Backend.SQL_PAR_COMMA +
+           Backend.SQL_PAR_COMMA +
            Backend.SQL_PAR_COMMA +
            Backend.SQL_PAR_COMMA +
            Backend.SQL_PAR_COMMA +
@@ -247,6 +269,9 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
     return Backend.SQL_UPDATE + CLASSVARIABLES.getTableName() + Backend.SQL_SET +
            CN_NORMTEXT + Backend.SQL_EQUAL_PAR_COMMA +
            CN_CLASSID + Backend.SQL_EQUAL_PAR_COMMA +
+           CN_EDITEDBY + Backend.SQL_EQUAL_PAR_COMMA +
+           CN_EDITEDSINCE + Backend.SQL_EQUAL_PAR_COMMA +
+           CN_EDITEDEXPIRY + Backend.SQL_EQUAL_PAR_COMMA +
            CN_NAME + Backend.SQL_EQUAL_PAR_COMMA +
            CN_COMMENT + Backend.SQL_EQUAL_PAR_COMMA +
            CN_SERIAL + Backend.SQL_EQUAL + CN_SERIAL + Backend.SQL_PLUS_ONE +
@@ -269,7 +294,7 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
   public StringBuilder createSelectAllInnerSql() {
     StringBuilder sql = new StringBuilder();
     sql.append(OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(Backend.SQL_ALLSTAR));
-    sql.append(Backend.SQL_COMMA).append(UserPersistenceImpl.CLASSVARIABLES.getColumnName(Backend.SQL_ALLSTAR));
+    sql.append(Backend.SQL_COMMA).append(UserPersistenceImpl.CLASSVARIABLES.getColumnNames(UserPersistenceImpl.CNS_USER));
     sql.append(Backend.SQL_COMMA).append(UserGroupPersistenceImpl.CLASSVARIABLES.getColumnName(Backend.SQL_ALLSTAR));
     sql.append(Backend.SQL_FROM);
     sql.append(OrgUnitPersistenceImpl.CLASSVARIABLES.getTableName()).
@@ -324,11 +349,10 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
 
   @Override
   public void setName(String name) {
-    assertMutable();
     if (!Objects.equals(this.name, name)) {
       setModified(true);
+      this.name = name;
     }
-    this.name = name;
   }
 
   @Override
@@ -338,11 +362,10 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
 
   @Override
   public void setComment(String comment) {
-    assertMutable();
     if (!Objects.equals(this.comment, comment)) {
       setModified(true);
+      this.comment = comment;
     }
-    this.comment = comment;
   }
 
   /**
@@ -427,34 +450,69 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
 
   //<editor-fold defaultstate="collapsed" desc="code 'cache' generated by wurblet PdoCache">//GEN-BEGIN:cache
 
+  /** Holder of the PDO cache singleton. */
+  private static class CacheHolder {
+    private static final PdoCache<? extends OrgUnit<?>> CACHE = createCache();
 
-  @Override
-  @SuppressWarnings("unchecked")
-  public T selectCached(long id) {
-    T pdo = (T) Pdo.create(User.class, getDomainContext()).selectCached(id);
-    if (pdo == null) {
-      pdo = (T) Pdo.create(UserGroup.class, getDomainContext()).selectCached(id);
+    @SuppressWarnings("unchecked")
+    private static <X extends OrgUnit<X>> PdoCache<X> createCache() {
+      PdoCache<X> cache = (PdoCache<X>) Pdo.createPdoCache(OrgUnit.class, true, true, false);
+      Pdo.listen(cache::expire, User.class, UserGroup.class);
+      return cache;
     }
-    return pdo;
+  }
+
+  private boolean isValidClassId(T pdo) {
+    if (pdo != null) {
+      List<Integer> classIds = getValidClassIds();
+      return classIds == null || classIds.contains(pdo.getPersistenceDelegate().getClassId());
+    }
+    return false;
+  }
+
+  private T filterByClassId(T pdo) {
+    return isValidClassId(pdo) ? pdo : null;
+  }
+
+  private List<T> filterByClassId(List<T> pdos) {
+    return getValidClassIds() == null ? pdos : pdos.stream().filter(this::isValidClassId).toList();
   }
 
   @Override
   @SuppressWarnings("unchecked")
+  public PdoCache<T> getCache() {
+    return (PdoCache<T>) CacheHolder.CACHE;
+  }
+
+  @Override
+  public boolean isCountingModification(ModificationType modType) {
+    return true;
+  }
+
+  @Override
+  public boolean isReadAllowed() {
+    return true;
+  }
+
+  @Override
+  public void expireCache(long maxSerial) {
+    super.expireCache(maxSerial);
+    CacheHolder.CACHE.expire(null, getTableName(), maxSerial);
+  }
+
+  @Override
   public T selectCachedOnly(long id) {
-    T pdo = (T) Pdo.create(User.class, getDomainContext()).selectCachedOnly(id);
-    if (pdo == null) {
-      pdo = (T) Pdo.create(UserGroup.class, getDomainContext()).selectCachedOnly(id);
-    }
-    return pdo;
+    return filterByClassId(getCache().select(getDomainContext(), id, false));
   }
 
   @Override
-  @SuppressWarnings("unchecked")
+  public T selectCached(long id) {
+    return filterByClassId(getCache().select(getDomainContext(), id));
+  }
+
+  @Override
   public List<T> selectAllCached() {
-    List<T> pdos = new ArrayList<>();
-    pdos.addAll((Collection<? extends T>) Pdo.create(User.class, getDomainContext()).selectAllCached());
-    pdos.addAll((Collection<? extends T>) Pdo.create(UserGroup.class, getDomainContext()).selectAllCached());
-    return pdos;
+    return filterByClassId(getCache().selectAll(getDomainContext()));
   }
 
   //</editor-fold>//GEN-END:cache

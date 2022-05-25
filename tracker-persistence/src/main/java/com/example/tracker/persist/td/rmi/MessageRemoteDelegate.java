@@ -29,7 +29,6 @@ public interface MessageRemoteDelegate
   Message selectByUniqueDomainKey(DomainContext context, String messageNumber) throws RemoteException;
   boolean isReferencingOrgUnitByOrgUnitId(Long orgUnitId) throws RemoteException;
   String nextMessageNumber(DomainContext context) throws RemoteException;
-  TrackedList<Message> findLatest(DomainContext context, int limit, long id) throws RemoteException;
   TrackedList<Message> findBy(DomainContext context, String messageNumber, Timestamp from, Timestamp until, MessageType type, OrgUnit<?> orgUnit, String pattern) throws RemoteException;
 
   //</editor-fold>//GEN-END:inclrmi

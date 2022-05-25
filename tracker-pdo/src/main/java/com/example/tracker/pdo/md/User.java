@@ -14,7 +14,7 @@ import org.tentackle.session.TableName;
 
 /*
  * @{
- * tablename = md.user
+ * tablename = md.users
  * classid   = 1001
  * mapping   = $model/$tablename.map
  * @}
@@ -57,7 +57,7 @@ import org.tentackle.session.TableName;
  * <p>
  * For security reasons, the password hash is stored in the user table, but is not part of the User PDO.
  */
-@TableName(value =/**/"md.user"/**/, // @wurblet < Inject --string $tablename
+@TableName(value =/**/"md.users"/**/, // @wurblet < Inject --string $tablename
            mapSchema =/**/false/**/, // @wurblet < Inject $mapSchema
            prefix =/**/""/**/)       // @wurblet < Inject --string $tablePrefix
 @ClassId(/**/1001/**/)               // @wurblet < Inject $classid

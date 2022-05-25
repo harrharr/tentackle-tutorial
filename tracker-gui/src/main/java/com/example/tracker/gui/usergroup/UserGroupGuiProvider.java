@@ -4,10 +4,10 @@
 
 package com.example.tracker.gui.usergroup;
 
-import com.example.tracker.gui.TrackerImageProvider;
+import com.example.tracker.gui.TrackerGraphicProvider;
 import com.example.tracker.pdo.md.User;
 import com.example.tracker.pdo.md.UserGroup;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 
@@ -37,8 +37,8 @@ public class UserGroupGuiProvider extends DefaultGuiProvider<UserGroup> {
   }
 
   @Override
-  public ImageView createIcon() {
-    return Fx.createImageView(TrackerImageProvider.REALM, "usergroup");
+  public Node createGraphic() {
+    return Fx.createGraphic(TrackerGraphicProvider.REALM, "usergroup");
   }
 
   @Override
@@ -48,12 +48,12 @@ public class UserGroupGuiProvider extends DefaultGuiProvider<UserGroup> {
   }
 
   @Override
-  public boolean editorExists() {
+  public boolean isEditorAvailable() {
     return true;
   }
 
   @Override
-  public boolean finderExists() {
+  public boolean isFinderAvailable() {
     return true;
   }
 

@@ -14,7 +14,10 @@ import org.testng.annotations.Test;
 import org.tentackle.log.Logger;
 import org.tentackle.ns.pdo.NumberPool;
 import org.tentackle.ns.pdo.NumberRange;
-import org.tentackle.test.pdo.AbstractPdoTest;
+import org.tentackle.pdo.Pdo;
+import org.tentackle.pdo.testng.AbstractPdoTest;
+import org.tentackle.session.Session;
+import org.tentackle.session.SessionInfo;
 
 
 /**
@@ -28,6 +31,14 @@ public class FillDatabase extends AbstractPdoTest {
     super(TransactionType.CLASS, true);   // commit!
   }
 
+  @Override
+  protected Session openSession() {
+    SessionInfo sessionInfo = Pdo.createSessionInfo("server");
+    sessionInfo.applyProperties();
+    Session session = Pdo.createSession(sessionInfo);
+    session.makeCurrent();
+    return session;
+  }
 
   @Test(groups = { TestConstants.GROUP_INITDB })
   public void setupPools() {

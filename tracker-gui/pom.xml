@@ -35,6 +35,11 @@
       <artifactId>tentackle-test-fx-rdc</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.tentackle</groupId>
+      <artifactId>tentackle-script-groovy</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.example</groupId>
       <artifactId>tracker-persistence</artifactId>
       <version>${project.version}</version>
@@ -47,8 +52,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
+      <!-- logger binder for testng -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
     </dependency>
   </dependencies>
 
@@ -65,7 +71,7 @@
         <directory>src/main/resources</directory>
       </resource>
       <resource>
-        <directory>target/generated-resources/services</directory>
+        <directory>target/generated-resources</directory>
       </resource>
       <resource>
         <directory>src/main/java</directory>

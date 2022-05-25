@@ -72,7 +72,6 @@ public class TrackerFxClient extends UpdatableDesktopApplication<MainController>
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public User getUser(DomainContext context, long userId) {
     return Pdo.create(User.class, context).selectCached(userId);
   }

@@ -14,13 +14,15 @@ import org.tentackle.session.TableName;
 
 /*
  * @{
-<#if pdoTablename != "">
- * tablename = ${pdoTablename}
-</#if>
 <#if pdoClassId != "">
  * classid   = ${pdoClassId}
 </#if>
+<#if pdoTablename != "">
+ * tablename = ${pdoTablename}
  * mapping   = $model/$tablename.map
+<#else>
+ * mapping   = $model/$classname.map
+</#if>
  * @}
  */
 
@@ -44,6 +46,13 @@ import org.tentackle.session.TableName;
  * integrity := $integrity
  *
  * ## attributes
+<#if profile == "masterdata">
+  <#if pdoExtends == "">
+ * [cached, tokenlock]
+  <#else>
+ * [cached]
+  </#if>
+</#if>
  *
  * ## indexes
  *

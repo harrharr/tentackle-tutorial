@@ -197,11 +197,10 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
 
   @Override
   public void setUserGroupId(long userGroupId) {
-    assertMutable();
     if (this.userGroupId != userGroupId) {
       setModified(true);
+      this.userGroupId = userGroupId;
     }
-    this.userGroupId = userGroupId;
   }
 
   @Override
@@ -211,11 +210,10 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
 
   @Override
   public void setUserId(long userId) {
-    assertMutable();
     if (this.userId != userId) {
       setModified(true);
+      this.userId = userId;
     }
-    this.userId = userId;
   }
 
   /**
@@ -244,7 +242,6 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
 
   @Override
   public void setUser(User user)  {
-    assertMutable();
     setUserId(user == null ? 0 : user.getId());
   }
 
@@ -255,7 +252,6 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
 
   @Override
   public void setUserGroup(UserGroup userGroup)  {
-    assertMutable();
     setUserGroupId(userGroup == null ? 0 : userGroup.getId());
   }
 

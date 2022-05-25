@@ -14,7 +14,7 @@ import org.tentackle.session.TableName;
 
 /*
  * @{
- * tablename = md.usergroup
+ * tablename = md.usergroups
  * classid   = 1002
  * mapping   = $model/$tablename.map
  * @}
@@ -52,7 +52,7 @@ import org.tentackle.session.TableName;
  * <p>
  * Group of users to define security roles
  */
-@TableName(value =/**/"md.usergroup"/**/, // @wurblet < Inject --string $tablename
+@TableName(value =/**/"md.usergroups"/**/, // @wurblet < Inject --string $tablename
            mapSchema =/**/false/**/,      // @wurblet < Inject $mapSchema
            prefix =/**/""/**/)            // @wurblet < Inject --string $tablePrefix
 @ClassId(/**/1002/**/)                    // @wurblet < Inject $classid

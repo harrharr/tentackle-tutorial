@@ -4,21 +4,59 @@
 
 package com.example.tracker.server;
 
+import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 public class RunServer {
 
   @Test
   public void runServer() {
-    run(new String[] {"--statistics"});
+    run(new String[] {"--statistics", "--backend=server"});
   }
 
+
+  private int exitValue;
+  private Throwable exitThrowable;
+
   private synchronized void run(String[] args) {
-    new TrackerServer().start(args);
-    try {
-      wait();   // keep it running...
+    @SuppressWarnings("unchecked")
+    TrackerServer server = new TrackerServer() {
+
+      @Override
+      protected boolean isSystemExitNecessaryToStop() {
+        return false;   // no System.exit() within the test container
+      }
+
+      @Override
+      public void stop(int exitValue, Throwable exitThrowable) {
+        super.stop(exitValue, exitThrowable);
+        if (exitValue != 0) {
+          synchronized (RunServer.this) {
+            RunServer.this.exitValue = exitValue;
+            RunServer.this.exitThrowable = exitThrowable;
+            RunServer.this.notifyAll();
+          }
+          Assert.fail("abnormally terminated with exit code = " + exitValue, exitThrowable);
+        }
+      }
+    };
+
+    server.start(args);
+
+    for (;;) {
+      try {
+        wait();   // keep it running until stop invoked
+        if (exitValue != 0) {
+          Assert.fail("server terminated while running with exit code = " + exitValue, exitThrowable);
+        }
+        Reporter.log("server finished", true);
+      }
+      catch (InterruptedException e) {
+        // interrupting the main thread in the debugger logs and clears the collected statistics
+        server.logStatistics();
+      }
     }
-    catch (InterruptedException e) {}
   }
 
 }

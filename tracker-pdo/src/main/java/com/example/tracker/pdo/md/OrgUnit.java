@@ -29,7 +29,7 @@ import org.tentackle.session.TableName;
  * integrity := $integrity
  *
  * ## attributes
- * [cached | +name]
+ * [cached, tokenlock | +name]
  * String($ou_name)       name        name        short name [key, uc, normtext]
  * String($ou_comment)    comment     ocomment    optional comment [normtext]
  *

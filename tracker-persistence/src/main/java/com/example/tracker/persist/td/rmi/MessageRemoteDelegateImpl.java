@@ -73,17 +73,6 @@ public class MessageRemoteDelegateImpl
   }
 
   @Override
-  public TrackedList<Message> findLatest(DomainContext context, int limit, long id) throws RemoteException {
-    try {
-      setDomainContext(context);
-      return dbObject.findLatest(limit, id);
-    }
-    catch (RuntimeException e) {
-      throw createException(e);
-    }
-  }
-
-  @Override
   public TrackedList<Message> findBy(DomainContext context, String messageNumber, Timestamp from, Timestamp until, MessageType type, OrgUnit<?> orgUnit, String pattern) throws RemoteException {
     try {
       getSession().applyTo(orgUnit);

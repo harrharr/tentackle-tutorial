@@ -4,9 +4,9 @@
 
 package com.example.tracker.gui.message;
 
-import com.example.tracker.gui.TrackerImageProvider;
+import com.example.tracker.gui.TrackerGraphicProvider;
 import com.example.tracker.pdo.td.Message;
-import javafx.scene.image.ImageView;
+import javafx.scene.Node;
 
 import org.tentackle.common.StringHelper;
 import org.tentackle.fx.Fx;
@@ -36,8 +36,8 @@ public class MessageGuiProvider extends DefaultGuiProvider<Message> {
   }
 
   @Override
-  public ImageView createIcon() {
-    return Fx.createImageView(TrackerImageProvider.REALM, "message");
+  public Node createGraphic() {
+    return Fx.createGraphic(TrackerGraphicProvider.REALM, "message");
   }
 
   @Override
@@ -53,7 +53,7 @@ public class MessageGuiProvider extends DefaultGuiProvider<Message> {
   }
 
   @Override
-  public boolean finderExists() {
+  public boolean isFinderAvailable() {
     return true;
   }
 

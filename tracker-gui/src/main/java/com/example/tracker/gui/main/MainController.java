@@ -5,7 +5,7 @@
 package com.example.tracker.gui.main;
 
 import com.example.tracker.common.TrackerDomainContext;
-import com.example.tracker.gui.TrackerImageProvider;
+import com.example.tracker.gui.TrackerGraphicProvider;
 import com.example.tracker.gui.about.AboutView;
 import com.example.tracker.gui.password.ChangePasswordView;
 import com.example.tracker.gui.prefs.PreferencesDialog;
@@ -17,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -26,6 +28,7 @@ import org.tentackle.app.AbstractApplication;
 import org.tentackle.fx.AbstractFxController;
 import org.tentackle.fx.Fx;
 import org.tentackle.fx.FxControllerService;
+import org.tentackle.fx.FxRuntimeException;
 import org.tentackle.fx.FxUtilities;
 import org.tentackle.fx.component.FxButton;
 import org.tentackle.fx.rdc.Rdc;
@@ -39,6 +42,8 @@ import org.tentackle.prefs.PersistedPreferencesFactory;
 import org.tentackle.security.SecurityFactory;
 import org.tentackle.security.pdo.Security;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ResourceBundle;
 
 /**
@@ -90,7 +95,6 @@ public class MainController extends AbstractFxController implements DomainContex
   private ResourceBundle resources;
 
 
-
   @Override
   public TrackerDomainContext getDomainContext() {
     return (TrackerDomainContext) AbstractApplication.getRunningApplication().getDomainContext();
@@ -99,54 +103,52 @@ public class MainController extends AbstractFxController implements DomainContex
   @FXML
   public void initialize() {
 
-    ImageView centerImage = Fx.createImageView(TrackerImageProvider.REALM, "tentackle");
-    borderPane.setCenter(centerImage);
+    borderPane.setCenter(createCenterNode());
 
-    securityManagerItem.setGraphic(Fx.createImageView("security"));
+    securityManagerItem.setGraphic(Fx.createGraphic("security"));
     securityManagerItem.setDisable(!SecurityDialogFactory.getInstance().isDialogAllowed(getDomainContext()));
     securityManagerItem.setOnAction(e ->
             SecurityDialogFactory.getInstance().showDialog(on(Security.class).getClassId(), getDomainContext()));
 
-    sessionsItem.setGraphic(Fx.createImageView("modem"));
+    sessionsItem.setGraphic(Fx.createGraphic("session"));
     sessionsItem.setDisable(!SecurityFactory.getInstance().getSecurityManager().evaluate(
         getDomainContext(), SecurityFactory.getInstance().getExecutePermission(), AdminExtension.class).isAccepted());
     sessionsItem.setOnAction(e -> manageSessions());
 
-    preferencesItem.setGraphic(Fx.createImageView("preferences"));
+    preferencesItem.setGraphic(Fx.createGraphic("preferences"));
     preferencesItem.setDisable(
             !PersistedPreferencesFactory.getInstance().isSystemOnly() ||
             !SecurityFactory.getInstance().getSecurityManager().evaluate(
                 getDomainContext(), SecurityFactory.getInstance().getExecutePermission(), PreferencesDialog.class).isAccepted());
     preferencesItem.setOnAction(e -> PreferencesDialog.show());
 
-    passwordItem.setGraphic(Fx.createImageView("password"));
+    passwordItem.setGraphic(Fx.createGraphic("password"));
     passwordItem.setOnAction(e -> ChangePasswordView.showDialog(DesktopApplication.getDesktopApplication().getUser(getDomainContext()), false));
 
-    exitItem.setGraphic(Fx.createImageView("exit"));
+    exitItem.setGraphic(Fx.createGraphic("exit"));
     exitItem.setOnAction(e -> exit());
 
-    editUserItem.setGraphic(Fx.createImageView(TrackerImageProvider.REALM, "user"));
+    editUserItem.setGraphic(Fx.createGraphic(TrackerGraphicProvider.REALM, "user"));
     editUserItem.setOnAction(e -> edit(User.class));
 
-    editUserGroupItem.setGraphic(Fx.createImageView(TrackerImageProvider.REALM, "usergroup"));
+    editUserGroupItem.setGraphic(Fx.createGraphic(TrackerGraphicProvider.REALM, "usergroup"));
     editUserGroupItem.setOnAction(e -> edit(UserGroup.class));
 
-    searchUserItem.setGraphic(Fx.createImageView(TrackerImageProvider.REALM, "user"));
+    searchUserItem.setGraphic(Fx.createGraphic(TrackerGraphicProvider.REALM, "user"));
     searchUserItem.setOnAction(e -> search(User.class));
 
-    searchUserGroupItem.setGraphic(Fx.createImageView(TrackerImageProvider.REALM, "usergroup"));
+    searchUserGroupItem.setGraphic(Fx.createGraphic(TrackerGraphicProvider.REALM, "usergroup"));
     searchUserGroupItem.setOnAction(e -> search(UserGroup.class));
 
-    searchMessageItem.setGraphic(Fx.createImageView(TrackerImageProvider.REALM, "message"));
+    searchMessageItem.setGraphic(Fx.createGraphic(TrackerGraphicProvider.REALM, "message"));
     searchMessageItem.setOnAction(e -> search(Message.class));
 
-    helpItem.setGraphic(Fx.createImageView("help"));
+    helpItem.setGraphic(Fx.createGraphic("help"));
     helpItem.setOnAction(e -> help());
 
-    aboutItem.setGraphic(Fx.createImageView("about"));
+    aboutItem.setGraphic(Fx.createGraphic("about"));
     aboutItem.setOnAction(e -> AboutView.showDialog());
   }
-
 
   /**
    * Asks the user whether to exit the application and does so if yes.
@@ -176,7 +178,6 @@ public class MainController extends AbstractFxController implements DomainContex
     Rdc.displaySearchStage(on(clazz), Fx.getStage(getView()), false);
   }
 
-
   /**
    * Shows the help browser.
    */
@@ -184,22 +185,31 @@ public class MainController extends AbstractFxController implements DomainContex
     FxUtilities.getInstance().showHelp(null);
   }
 
-
   /**
    * Manages server sessions.
    */
   private void manageSessions() {
     Stage stage = Fx.createStage(Modality.APPLICATION_MODAL);
     SessionsView controller = Fx.load(SessionsView.class);
-    FxButton closeButton = Fx.createNode(Button.class);
+    FxButton closeButton = Fx.create(Button.class);
     closeButton.setText(resources.getString("close"));
-    closeButton.setGraphic(Fx.createImageView("close"));
+    closeButton.setGraphic(Fx.createGraphic("close"));
     closeButton.setOnAction(e -> stage.close());
     controller.getButtonBox().getChildren().add(closeButton);
     Scene scene = Fx.createScene(controller.getView());
     stage.setScene(scene);
     stage.setTitle(resources.getString("Sessions"));
     stage.show();
+  }
+
+  private Node createCenterNode() {
+    // just to show something nice (to be replaced by some application relevant stuff)
+    try (InputStream is = getClass().getResourceAsStream("/com/example/tracker/gui/images/tentackle.png")) {
+      return new ImageView(new Image(is));
+    }
+    catch (IOException iox) {
+      throw new FxRuntimeException("loading center image failed", iox);
+    }
   }
 
 }

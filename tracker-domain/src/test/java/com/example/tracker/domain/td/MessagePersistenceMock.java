@@ -16,7 +16,7 @@ import org.tentackle.misc.TrackedArrayList;
 import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.PersistentObjectService;
 import org.tentackle.session.Session;
-import org.tentackle.test.pdo.mock.MockPersistentObject;
+import org.tentackle.pdo.mock.MockPersistentObject;
 
 import java.io.Serial;
 
@@ -123,9 +123,9 @@ public class MessagePersistenceMock extends MockPersistentObject<Message, Messag
 
   @Override
   public void setWhen(Timestamp when) {
-    this.when = when;
     Timestamp.setUTC(when, false);
     Freezable.freeze(when);
+    this.when = when;
   }
 
   @Override
@@ -221,11 +221,6 @@ public class MessagePersistenceMock extends MockPersistentObject<Message, Messag
   @Override
   public Message selectByUniqueDomainKey(String messageNumber) {
     return null;
-  }
-
-  @Override
-  public TrackedList<Message> findLatest(int limit, long id) {
-    return new TrackedArrayList<>();
   }
 
   @Override

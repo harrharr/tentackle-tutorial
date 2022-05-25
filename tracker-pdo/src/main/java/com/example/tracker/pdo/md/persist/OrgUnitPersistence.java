@@ -59,7 +59,7 @@ public interface OrgUnitPersistence<T extends OrgUnit<T>> extends PersistentObje
    *
    * @return short name
    */
-  @Persistent(ordinal=2, comment="short name")
+  @Persistent(ordinal=5, comment="short name")
   @NotNull(message="{ @('please enter the name') }")
   @Bindable(options="UC,MAXCOLS=20")
   @DomainKey
@@ -78,7 +78,7 @@ public interface OrgUnitPersistence<T extends OrgUnit<T>> extends PersistentObje
    *
    * @return optional comment
    */
-  @Persistent(ordinal=3, comment="optional comment")
+  @Persistent(ordinal=6, comment="optional comment")
   @Bindable(options="MAXCOLS=256")
   String getComment();
 

@@ -61,7 +61,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @return true if login is allowed
    */
-  @Persistent(ordinal=7, comment="true if login is allowed")
+  @Persistent(ordinal=10, comment="true if login is allowed")
   @Bindable
   boolean isLoginAllowed();
 
@@ -78,7 +78,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @return user allowed to change its own password?
    */
-  @Persistent(ordinal=8, comment="user allowed to change its own password?")
+  @Persistent(ordinal=11, comment="user allowed to change its own password?")
   @Bindable
   boolean isPasswordChangeable();
 
@@ -95,7 +95,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @return user allowed to maintain its own preferences?
    */
-  @Persistent(ordinal=9, comment="user allowed to maintain its own preferences?")
+  @Persistent(ordinal=12, comment="user allowed to maintain its own preferences?")
   @Bindable
   boolean isChangingPreferencesAllowed();
 
@@ -112,7 +112,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @return user restricted to system preferences only?
    */
-  @Persistent(ordinal=10, comment="user restricted to system preferences only?")
+  @Persistent(ordinal=13, comment="user restricted to system preferences only?")
   @Bindable
   boolean isSystemPreferencesOnly();
 

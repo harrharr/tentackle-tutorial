@@ -4,7 +4,7 @@
 
 package com.example.tracker.gui;
 
-import org.tentackle.test.fx.rdc.GuiProviderTest;
+import org.tentackle.fx.rdc.testng.GuiProviderTest;
 
 /**
  * Tests all GuiProviders.
