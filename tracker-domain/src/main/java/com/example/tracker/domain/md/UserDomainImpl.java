@@ -7,6 +7,7 @@ package com.example.tracker.domain.md;
 import com.example.tracker.pdo.md.User;
 import com.example.tracker.pdo.md.domain.UserDomain;
 
+import org.tentackle.common.StringHelper;
 import org.tentackle.pdo.DomainObjectService;
 
 import java.io.Serial;
@@ -19,6 +20,8 @@ public class UserDomainImpl extends OrgUnitDomainImpl<User, UserDomainImpl> impl
 
   @Serial
   private static final long serialVersionUID = 1L;
+
+  private static final char[] SALT = {'E', 'X', 'A', 'M', 'P', 'L', 'E'};
 
   //<editor-fold defaultstate="collapsed" desc="constructors">
 
@@ -46,5 +49,13 @@ public class UserDomainImpl extends OrgUnitDomainImpl<User, UserDomainImpl> impl
 
 
 //</editor-fold>//GEN-END:domainMethods
+
+  @Override
+  public String hash(char[] password) {
+    if (password != null && password.length == 0) {
+      password = null;
+    }
+    return StringHelper.hash("SHA-256", SALT, password);
+  }
 
 }

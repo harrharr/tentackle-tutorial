@@ -15,7 +15,6 @@ import org.tentackle.pdo.Pdo;
 import org.tentackle.persist.app.ServerApplication;
 import org.tentackle.update.ServerUpdateUtilities;
 
-
 /**
  * Middle Tier Server.
  */

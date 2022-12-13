@@ -8,15 +8,10 @@
 module com.example.tracker.client {
   exports com.example.tracker.client;
 
-  requires com.example.tracker.gui;
+  requires transitive com.example.tracker.gui;
   requires com.example.tracker.persist;
   requires com.example.tracker.domain;
-
-  requires org.tentackle.fx.rdc;
-  requires org.tentackle.fx.rdc.update;
-
-  requires javafx.graphics;
-  requires java.prefs;
+  requires transitive org.tentackle.fx.rdc.update;
 
   provides org.tentackle.common.ModuleHook with com.example.tracker.client.service.Hook;
 }

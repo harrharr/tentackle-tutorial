@@ -9,11 +9,8 @@ open module com.example.tracker.gui {
   exports com.example.tracker.gui;
   exports com.example.tracker.gui.main;
 
-  requires com.example.tracker.pdo;
-
-  requires org.tentackle.fx.rdc;
-
-  requires java.prefs;
+  requires transitive com.example.tracker.pdo;
+  requires transitive org.tentackle.fx.rdc;
 
   provides org.tentackle.common.ModuleHook with com.example.tracker.gui.service.Hook;
 }

@@ -9,14 +9,12 @@ import com.example.tracker.persist.md.UserGroupPersistenceImpl;
 
 import org.tentackle.dbms.rmi.RemoteDbSessionImpl;
 
-
 /**
  * Remote delegate implementation for {@link UserGroupPersistenceImpl}.
  */
 public class UserGroupRemoteDelegateImpl
        extends OrgUnitRemoteDelegateImpl<UserGroup,UserGroupPersistenceImpl>
        implements UserGroupRemoteDelegate {
-
 
   /**
    * Creates the remote delegate for {@link UserGroupPersistenceImpl}.
@@ -35,6 +33,5 @@ public class UserGroupRemoteDelegateImpl
 
 
 //</editor-fold>//GEN-END:inclrmi
-
 
 }

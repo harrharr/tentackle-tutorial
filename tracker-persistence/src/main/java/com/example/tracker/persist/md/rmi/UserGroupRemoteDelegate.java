@@ -7,7 +7,6 @@ package com.example.tracker.persist.md.rmi;
 import com.example.tracker.pdo.md.UserGroup;
 import com.example.tracker.persist.md.UserGroupPersistenceImpl;
 
-
 /**
  * Remote delegate for {@link UserGroupPersistenceImpl}.
  */
@@ -20,6 +19,5 @@ public interface UserGroupRemoteDelegate
 
 
 //</editor-fold>//GEN-END:inclrmi
-
 
 }

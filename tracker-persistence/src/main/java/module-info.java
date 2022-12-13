@@ -14,10 +14,7 @@ module com.example.tracker.persist {
   exports com.example.tracker.persist.td.rmi;
 
   requires transitive com.example.tracker.pdo;
-
   requires transitive org.tentackle.persistence;
-
-  requires java.rmi;
 
   provides org.tentackle.common.ModuleHook with com.example.tracker.persist.service.Hook;
 }

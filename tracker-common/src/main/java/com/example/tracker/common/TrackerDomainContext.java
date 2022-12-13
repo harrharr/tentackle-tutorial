@@ -36,4 +36,9 @@ public class TrackerDomainContext extends DefaultDomainContext {
     super(session);
   }
 
+  @Override
+  public TrackerSessionInfo getSessionInfo() {
+    return (TrackerSessionInfo) super.getSessionInfo();
+  }
+
 }

@@ -10,9 +10,10 @@ import com.example.tracker.pdo.td.Message;
 import org.tentackle.ns.pdo.NumberPool;
 import org.tentackle.ns.pdo.NumberRange;
 import org.tentackle.pdo.testng.AbstractPdoTest;
-import org.tentackle.session.Session;
 
-
+/**
+ * Base class for in-memory database integration tests.
+ */
 public abstract class TrackerTestBase extends AbstractPdoTest {
 
   @Override

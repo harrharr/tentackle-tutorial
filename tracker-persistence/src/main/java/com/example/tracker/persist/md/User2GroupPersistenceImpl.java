@@ -147,9 +147,6 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
       rs.configureColumn(CN_ID);
       rs.configureColumn(CN_SERIAL);
     }
-    if (rs.getRow() <= 0) {
-      throw new PersistenceException(getSession(), "no valid row");
-    }
     userGroupId = rs.getLong();
     userId = rs.getLong();
     setId(rs.getLong());
@@ -167,21 +164,19 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
   }
 
   @Override
-  public String createInsertSql() {
+  public String createInsertSql(Backend backend) {
     return Backend.SQL_INSERT_INTO + getTableName() + Backend.SQL_LEFT_PARENTHESIS +
            CN_USERGROUPID + Backend.SQL_COMMA +
            CN_USERID + Backend.SQL_COMMA +
            CN_ID + Backend.SQL_COMMA +
            CN_SERIAL +
            Backend.SQL_INSERT_VALUES +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
+           Backend.SQL_PAR_COMMA.repeat(3) +
            Backend.SQL_PAR + Backend.SQL_RIGHT_PARENTHESIS;
   }
 
   @Override
-  public String createUpdateSql() {
+  public String createUpdateSql(Backend backend) {
     return Backend.SQL_UPDATE + getTableName() + Backend.SQL_SET +
            CN_USERGROUPID + Backend.SQL_EQUAL_PAR_COMMA +
            CN_USERID + Backend.SQL_EQUAL_PAR_COMMA +
@@ -281,12 +276,12 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
       }
     }
     PreparedStatementWrapper st = getPreparedStatement(SELECT_BY_USER_ID_STMT,
-      () -> {
-        StringBuilder sql = createSelectAllInnerSql();
+      b -> {
+        StringBuilder sql = createSelectAllInnerSql(b);
         sql.append(Backend.SQL_AND);
         sql.append(getColumnName(CN_USERID));
         sql.append(Backend.SQL_EQUAL_PAR);
-        getBackend().buildSelectSql(sql, false, 0, 0);
+        b.buildSelectSql(sql, false, 0, 0);
         return sql.toString();
       }
     );
@@ -315,12 +310,12 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
       }
     }
     PreparedStatementWrapper st = getPreparedStatement(SELECT_BY_USER_GROUP_ID_STMT,
-      () -> {
-        StringBuilder sql = createSelectAllInnerSql();
+      b -> {
+        StringBuilder sql = createSelectAllInnerSql(b);
         sql.append(Backend.SQL_AND);
         sql.append(getColumnName(CN_USERGROUPID));
         sql.append(Backend.SQL_EQUAL_PAR);
-        getBackend().buildSelectSql(sql, false, 0, 0);
+        b.buildSelectSql(sql, false, 0, 0);
         return sql.toString();
       }
     );

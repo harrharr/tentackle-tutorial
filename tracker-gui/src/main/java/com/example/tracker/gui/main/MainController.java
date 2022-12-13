@@ -24,7 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import org.tentackle.app.AbstractApplication;
+import org.tentackle.app.Application;
 import org.tentackle.fx.AbstractFxController;
 import org.tentackle.fx.Fx;
 import org.tentackle.fx.FxControllerService;
@@ -33,7 +33,6 @@ import org.tentackle.fx.FxUtilities;
 import org.tentackle.fx.component.FxButton;
 import org.tentackle.fx.rdc.Rdc;
 import org.tentackle.fx.rdc.admin.SessionsView;
-import org.tentackle.fx.rdc.app.DesktopApplication;
 import org.tentackle.fx.rdc.security.SecurityDialogFactory;
 import org.tentackle.pdo.AdminExtension;
 import org.tentackle.pdo.DomainContextProvider;
@@ -97,7 +96,7 @@ public class MainController extends AbstractFxController implements DomainContex
 
   @Override
   public TrackerDomainContext getDomainContext() {
-    return (TrackerDomainContext) AbstractApplication.getRunningApplication().getDomainContext();
+    return (TrackerDomainContext) Application.getInstance().getDomainContext();
   }
 
   @FXML
@@ -123,7 +122,7 @@ public class MainController extends AbstractFxController implements DomainContex
     preferencesItem.setOnAction(e -> PreferencesDialog.show());
 
     passwordItem.setGraphic(Fx.createGraphic("password"));
-    passwordItem.setOnAction(e -> ChangePasswordView.showDialog(DesktopApplication.getDesktopApplication().getUser(getDomainContext()), false));
+    passwordItem.setOnAction(e -> ChangePasswordView.showDialog(Application.getInstance().getUser(getDomainContext()), false));
 
     exitItem.setGraphic(Fx.createGraphic("exit"));
     exitItem.setOnAction(e -> exit());

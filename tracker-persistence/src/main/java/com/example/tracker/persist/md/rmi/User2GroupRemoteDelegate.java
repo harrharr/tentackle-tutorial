@@ -12,7 +12,6 @@ import org.tentackle.pdo.DomainContext;
 
 import java.rmi.RemoteException;
 
-
 /**
  * Remote delegate for {@link User2GroupPersistenceImpl}.
  */
@@ -27,6 +26,5 @@ public interface User2GroupRemoteDelegate
   TrackedList<User2Group> selectByUserId(DomainContext context, long userId) throws RemoteException;
 
   //</editor-fold>//GEN-END:inclrmi
-
 
 }

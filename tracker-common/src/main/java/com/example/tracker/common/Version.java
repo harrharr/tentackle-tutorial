@@ -6,7 +6,6 @@ package com.example.tracker.common;
 
 import java.util.ResourceBundle;
 
-
 /**
  * Holds versioning information.
  */

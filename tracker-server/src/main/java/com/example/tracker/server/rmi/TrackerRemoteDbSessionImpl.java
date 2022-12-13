@@ -4,7 +4,6 @@
 
 package com.example.tracker.server.rmi;
 
-import com.example.tracker.common.TrackerHelper;
 import com.example.tracker.common.TrackerSessionInfo;
 import com.example.tracker.pdo.MessageType;
 import com.example.tracker.pdo.md.User;
@@ -12,7 +11,7 @@ import com.example.tracker.pdo.td.Message;
 import com.example.tracker.persist.rmi.TrackerRemoteDbSession;
 import com.example.tracker.server.ServerBundle;
 
-import org.tentackle.app.AbstractApplication;
+import org.tentackle.app.Application;
 import org.tentackle.common.LocaleProvider;
 import org.tentackle.dbms.Db;
 import org.tentackle.dbms.rmi.RemoteDbConnectionImpl;
@@ -41,8 +40,8 @@ public class TrackerRemoteDbSessionImpl extends RemoteDbSessionImpl implements T
    * Creates a session on a given connection.
    *
    * @param con the connection
-   * @param clientInfo the UserInfo from the client
-   * @param serverInfo the UserInfo to establish the connection to the database server
+   * @param clientInfo the session info from the client
+   * @param serverInfo the session info to establish the connection to the database server
    */
   public TrackerRemoteDbSessionImpl(RemoteDbConnectionImpl con, SessionInfo clientInfo, SessionInfo serverInfo) {
     super(con, clientInfo, serverInfo);
@@ -50,7 +49,6 @@ public class TrackerRemoteDbSessionImpl extends RemoteDbSessionImpl implements T
 
   @Override
   public void verifySessionInfo(SessionInfo sessionInfo) {
-    String passwordHash = TrackerHelper.hash(sessionInfo.getPassword());
     DomainContext context = Pdo.createDomainContext(getSession());
     String username = sessionInfo.getUserName();
     User user = Pdo.create(User.class, context).selectByUniqueDomainKey(username);
@@ -58,7 +56,7 @@ public class TrackerRemoteDbSessionImpl extends RemoteDbSessionImpl implements T
       LOGGER.warning("attempt to login for unknown user {0}", username);
     }
     else {
-      if (Objects.equals(passwordHash, user.selectPasswordHash())) {
+      if (Objects.equals(user.hash(sessionInfo.getPassword()), user.selectPasswordHash())) {
         if (!user.isLoginAllowed()) {
           LOGGER.warning("attempt to login for disabled user {0} (matching password)", username);
           user = null;
@@ -100,9 +98,9 @@ public class TrackerRemoteDbSessionImpl extends RemoteDbSessionImpl implements T
     if (session != null && !session.isRemote()) {
       try {
         TrackerSessionInfo sessionInfo = (TrackerSessionInfo) getClientSessionInfo();
-        if (!sessionInfo.isCloned()) {    // if main session and not the finalizer
+        if (!sessionInfo.isCloned()) {    // if main session
           DomainContext context = Pdo.createDomainContext(session);
-          User user = AbstractApplication.getRunningApplication().getUser(context, sessionInfo.getUserId());
+          User user = Application.getInstance().getUser(context, sessionInfo.getUserId());
           LocaleProvider.getInstance().setCurrentLocale(sessionInfo.getLocale());
           session.makeCurrent();
           String message = null;

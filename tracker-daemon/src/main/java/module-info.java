@@ -8,10 +8,8 @@
 module com.example.tracker.daemon {
   exports com.example.tracker.daemon;
 
-  requires com.example.tracker.persist;
+  requires transitive com.example.tracker.persist;
   requires com.example.tracker.domain;
-
-  requires java.rmi;
 
   provides org.tentackle.common.ModuleHook with com.example.tracker.daemon.service.Hook;
 }

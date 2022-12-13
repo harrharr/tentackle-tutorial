@@ -15,7 +15,6 @@ import org.tentackle.pdo.DomainContext;
 
 import java.rmi.RemoteException;
 
-
 /**
  * Remote delegate for {@link MessagePersistenceImpl}.
  */
@@ -32,6 +31,5 @@ public interface MessageRemoteDelegate
   TrackedList<Message> findBy(DomainContext context, String messageNumber, Timestamp from, Timestamp until, MessageType type, OrgUnit<?> orgUnit, String pattern) throws RemoteException;
 
   //</editor-fold>//GEN-END:inclrmi
-
 
 }

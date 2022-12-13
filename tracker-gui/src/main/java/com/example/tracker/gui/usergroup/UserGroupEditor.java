@@ -29,8 +29,6 @@ import org.tentackle.pdo.Pdo;
 import java.util.List;
 import java.util.ResourceBundle;
 
-
-
 /**
  * Editor for UserGroup.
  */

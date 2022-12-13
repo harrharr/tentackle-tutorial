@@ -14,7 +14,6 @@ import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.Pdo;
 import org.tentackle.prefs.PersistedPreferencesFactory;
 
-
 /**
  * Console application for Tracker.
  */
@@ -36,7 +35,6 @@ public class TrackerDaemon extends ConsoleApplication {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public User getUser(DomainContext context, long userId) {
     return Pdo.create(User.class, context).selectCached(userId);
   }

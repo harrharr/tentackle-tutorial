@@ -11,14 +11,12 @@ import org.tentackle.dbms.rmi.RemoteDbSessionImpl;
 
 import java.rmi.RemoteException;
 
-
 /**
  * Remote delegate implementation for {@link UserPersistenceImpl}.
  */
 public class UserRemoteDelegateImpl
        extends OrgUnitRemoteDelegateImpl<User,UserPersistenceImpl>
        implements UserRemoteDelegate {
-
 
   /**
    * Creates the remote delegate for {@link UserPersistenceImpl}.
@@ -59,6 +57,5 @@ public class UserRemoteDelegateImpl
   }
 
   //</editor-fold>//GEN-END:inclrmi
-
 
 }

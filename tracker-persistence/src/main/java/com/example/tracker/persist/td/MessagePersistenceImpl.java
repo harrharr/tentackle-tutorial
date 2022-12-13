@@ -215,9 +215,6 @@ public class MessagePersistenceImpl extends AbstractPersistentTransactionData<Me
       rs.configureColumn(CN_ID);
       rs.configureColumn(CN_SERIAL);
     }
-    if (rs.getRow() <= 0) {
-      throw new PersistenceException(getSession(), "no valid row");
-    }
     setNormText(rs.getString());
     setTableSerial(rs.getLong());
     messageNumber = rs.getString();
@@ -251,7 +248,7 @@ public class MessagePersistenceImpl extends AbstractPersistentTransactionData<Me
   }
 
   @Override
-  public String createInsertSql() {
+  public String createInsertSql(Backend backend) {
     return Backend.SQL_INSERT_INTO + getTableName() + Backend.SQL_LEFT_PARENTHESIS +
            CN_NORMTEXT + Backend.SQL_COMMA +
            CN_TABLESERIAL + Backend.SQL_COMMA +
@@ -266,22 +263,12 @@ public class MessagePersistenceImpl extends AbstractPersistentTransactionData<Me
            CN_ID + Backend.SQL_COMMA +
            CN_SERIAL +
            Backend.SQL_INSERT_VALUES +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
+           Backend.SQL_PAR_COMMA.repeat(11) +
            Backend.SQL_PAR + Backend.SQL_RIGHT_PARENTHESIS;
   }
 
   @Override
-  public String createUpdateSql() {
+  public String createUpdateSql(Backend backend) {
     return Backend.SQL_UPDATE + getTableName() + Backend.SQL_SET +
            CN_NORMTEXT + Backend.SQL_EQUAL_PAR_COMMA +
            CN_TABLESERIAL + Backend.SQL_EQUAL_PAR_COMMA +
@@ -456,12 +443,12 @@ public class MessagePersistenceImpl extends AbstractPersistentTransactionData<Me
       }
     }
     PreparedStatementWrapper st = getPreparedStatement(SELECT_BY_UNIQUE_DOMAIN_KEY_STMT,
-      () -> {
-        StringBuilder sql = createSelectAllInnerSql();
+      b -> {
+        StringBuilder sql = createSelectAllInnerSql(b);
         sql.append(Backend.SQL_AND);
         sql.append(getColumnName(CN_MESSAGENUMBER));
         sql.append(Backend.SQL_EQUAL_PAR);
-        getBackend().buildSelectSql(sql, false, 0, 0);
+        b.buildSelectSql(sql, false, 0, 0);
         return sql.toString();
       }
     );
@@ -516,12 +503,12 @@ public class MessagePersistenceImpl extends AbstractPersistentTransactionData<Me
       }
     }
     PreparedStatementWrapper st = getPreparedStatement(IS_REFERENCING_ORG_UNIT_BY_ORG_UNIT_ID_STMT,
-      () -> {
+      b -> {
         StringBuilder sql = createSelectIdInnerSql(false);
         sql.append(Backend.SQL_AND);
         sql.append(CN_ORGUNITID);
         sql.append(Backend.SQL_EQUAL_PAR);
-        getBackend().buildSelectSql(sql, false, 1, 0);
+        b.buildSelectSql(sql, false, 1, 0);
         return sql.toString();
       }
     );
@@ -590,8 +577,7 @@ public class MessagePersistenceImpl extends AbstractPersistentTransactionData<Me
     //</editor-fold>//GEN-END:findBy
 
 
-    Query query = new Query();
-    query.add("SELECT " + createSelectAllInnerSql());
+    Query query = createQuery();
 
     if (messageNumber != null) {
       query.add(" AND " + getColumnName(CN_MESSAGENUMBER) + "=?", messageNumber);
@@ -614,10 +600,7 @@ public class MessagePersistenceImpl extends AbstractPersistentTransactionData<Me
     }
     query.add(" ORDER BY " + getTableAlias() + "." + CN_ID);
 
-    try (PreparedStatementWrapper st = createPreparedStatement(query.buildInnerSql().toString())) {
-      query.applyParameters(st, 1);
-      return executeTrackedListQuery(st);
-    }
+    return executeQuery(query);
   }
 
 }

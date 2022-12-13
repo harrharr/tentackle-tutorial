@@ -4,7 +4,6 @@
 
 package com.example.tracker.client;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class RunClient {

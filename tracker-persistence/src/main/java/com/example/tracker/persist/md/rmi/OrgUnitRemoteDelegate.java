@@ -12,7 +12,6 @@ import org.tentackle.pdo.DomainContext;
 
 import java.rmi.RemoteException;
 
-
 /**
  * Remote delegate for {@link OrgUnitPersistenceImpl}.
  *
@@ -29,6 +28,5 @@ public interface OrgUnitRemoteDelegate<T extends OrgUnit<T>, P extends OrgUnitPe
   T selectByUniqueDomainKey(DomainContext context, String name) throws RemoteException;
 
   //</editor-fold>//GEN-END:inclrmi
-
 
 }

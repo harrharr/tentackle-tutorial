@@ -24,7 +24,7 @@ public class TrackerSessionInfo extends DefaultSessionInfo {
    *
    * @param username is the name of the user, null if {@code System.getProperty("user.name")}
    * @param password is the password, null if none
-   * @param propertiesName name of the db-properties, null if {@code "Db"}
+   * @param propertiesName name of the session properties, null if {@code "backend"}
    */
   public TrackerSessionInfo(String username, char[] password, String propertiesName) {
     super(username, password, propertiesName);
@@ -33,7 +33,7 @@ public class TrackerSessionInfo extends DefaultSessionInfo {
   /**
    * Create session info from a property file holding the connection parameters.
    *
-   * @param propertiesName name of the db-properties, null if {@code "backend"}
+   * @param propertiesName name of the session properties, null if {@code "backend"}
    */
   public TrackerSessionInfo(String propertiesName) {
     super(propertiesName);
@@ -49,7 +49,7 @@ public class TrackerSessionInfo extends DefaultSessionInfo {
   }
 
   /**
-   * Create session info from the default property file {@code "backend"}.
+   * Create session info from the default properties {@code "backend"}.
    */
   public TrackerSessionInfo() {
     super();

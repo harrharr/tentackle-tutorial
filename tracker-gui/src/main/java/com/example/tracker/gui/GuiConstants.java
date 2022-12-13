@@ -4,7 +4,6 @@
 
 package com.example.tracker.gui;
 
-
 /**
  * GUI constants.
  */

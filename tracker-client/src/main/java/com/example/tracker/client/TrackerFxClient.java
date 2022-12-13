@@ -19,7 +19,6 @@ import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.Pdo;
 import org.tentackle.prefs.PersistedPreferencesFactory;
 
-
 /**
  * The FX client application.
  */
@@ -62,10 +61,8 @@ public class TrackerFxClient extends UpdatableDesktopApplication<MainController>
     PersistedPreferencesFactory.getInstance().setReadOnly(!user.isChangingPreferencesAllowed());
     TrackerPreferences.getInstance().getSystemPrefs().addPreferenceChangeListener(evt -> {
       switch (evt.getKey()) {
-        case TrackerPreferences.HELP_URL:
-          configureHelpURL();
-          break;
-        // other application specific pref changes go here...
+        case TrackerPreferences.HELP_URL -> configureHelpURL();
+        // other application specific preference changes go here...
       }
     });
     configureHelpURL();

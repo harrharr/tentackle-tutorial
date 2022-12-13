@@ -4,7 +4,6 @@
 
 package com.example.tracker.gui.password;
 
-import com.example.tracker.common.TrackerHelper;
 import com.example.tracker.gui.GuiBundle;
 import com.example.tracker.pdo.md.User;
 import javafx.fxml.FXML;
@@ -105,7 +104,7 @@ public class ChangePasswordView extends AbstractFxController implements DomainCo
   }
 
   private void save() {
-    if (admin || Objects.equals(TrackerHelper.hash(oldPassword), oldPasswordHash)) {
+    if (admin || Objects.equals(user.hash(oldPassword), oldPasswordHash)) {
       if (!Arrays.equals(newPassword, confirmedNewPassword)) {
         Fx.error(resources.getString("new passwords do not match"));
       }
@@ -115,7 +114,7 @@ public class ChangePasswordView extends AbstractFxController implements DomainCo
           Fx.yes(resources.getString("are you sure to disable the password check?"), false, () -> saveAndClose(null));
         }
         else {
-          Fx.yes(resources.getString("save new password?"), false, () -> saveAndClose(TrackerHelper.hash(newPassword)));
+          Fx.yes(resources.getString("save new password?"), false, () -> saveAndClose(user.hash(newPassword)));
         }
       }
     }

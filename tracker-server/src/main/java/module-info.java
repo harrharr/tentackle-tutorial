@@ -9,13 +9,9 @@ module com.example.tracker.server {
   exports com.example.tracker.server;
   exports com.example.tracker.server.rmi;
 
-  requires com.example.tracker.persist;
+  requires transitive com.example.tracker.persist;
   requires com.example.tracker.domain;
-
-  requires java.rmi;
-  requires java.prefs;
-
-  requires org.tentackle.update;
+  requires transitive org.tentackle.update;
 
   provides org.tentackle.common.ModuleHook with com.example.tracker.server.service.Hook;
 }

@@ -31,10 +31,10 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <wurbelizer.version>17.3.2.1</wurbelizer.version>
+    <wurbelizer.version>17.4.0.0</wurbelizer.version>
     <wurbel.wurbelDir>${rootBasedir}/target/wurbel</wurbel.wurbelDir>
 
-    <tentackle.version>17.10.0.0</tentackle.version>
+    <tentackle.version>17.12.0.0</tentackle.version>
     <tentackle.serviceDir>${project.build.directory}/generated-resources</tentackle.serviceDir>
     <tentackle.testServiceDir>${project.build.directory}/generated-test-resources</tentackle.testServiceDir>
     <tentackle.manifestDirectory>${project.build.directory}/generated-resources/manifest</tentackle.manifestDirectory>
@@ -42,8 +42,8 @@
     <tentackle.sqlDir>${wurbel.wurbelDir}/sql</tentackle.sqlDir>
     <tentackle.modelDefaults>remote, bind, size, autoselect, tracked, root, rootid, rootclassid</tentackle.modelDefaults>
 
-    <postgres.version>42.3.5</postgres.version>
-    <h2.version>2.1.212</h2.version>
+    <postgres.version>42.5.1</postgres.version>
+    <h2.version>2.1.214</h2.version>
     <dbUrl>jdbc:postgresql://localhost/tracker</dbUrl>
     <dbUser>tracker</dbUser>
     <dbPasswd>tracker</dbPasswd>
@@ -65,12 +65,6 @@
 
       <!-- runtime dependencies -->
       <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.2.11</version>
-        <scope>runtime</scope>
-      </dependency>
-      <dependency>
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>${postgres.version}</version>
@@ -81,14 +75,14 @@
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
-        <version>7.5</version>
+        <version>7.7.0</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <!-- logger binder for testng -->
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>1.7.36</version>
+        <version>2.0.5</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -104,6 +98,10 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
@@ -164,7 +162,7 @@
             <dependency>
               <groupId>com.example</groupId>
               <artifactId>tracker-gui</artifactId>
-              <version>1.0-SNAPSHOT</version>
+              <version>${project.version}</version>
             </dependency>
             <dependency>
               <groupId>com.example</groupId>
@@ -410,7 +408,7 @@
             <showWarnings>true</showWarnings>
             <showDeprecation>true</showDeprecation>
             <compilerArgs>
-              <arg>-Xlint:auxiliaryclass,cast,classfile,deprecation,dep-ann,divzero,empty,fallthrough,finally,opens,overloads,options,overrides,path,rawtypes,removal,requires-transitive-automatic,requires-automatic,serial,static,try,varargs,unchecked</arg>
+              <arg>-Xlint:all,-processing,-exports,-missing-explicit-ctor</arg>
             </compilerArgs>
             <!-- necessary since Java 9, see https://issues.apache.org/jira/browse/MCOMPILER-310 -->
             <annotationProcessorPaths>
@@ -437,7 +435,7 @@
               <dependency>    <!-- necessary for fx-rdc processors because deps are not recognized here -->
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-controls</artifactId>
-                <version>18.0.1</version>
+                <version>19</version>
               </dependency>
             </annotationProcessorPaths>
           </configuration>
@@ -446,7 +444,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>3.3.0</version>
           <configuration>
             <encoding>UTF-8</encoding>
             <propertiesEncoding>UTF-8</propertiesEncoding>
@@ -465,7 +463,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.3</version> <!-- Use newer version of ASM -->
+              <version>9.4</version> <!-- Use newer version of ASM -->
             </dependency>
           </dependencies>
         </plugin>
@@ -479,12 +477,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.4.0</version>
+          <version>3.4.1</version>
           <dependencies>
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.3</version>
+              <version>9.4</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -492,7 +490,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>keytool-maven-plugin</artifactId>
-          <version>1.5</version>
+          <version>1.6</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -533,10 +531,6 @@
         <groupId>org.tentackle</groupId>
         <artifactId>tentackle-check-maven-plugin</artifactId>
       </plugin>
-      <plugin>
-        <groupId>org.tentackle</groupId>
-        <artifactId>tentackle-i18n-maven-plugin</artifactId>
-      </plugin>
     </plugins>
 
   </build>
@@ -571,7 +565,6 @@
                 <configuration>
                   <quiet>true</quiet>
                   <additionalOptions>
-                    <additionalOption>-html5</additionalOption>
                     <!-- don't complain about wurblet args -->
                     <additionalOption>-Xdoclint:none</additionalOption>
                   </additionalOptions>

@@ -55,13 +55,10 @@
           <mainModule>com.example.tracker.daemon</mainModule>
           <mainClass>com.example.tracker.daemon.TrackerDaemon</mainClass>
           <addModules>
+            <addModule>java.desktop</addModule> <!-- necessary for groovy (NoClassDefFoundError: java/beans/BeanInfo) -->
             <addModule>jdk.jcmd</addModule>
             <addModule>jdk.localedata</addModule>
           </addModules>
-          <excludeModules>
-            <!-- slf4j: unsupported reference since java 12 -->
-            <excludeModule>jdk8internals</excludeModule>
-          </excludeModules>
         </configuration>
       </plugin>
     </plugins>

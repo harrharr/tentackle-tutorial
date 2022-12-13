@@ -9,7 +9,6 @@ import com.example.tracker.persist.md.UserPersistenceImpl;
 
 import java.rmi.RemoteException;
 
-
 /**
  * Remote delegate for {@link UserPersistenceImpl}.
  */
@@ -25,6 +24,5 @@ public interface UserRemoteDelegate
   void updatePasswordHash(String password, User obj) throws RemoteException;
 
   //</editor-fold>//GEN-END:inclrmi
-
 
 }

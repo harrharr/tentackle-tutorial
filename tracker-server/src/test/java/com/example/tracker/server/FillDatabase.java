@@ -5,7 +5,6 @@
 package com.example.tracker.server;
 
 import com.example.tracker.common.Constants;
-import com.example.tracker.common.TrackerHelper;
 import com.example.tracker.pdo.md.User;
 import com.example.tracker.pdo.md.UserGroup;
 import com.example.tracker.pdo.td.Message;
@@ -75,7 +74,7 @@ public class FillDatabase extends AbstractPdoTest {
     user.setSystemPreferencesOnly(true);
     user.getUserGroups().add(group);
     user = user.persist();
-    user.updatePasswordHash(TrackerHelper.hash(new char[] {'g', 'o', 'n', 'z', 'o'}));
+    user.updatePasswordHash(user.hash(new char[] {'g', 'o', 'n', 'z', 'o'}));
 
     user = on(User.class);
     user.setName("KERMIT");
@@ -86,7 +85,7 @@ public class FillDatabase extends AbstractPdoTest {
     user.setSystemPreferencesOnly(true);
     user.getUserGroups().add(group);
     user = user.persist();
-    user.updatePasswordHash(TrackerHelper.hash(new char[] {'p', 'i', 'g', 'g', 'y'}));
+    user.updatePasswordHash(user.hash(new char[] {'p', 'i', 'g', 'g', 'y'}));
 
     user = on(User.class);
     user.setName("DAEMON");
@@ -94,7 +93,7 @@ public class FillDatabase extends AbstractPdoTest {
     user.setLoginAllowed(true);
     user.setSystemPreferencesOnly(true);
     user = user.persist();
-    user.updatePasswordHash(TrackerHelper.hash(new char[] {'d', 'a', 'e', 'm', 'o', 'n'}));
+    user.updatePasswordHash(user.hash(new char[] {'d', 'a', 'e', 'm', 'o', 'n'}));
 
     LOGGER.info("users created");
   }

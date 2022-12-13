@@ -18,6 +18,7 @@ import org.tentackle.dbms.DbObjectClassVariables;
 import org.tentackle.dbms.ModificationType;
 import org.tentackle.dbms.PreparedStatementWrapper;
 import org.tentackle.dbms.ResultSetWrapper;
+import org.tentackle.dbms.SqlSupplier;
 import org.tentackle.dbms.StatementId;
 import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.Pdo;
@@ -32,11 +33,8 @@ import org.tentackle.sql.JoinType;
 
 import java.io.Serial;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * Persistence implementation for OrgUnit.
@@ -198,9 +196,6 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
       rs.configureColumn(CN_ID);
       rs.configureColumn(CN_SERIAL);
     }
-    if (rs.getRow() <= 0) {
-      throw new PersistenceException(getSession(), "no valid row");
-    }
     setNormText(rs.getString());
     setClassId(rs.getInt());
     setEditedBy(rs.getLong());
@@ -237,7 +232,7 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
    *
    * @return the SQL code
    */
-  public String createInsertSqlOrgUnit() {
+  public String createInsertSqlOrgUnit(Backend backend) {
     return Backend.SQL_INSERT_INTO + CLASSVARIABLES.getTableName() + Backend.SQL_LEFT_PARENTHESIS +
            CN_NORMTEXT + Backend.SQL_COMMA +
            CN_CLASSID + Backend.SQL_COMMA +
@@ -249,14 +244,7 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
            CN_ID + Backend.SQL_COMMA +
            CN_SERIAL +
            Backend.SQL_INSERT_VALUES +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
+           Backend.SQL_PAR_COMMA.repeat(8) +
            Backend.SQL_PAR + Backend.SQL_RIGHT_PARENTHESIS;
   }
 
@@ -265,7 +253,7 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
    *
    * @return the SQL code
    */
-  public String createUpdateSqlOrgUnit() {
+  public String createUpdateSqlOrgUnit(Backend backend) {
     return Backend.SQL_UPDATE + CLASSVARIABLES.getTableName() + Backend.SQL_SET +
            CN_NORMTEXT + Backend.SQL_EQUAL_PAR_COMMA +
            CN_CLASSID + Backend.SQL_EQUAL_PAR_COMMA +
@@ -291,19 +279,19 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
   }
 
   @Override
-  public StringBuilder createSelectAllInnerSql() {
+  public StringBuilder createSelectAllInnerSql(Backend backend) {
     StringBuilder sql = new StringBuilder();
     sql.append(OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(Backend.SQL_ALLSTAR));
-    sql.append(Backend.SQL_COMMA).append(UserPersistenceImpl.CLASSVARIABLES.getColumnNames(UserPersistenceImpl.CNS_USER));
+    sql.append(Backend.SQL_COMMA).append(UserPersistenceImpl.CLASSVARIABLES.getColumnNames(UserPersistenceImpl.mappedColumns(backend)));
     sql.append(Backend.SQL_COMMA).append(UserGroupPersistenceImpl.CLASSVARIABLES.getColumnName(Backend.SQL_ALLSTAR));
     sql.append(Backend.SQL_FROM);
     sql.append(OrgUnitPersistenceImpl.CLASSVARIABLES.getTableName()).
-        append(getBackend().sqlAsBeforeTableAlias()).append(OrgUnitPersistenceImpl.CLASSVARIABLES.getTableAlias());
-    sql.append(getBackend().sqlJoin(JoinType.LEFT,
+        append(backend.sqlAsBeforeTableAlias()).append(OrgUnitPersistenceImpl.CLASSVARIABLES.getTableAlias());
+    sql.append(backend.sqlJoin(JoinType.LEFT,
                UserPersistenceImpl.CLASSVARIABLES.getTableName(), UserPersistenceImpl.CLASSVARIABLES.getTableAlias(),
                OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID) + Backend.SQL_EQUAL +
                UserPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID)));
-    sql.append(getBackend().sqlJoin(JoinType.LEFT,
+    sql.append(backend.sqlJoin(JoinType.LEFT,
                UserGroupPersistenceImpl.CLASSVARIABLES.getTableName(), UserGroupPersistenceImpl.CLASSVARIABLES.getTableAlias(),
                OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID) + Backend.SQL_EQUAL +
                UserGroupPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID)));
@@ -312,8 +300,8 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
   }
 
   @Override
-  public StringBuilder createSelectAllByIdInnerSql() {
-    StringBuilder sql = createSelectAllInnerSql();
+  public StringBuilder createSelectAllByIdInnerSql(Backend backend) {
+    StringBuilder sql = createSelectAllInnerSql(backend);
     sql.append(Backend.SQL_AND).
         append(OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID)).
         append(Backend.SQL_EQUAL_PAR);
@@ -321,22 +309,22 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
   }
 
   @Override
-  protected void updateImpl(DbObjectClassVariables<P> classVariables, Supplier<String> sqlsupplier) {
+  protected void updateImpl(DbObjectClassVariables<P> classVariables, SqlSupplier sqlSupplier) {
     PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.UPDATE, CLASSVARIABLES.updateStatementId, this::createUpdateSqlOrgUnit);
     setFieldsOrgUnit(st);
     assertThisRowAffected(st.executeUpdate());
   }
 
   @Override
-  protected void insertImpl(DbObjectClassVariables<P> classVariables, Supplier<String> sqlsupplier) {
+  protected void insertImpl(DbObjectClassVariables<P> classVariables, SqlSupplier sqlSupplier) {
     PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.INSERT, CLASSVARIABLES.insertStatementId, this::createInsertSqlOrgUnit);
     setFieldsOrgUnit(st);
     assertThisRowAffected(st.executeUpdate());
   }
 
   @Override
-  protected void deleteImpl(DbObjectClassVariables<P> classVariables, Supplier<String> sqlsupplier) {
-    PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.DELETE, CLASSVARIABLES.deleteStatementId, this::createDeleteSqlOrgUnit);
+  protected void deleteImpl(DbObjectClassVariables<P> classVariables, SqlSupplier sqlSupplier) {
+    PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.DELETE, CLASSVARIABLES.deleteStatementId, b -> createDeleteSqlOrgUnit());
     st.setLong(1, getId());
     st.setLong(2, getSerial());
     assertThisRowAffected(st.executeUpdate());
@@ -413,12 +401,12 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
       }
     }
     PreparedStatementWrapper st = getPreparedStatement(SELECT_BY_UNIQUE_DOMAIN_KEY_STMT,
-      () -> {
-        StringBuilder sql = createSelectAllInnerSql();
+      b -> {
+        StringBuilder sql = createSelectAllInnerSql(b);
         sql.append(Backend.SQL_AND);
         sql.append(OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(CN_NAME));
         sql.append(Backend.SQL_EQUAL_PAR);
-        getBackend().buildSelectSql(sql, false, 0, 0);
+        b.buildSelectSql(sql, false, 0, 0);
         return sql.toString();
       }
     );

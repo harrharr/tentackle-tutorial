@@ -16,13 +16,13 @@ import org.tentackle.dbms.DbModificationType;
 import org.tentackle.dbms.DbObjectClassVariables;
 import org.tentackle.dbms.PreparedStatementWrapper;
 import org.tentackle.dbms.ResultSetWrapper;
+import org.tentackle.dbms.SqlSupplier;
 import org.tentackle.dbms.StatementId;
 import org.tentackle.misc.IdentifiableMap;
 import org.tentackle.misc.TrackedArrayList;
 import org.tentackle.misc.TrackedList;
 import org.tentackle.misc.TrackedListListener;
 import org.tentackle.pdo.DomainContext;
-import org.tentackle.pdo.Pdo;
 import org.tentackle.pdo.PersistentDomainObject;
 import org.tentackle.pdo.PersistentObjectService;
 import org.tentackle.persist.PersistentObjectClassVariables;
@@ -41,7 +41,6 @@ import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * Persistence implementation for User.
@@ -94,13 +93,24 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
   /** database column name for 'systemPreferencesOnly'. */
   public static final String CN_SYSTEMPREFERENCESONLY = "prefs_system";
 
-  /** mapped columns for 'User'. */
-  public static final List<String> CNS_USER = List.of(
+  /** backend-agnostic mapped columns. */
+  private static final List<String> MAPPED_COLUMNS = List.of(
     CN_LOGINALLOWED,
     CN_PASSWORDCHANGEABLE,
     CN_CHANGINGPREFERENCESALLOWED,
     CN_SYSTEMPREFERENCESONLY
   );
+
+  /**
+   * Returns all mapped columns for {@link User}.
+   *
+   * @param backend the backend
+   * @return the unmodifiable list of column names
+   */
+  public static List<String> mappedColumns(Backend backend) {
+    return MAPPED_COLUMNS;
+  }
+
 
   //</editor-fold>//GEN-END:columnNames
 
@@ -191,9 +201,6 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
       rs.configureColumn(CN_CHANGINGPREFERENCESALLOWED);
       rs.configureColumn(CN_SYSTEMPREFERENCESONLY);
     }
-    if (rs.getRow() <= 0) {
-      throw new PersistenceException(getSession(), "no valid row");
-    }
     loginAllowed = rs.getBoolean();
     passwordChangeable = rs.getBoolean();
     changingPreferencesAllowed = rs.getBoolean();
@@ -221,7 +228,7 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
    *
    * @return the SQL code
    */
-  public String createInsertSqlUser() {
+  public String createInsertSqlUser(Backend backend) {
     return Backend.SQL_INSERT_INTO + CLASSVARIABLES.getTableName() + Backend.SQL_LEFT_PARENTHESIS +
            CN_LOGINALLOWED + Backend.SQL_COMMA +
            CN_PASSWORDCHANGEABLE + Backend.SQL_COMMA +
@@ -229,10 +236,7 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
            CN_SYSTEMPREFERENCESONLY + Backend.SQL_COMMA +
            CN_ID +
            Backend.SQL_INSERT_VALUES +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
-           Backend.SQL_PAR_COMMA +
+           Backend.SQL_PAR_COMMA.repeat(4) +
            Backend.SQL_PAR + Backend.SQL_RIGHT_PARENTHESIS;
   }
 
@@ -241,7 +245,7 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
    *
    * @return the SQL code
    */
-  public String createUpdateSqlUser() {
+  public String createUpdateSqlUser(Backend backend) {
     return Backend.SQL_UPDATE + CLASSVARIABLES.getTableName() + Backend.SQL_SET +
            CN_LOGINALLOWED + Backend.SQL_EQUAL_PAR_COMMA +
            CN_PASSWORDCHANGEABLE + Backend.SQL_EQUAL_PAR_COMMA +
@@ -261,14 +265,14 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
   }
 
   @Override
-  public StringBuilder createSelectAllInnerSql() {
+  public StringBuilder createSelectAllInnerSql(Backend backend) {
     StringBuilder sql = new StringBuilder();
     sql.append(OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(Backend.SQL_ALLSTAR));
-    sql.append(Backend.SQL_COMMA).append(UserPersistenceImpl.CLASSVARIABLES.getColumnNames(UserPersistenceImpl.CNS_USER));
+    sql.append(Backend.SQL_COMMA).append(UserPersistenceImpl.CLASSVARIABLES.getColumnNames(UserPersistenceImpl.mappedColumns(backend)));
     sql.append(Backend.SQL_FROM);
     sql.append(OrgUnitPersistenceImpl.CLASSVARIABLES.getTableName()).
-        append(getBackend().sqlAsBeforeTableAlias()).append(OrgUnitPersistenceImpl.CLASSVARIABLES.getTableAlias());
-    sql.append(getBackend().sqlJoin(JoinType.INNER,
+        append(backend.sqlAsBeforeTableAlias()).append(OrgUnitPersistenceImpl.CLASSVARIABLES.getTableAlias());
+    sql.append(backend.sqlJoin(JoinType.INNER,
                UserPersistenceImpl.CLASSVARIABLES.getTableName(), UserPersistenceImpl.CLASSVARIABLES.getTableAlias(),
                OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID) + Backend.SQL_EQUAL +
                UserPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID)));
@@ -277,8 +281,8 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
   }
 
   @Override
-  public StringBuilder createSelectAllByIdInnerSql() {
-    StringBuilder sql = createSelectAllInnerSql();
+  public StringBuilder createSelectAllByIdInnerSql(Backend backend) {
+    StringBuilder sql = createSelectAllInnerSql(backend);
     sql.append(Backend.SQL_AND).
         append(OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID)).
         append(Backend.SQL_EQUAL_PAR);
@@ -287,8 +291,8 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
 
   @Override
   protected void updateImpl(DbObjectClassVariables<UserPersistenceImpl> classVariables,
-                            Supplier<String> sqlsupplier) {
-    super.updateImpl(classVariables, sqlsupplier);
+                            SqlSupplier sqlSupplier) {
+    super.updateImpl(classVariables, sqlSupplier);
     PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.UPDATE, CLASSVARIABLES.updateStatementId, this::createUpdateSqlUser);
     setFieldsUser(st);
     assertThisRowAffected(st.executeUpdate());
@@ -296,8 +300,8 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
 
   @Override
   protected void insertImpl(DbObjectClassVariables<UserPersistenceImpl> classVariables,
-                            Supplier<String> sqlsupplier) {
-    super.insertImpl(classVariables, sqlsupplier);
+                            SqlSupplier sqlSupplier) {
+    super.insertImpl(classVariables, sqlSupplier);
     PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.INSERT, CLASSVARIABLES.insertStatementId, this::createInsertSqlUser);
     setFieldsUser(st);
     assertThisRowAffected(st.executeUpdate());
@@ -305,11 +309,11 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
 
   @Override
   protected void deleteImpl(DbObjectClassVariables<UserPersistenceImpl> classVariables,
-                            Supplier<String> sqlsupplier) {
-    PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.DELETE, CLASSVARIABLES.deleteStatementId, this::createDeleteSqlUser);
+                            SqlSupplier sqlSupplier) {
+    PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.DELETE, CLASSVARIABLES.deleteStatementId, b -> createDeleteSqlUser());
     st.setLong(1, getId());
     assertThisRowAffected(st.executeUpdate());
-    super.deleteImpl(classVariables, sqlsupplier);
+    super.deleteImpl(classVariables, sqlSupplier);
   }
 
   @Override
@@ -640,7 +644,7 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
 
 
     assertPasswordAccessible();
-    PreparedStatementWrapper st = getPreparedStatement(SELECT_PASSWORD_STMT, () ->
+    PreparedStatementWrapper st = getPreparedStatement(SELECT_PASSWORD_STMT, b ->
              "SELECT " + CN_PASSWORD + " FROM " + getTableName() + " WHERE " + CN_ID + "=?");
     st.setLong(1, getId());
     try (ResultSetWrapper rs = st.executeQuery()) {
@@ -676,7 +680,7 @@ public class UserPersistenceImpl extends OrgUnitPersistenceImpl<User, UserPersis
 
 
     assertPasswordAccessible();
-    PreparedStatementWrapper st = getPreparedStatement(UPDATE_PASSWORD_STMT, () ->
+    PreparedStatementWrapper st = getPreparedStatement(UPDATE_PASSWORD_STMT, b ->
         "UPDATE " + getTableName() + " SET " +  CN_PASSWORD + "=? WHERE " + CN_ID + "=?");
     st.setString(1, password);
     st.setLong(2, getId());

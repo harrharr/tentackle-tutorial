@@ -14,16 +14,15 @@ import org.tentackle.dbms.DbModificationType;
 import org.tentackle.dbms.DbObjectClassVariables;
 import org.tentackle.dbms.PreparedStatementWrapper;
 import org.tentackle.dbms.ResultSetWrapper;
+import org.tentackle.dbms.SqlSupplier;
 import org.tentackle.misc.IdentifiableMap;
 import org.tentackle.misc.TrackedArrayList;
 import org.tentackle.misc.TrackedList;
 import org.tentackle.misc.TrackedListListener;
 import org.tentackle.pdo.DomainContext;
-import org.tentackle.pdo.Pdo;
 import org.tentackle.pdo.PersistentDomainObject;
 import org.tentackle.pdo.PersistentObjectService;
 import org.tentackle.persist.PersistentObjectClassVariables;
-import org.tentackle.session.PersistenceException;
 import org.tentackle.session.Session;
 import org.tentackle.sql.Backend;
 import org.tentackle.sql.JoinType;
@@ -36,7 +35,6 @@ import java.io.Serial;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * Persistence implementation for UserGroup.
@@ -146,9 +144,6 @@ public class UserGroupPersistenceImpl extends OrgUnitPersistenceImpl<UserGroup, 
   public void getFields(ResultSetWrapper rs) {
     super.getFields(rs);
     rs.configureSection(CLASSVARIABLES);
-    if (rs.getRow() <= 0) {
-      throw new PersistenceException(getSession(), "no valid row");
-    }
   }
 
   /**
@@ -168,7 +163,7 @@ public class UserGroupPersistenceImpl extends OrgUnitPersistenceImpl<UserGroup, 
    *
    * @return the SQL code
    */
-  public String createInsertSqlUserGroup() {
+  public String createInsertSqlUserGroup(Backend backend) {
     return Backend.SQL_INSERT_INTO + CLASSVARIABLES.getTableName() + Backend.SQL_LEFT_PARENTHESIS +
            CN_ID +
            Backend.SQL_INSERT_VALUES +
@@ -180,7 +175,7 @@ public class UserGroupPersistenceImpl extends OrgUnitPersistenceImpl<UserGroup, 
    *
    * @return the SQL code
    */
-  public String createUpdateSqlUserGroup() {
+  public String createUpdateSqlUserGroup(Backend backend) {
     return Backend.SQL_UPDATE + CLASSVARIABLES.getTableName() + Backend.SQL_SET +
            CN_ID + Backend.SQL_EQUAL + CN_ID +
            Backend.SQL_WHERE + CN_ID + Backend.SQL_EQUAL_PAR;
@@ -197,14 +192,14 @@ public class UserGroupPersistenceImpl extends OrgUnitPersistenceImpl<UserGroup, 
   }
 
   @Override
-  public StringBuilder createSelectAllInnerSql() {
+  public StringBuilder createSelectAllInnerSql(Backend backend) {
     StringBuilder sql = new StringBuilder();
     sql.append(OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(Backend.SQL_ALLSTAR));
     sql.append(Backend.SQL_COMMA).append(UserGroupPersistenceImpl.CLASSVARIABLES.getColumnName(Backend.SQL_ALLSTAR));
     sql.append(Backend.SQL_FROM);
     sql.append(OrgUnitPersistenceImpl.CLASSVARIABLES.getTableName()).
-        append(getBackend().sqlAsBeforeTableAlias()).append(OrgUnitPersistenceImpl.CLASSVARIABLES.getTableAlias());
-    sql.append(getBackend().sqlJoin(JoinType.INNER,
+        append(backend.sqlAsBeforeTableAlias()).append(OrgUnitPersistenceImpl.CLASSVARIABLES.getTableAlias());
+    sql.append(backend.sqlJoin(JoinType.INNER,
                UserGroupPersistenceImpl.CLASSVARIABLES.getTableName(), UserGroupPersistenceImpl.CLASSVARIABLES.getTableAlias(),
                OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID) + Backend.SQL_EQUAL +
                UserGroupPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID)));
@@ -213,8 +208,8 @@ public class UserGroupPersistenceImpl extends OrgUnitPersistenceImpl<UserGroup, 
   }
 
   @Override
-  public StringBuilder createSelectAllByIdInnerSql() {
-    StringBuilder sql = createSelectAllInnerSql();
+  public StringBuilder createSelectAllByIdInnerSql(Backend backend) {
+    StringBuilder sql = createSelectAllInnerSql(backend);
     sql.append(Backend.SQL_AND).
         append(OrgUnitPersistenceImpl.CLASSVARIABLES.getColumnName(CN_ID)).
         append(Backend.SQL_EQUAL_PAR);
@@ -223,8 +218,8 @@ public class UserGroupPersistenceImpl extends OrgUnitPersistenceImpl<UserGroup, 
 
   @Override
   protected void updateImpl(DbObjectClassVariables<UserGroupPersistenceImpl> classVariables,
-                            Supplier<String> sqlsupplier) {
-    super.updateImpl(classVariables, sqlsupplier);
+                            SqlSupplier sqlSupplier) {
+    super.updateImpl(classVariables, sqlSupplier);
     PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.UPDATE, CLASSVARIABLES.updateStatementId, this::createUpdateSqlUserGroup);
     setFieldsUserGroup(st);
     assertThisRowAffected(st.executeUpdate());
@@ -232,8 +227,8 @@ public class UserGroupPersistenceImpl extends OrgUnitPersistenceImpl<UserGroup, 
 
   @Override
   protected void insertImpl(DbObjectClassVariables<UserGroupPersistenceImpl> classVariables,
-                            Supplier<String> sqlsupplier) {
-    super.insertImpl(classVariables, sqlsupplier);
+                            SqlSupplier sqlSupplier) {
+    super.insertImpl(classVariables, sqlSupplier);
     PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.INSERT, CLASSVARIABLES.insertStatementId, this::createInsertSqlUserGroup);
     setFieldsUserGroup(st);
     assertThisRowAffected(st.executeUpdate());
@@ -241,11 +236,11 @@ public class UserGroupPersistenceImpl extends OrgUnitPersistenceImpl<UserGroup, 
 
   @Override
   protected void deleteImpl(DbObjectClassVariables<UserGroupPersistenceImpl> classVariables,
-                            Supplier<String> sqlsupplier) {
-    PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.DELETE, CLASSVARIABLES.deleteStatementId, this::createDeleteSqlUserGroup);
+                            SqlSupplier sqlSupplier) {
+    PreparedStatementWrapper st = getBatchablePreparedStatement(DbModificationType.DELETE, CLASSVARIABLES.deleteStatementId, b -> createDeleteSqlUserGroup());
     st.setLong(1, getId());
     assertThisRowAffected(st.executeUpdate());
-    super.deleteImpl(classVariables, sqlsupplier);
+    super.deleteImpl(classVariables, sqlSupplier);
   }
 
   //</editor-fold>//GEN-END:methods
