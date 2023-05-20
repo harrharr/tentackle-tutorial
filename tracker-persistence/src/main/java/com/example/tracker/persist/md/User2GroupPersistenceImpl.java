@@ -135,7 +135,7 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
 
   @Override
   public boolean isTracked() {
-    return true;    // invoking isModified() is ok
+    return true;
   }
 
   @Override

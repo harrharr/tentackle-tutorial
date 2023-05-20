@@ -4,10 +4,11 @@
 
 package com.example.tracker.common;
 
+import org.tentackle.common.EncryptedProperties;
 import org.tentackle.session.DefaultSessionInfo;
 
 import java.io.Serial;
-import java.util.Properties;
+import java.util.Locale;
 
 /**
  * Application specific session info.
@@ -44,7 +45,7 @@ public class TrackerSessionInfo extends DefaultSessionInfo {
    *
    * @param properties the properties
    */
-  public TrackerSessionInfo(Properties properties)  {
+  public TrackerSessionInfo(EncryptedProperties properties)  {
     super(properties);
   }
 
@@ -57,6 +58,6 @@ public class TrackerSessionInfo extends DefaultSessionInfo {
 
   @Override
   public void setUserName(String userName) {
-    super.setUserName(userName == null ? null : userName.toUpperCase());    // usernames are uppercase only
+    super.setUserName(userName == null ? null : userName.toUpperCase(Locale.ROOT));    // usernames are uppercase only
   }
 }

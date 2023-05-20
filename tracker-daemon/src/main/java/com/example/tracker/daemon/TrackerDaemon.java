@@ -12,6 +12,7 @@ import org.tentackle.app.ConsoleApplication;
 import org.tentackle.log.Logger;
 import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.Pdo;
+import org.tentackle.pdo.PdoUtilities;
 import org.tentackle.prefs.PersistedPreferencesFactory;
 
 /**
@@ -42,7 +43,7 @@ public class TrackerDaemon extends ConsoleApplication {
   @Override
   protected void configurePreferences() {
     super.configurePreferences();
-    User user = getUser(getDomainContext());    // must exist!
+    User user = PdoUtilities.getInstance().getUser(getDomainContext());    // must exist!
     PersistedPreferencesFactory.getInstance().setSystemOnly(user.isSystemPreferencesOnly());
   }
 

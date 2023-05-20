@@ -80,9 +80,7 @@ public interface UserGroup extends OrgUnit<UserGroup>, UserGroupPersistence, Use
    *    + User2Group via u2g.userGroupId as nmLinks [N:M] to User as users
    *
    *
-   * UserGroup is referencing the following entities:
-   *
-   * User from User2Group via userId [N:M]
+   * UserGroup is not referencing other entities
    *
    *
    * Components of UserGroup are not deeply referenced

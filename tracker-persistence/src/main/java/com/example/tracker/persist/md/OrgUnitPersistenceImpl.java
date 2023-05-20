@@ -172,7 +172,7 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
 
   @Override
   public boolean isTracked() {
-    return true;    // invoking isModified() is ok
+    return true;
   }
 
   @Override

@@ -72,14 +72,11 @@ public interface User2Group extends MasterData<User2Group>, User2GroupPersistenc
    *
    * User2Group is referenced by:
    *
-   * User via u2g.userId as nmLinks [1:N]
-   * UserGroup via u2g.userGroupId as nmLinks [1:N]
+   * User composite via u2g.userId as nmLinks [1:N]
+   * UserGroup composite via u2g.userGroupId as nmLinks [1:N]
    *
    *
-   * User2Group is referencing the following entities:
-   *
-   * User via userId [1:1]
-   * UserGroup via userGroupId [1:1]
+   * User2Group is not referencing other entities
    *
    *
    * User2Group is a component of: User, UserGroup

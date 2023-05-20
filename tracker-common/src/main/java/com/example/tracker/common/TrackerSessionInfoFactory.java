@@ -4,11 +4,10 @@
 
 package com.example.tracker.common;
 
+import org.tentackle.common.EncryptedProperties;
 import org.tentackle.common.Service;
 import org.tentackle.session.SessionInfo;
 import org.tentackle.session.SessionInfoFactory;
-
-import java.util.Properties;
 
 /**
  * Application specific session info factory.
@@ -27,7 +26,7 @@ public class TrackerSessionInfoFactory implements SessionInfoFactory {
   }
 
   @Override
-  public SessionInfo create(Properties properties) {
+  public SessionInfo create(EncryptedProperties properties) {
     return new TrackerSessionInfo(properties);
   }
 

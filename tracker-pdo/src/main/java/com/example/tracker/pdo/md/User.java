@@ -85,9 +85,7 @@ public interface User extends OrgUnit<User>, UserPersistence, UserDomain {
    *    + User2Group via u2g.userId as nmLinks [N:M] to UserGroup as userGroups
    *
    *
-   * User is referencing the following entities:
-   *
-   * UserGroup from User2Group via userGroupId [N:M]
+   * User is not referencing other entities
    *
    *
    * Components of User are not deeply referenced
