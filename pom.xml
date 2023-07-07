@@ -43,7 +43,7 @@
     <tentackle.modelDefaults>remote, bind, size, autoselect, tracked, root, rootid, rootclassid</tentackle.modelDefaults>
 
     <postgres.version>42.6.0</postgres.version>
-    <h2.version>2.1.214</h2.version>
+    <h2.version>2.2.220</h2.version>
     <dbUrl>jdbc:postgresql://localhost/tracker</dbUrl>
     <dbUser>tracker</dbUser>
     <dbPasswd>tracker</dbPasswd>
