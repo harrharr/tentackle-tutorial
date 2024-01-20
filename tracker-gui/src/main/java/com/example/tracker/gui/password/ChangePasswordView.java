@@ -37,10 +37,11 @@ public class ChangePasswordView extends AbstractFxController implements DomainCo
   /**
    * Shows the dialog and prompts the user to change his password.
    *
+   * @param owner the owner window or node
    * @param user the user
    * @param admin invoked by admin user
    */
-  public static void showDialog(User user, boolean admin) {
+  public static void showDialog(Object owner, User user, boolean admin) {
     if (admin || user.isEditAllowed() || user.isPasswordChangeable()) {
       ChangePasswordView controller = Fx.load(ChangePasswordView.class);
       Stage stage = Fx.createStage(Modality.NONE);
@@ -48,10 +49,10 @@ public class ChangePasswordView extends AbstractFxController implements DomainCo
       stage.setScene(scene);
       stage.setTitle(MessageFormat.format(GuiBundle.getString("password {0}"), user));
       controller.setUser(user, admin);
-      stage.show();
+      Fx.show(stage);
     }
     else {
-      Fx.info(GuiBundle.getString("you're not allowed to change your password"));
+      Fx.info(owner, GuiBundle.getString("you're not allowed to change your password"));
     }
   }
 
@@ -106,20 +107,20 @@ public class ChangePasswordView extends AbstractFxController implements DomainCo
   private void save() {
     if (admin || Objects.equals(user.hash(oldPassword), oldPasswordHash)) {
       if (!Arrays.equals(newPassword, confirmedNewPassword)) {
-        Fx.error(resources.getString("new passwords do not match"));
+        Fx.error(getView(), resources.getString("new passwords do not match"));
       }
       else {
         user = user.reload();
         if (newPassword == null) {
-          Fx.yes(resources.getString("are you sure to disable the password check?"), false, () -> saveAndClose(null));
+          Fx.yes(getView(), resources.getString("are you sure to disable the password check?"), false, () -> saveAndClose(null));
         }
         else {
-          Fx.yes(resources.getString("save new password?"), false, () -> saveAndClose(user.hash(newPassword)));
+          Fx.yes(getView(), resources.getString("save new password?"), false, () -> saveAndClose(user.hash(newPassword)));
         }
       }
     }
     else {
-      Fx.error(resources.getString("wrong password"));
+      Fx.error(getView(), resources.getString("wrong password"));
     }
   }
 

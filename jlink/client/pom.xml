@@ -56,10 +56,15 @@
           <mainModule>com.example.tracker.client</mainModule>
           <mainClass>com.example.tracker.client.TrackerFxClient</mainClass>
           <classpathDependencies>
-            <!-- POI 5.x illegally requires automatic modules! -->
+            <!-- POI is full modular but illegally requires automatic modules! -->
             <dependency>
               <groupId>org.apache.poi</groupId>
               <artifactId>poi</artifactId>
+            </dependency>
+            <dependency>
+              <!-- must be moved as well to be accessible by POI -->
+              <groupId>commons-io</groupId>
+              <artifactId>commons-io</artifactId>
             </dependency>
           </classpathDependencies>
           <addModules>

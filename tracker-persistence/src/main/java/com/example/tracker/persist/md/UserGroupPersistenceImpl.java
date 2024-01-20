@@ -302,6 +302,9 @@ public class UserGroupPersistenceImpl extends OrgUnitPersistenceImpl<UserGroup, 
     if (users == null) {
       users = new TrackedArrayList<>() {
 
+        @Serial
+        private static final long serialVersionUID = 1L;
+
         @Override
         public boolean isModified() {
           return getNmLinks().isModified();

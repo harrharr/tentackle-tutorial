@@ -12,7 +12,6 @@ import com.example.tracker.gui.prefs.PreferencesDialog;
 import com.example.tracker.pdo.md.User;
 import com.example.tracker.pdo.md.UserGroup;
 import com.example.tracker.pdo.td.Message;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -123,7 +122,7 @@ public class MainController extends AbstractFxController implements DomainContex
     preferencesItem.setOnAction(e -> PreferencesDialog.show());
 
     passwordItem.setGraphic(Fx.createGraphic("password"));
-    passwordItem.setOnAction(e -> ChangePasswordView.showDialog(PdoUtilities.getInstance().getUser(getDomainContext()), false));
+    passwordItem.setOnAction(e -> ChangePasswordView.showDialog(getView(), PdoUtilities.getInstance().getUser(getDomainContext()), false));
 
     exitItem.setGraphic(Fx.createGraphic("exit"));
     exitItem.setOnAction(e -> exit());
@@ -147,14 +146,14 @@ public class MainController extends AbstractFxController implements DomainContex
     helpItem.setOnAction(e -> help());
 
     aboutItem.setGraphic(Fx.createGraphic("about"));
-    aboutItem.setOnAction(e -> AboutView.showDialog());
+    aboutItem.setOnAction(e -> AboutView.show(getView()));
   }
 
   /**
    * Asks the user whether to exit the application and does so if yes.
    */
   public void exit() {
-    Fx.yes(resources.getString("ExitAction"), false, Platform::exit);
+    Fx.yes(getView(), resources.getString("ExitAction"), false, Fx::terminate);
   }
 
 
@@ -199,7 +198,7 @@ public class MainController extends AbstractFxController implements DomainContex
     Scene scene = Fx.createScene(controller.getView());
     stage.setScene(scene);
     stage.setTitle(resources.getString("Sessions"));
-    stage.show();
+    Fx.show(stage);
   }
 
   private Node createCenterNode() {
