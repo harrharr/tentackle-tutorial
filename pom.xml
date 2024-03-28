@@ -34,7 +34,7 @@
     <wurbelizer.version>21.6.1.0</wurbelizer.version>
     <wurbel.wurbelDir>${rootBasedir}/target/wurbel</wurbel.wurbelDir>
 
-    <tentackle.version>21.15.2.0</tentackle.version>
+    <tentackle.version>21.15.3.0</tentackle.version>
     <tentackle.serviceDir>${project.build.directory}/generated-resources</tentackle.serviceDir>
     <tentackle.testServiceDir>${project.build.directory}/generated-test-resources</tentackle.testServiceDir>
     <tentackle.manifestDirectory>${project.build.directory}/generated-resources/manifest</tentackle.manifestDirectory>
@@ -42,7 +42,7 @@
     <tentackle.sqlDir>${wurbel.wurbelDir}/sql</tentackle.sqlDir>
     <tentackle.modelDefaults>remote, bind, size, autoselect, tracked, root, rootid, rootclassid</tentackle.modelDefaults>
 
-    <postgres.version>42.7.1</postgres.version>
+    <postgres.version>42.7.3</postgres.version>
     <h2.version>2.2.224</h2.version>
     <dbUrl>jdbc:postgresql://localhost/tracker</dbUrl>
     <dbUser>tracker</dbUser>
@@ -82,7 +82,7 @@
         <!-- logger binder for testng -->
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>2.0.11</version>
+        <version>2.0.12</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -401,7 +401,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.12.1</version>
+          <version>3.13.0</version>
           <configuration>
             <encoding>UTF-8</encoding>
             <release>21</release>
@@ -436,7 +436,7 @@
               <dependency>    <!-- necessary for fx-rdc processors because deps are not recognized here -->
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-controls</artifactId>
-                <version>21.0.2</version>
+                <version>22</version>
               </dependency>
             </annotationProcessorPaths>
           </configuration>
@@ -464,7 +464,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.6</version> <!-- Use newer version of ASM -->
+              <version>9.7</version> <!-- Use newer version of ASM -->
             </dependency>
           </dependencies>
         </plugin>
@@ -483,7 +483,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.6</version>
+              <version>9.7</version>
             </dependency>
           </dependencies>
         </plugin>

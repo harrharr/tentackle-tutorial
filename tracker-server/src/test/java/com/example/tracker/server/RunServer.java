@@ -20,6 +20,7 @@ public class RunServer {
   private Throwable exitThrowable;
 
   private synchronized void run(String[] args) {
+
     @SuppressWarnings("unchecked")
     TrackerServer server = new TrackerServer() {
 
@@ -31,13 +32,10 @@ public class RunServer {
       @Override
       public void stop(int exitValue, Throwable exitThrowable) {
         super.stop(exitValue, exitThrowable);
-        if (exitValue != 0) {
-          synchronized (RunServer.this) {
-            RunServer.this.exitValue = exitValue;
-            RunServer.this.exitThrowable = exitThrowable;
-            RunServer.this.notifyAll();
-          }
-          Assert.fail("abnormally terminated with exit code = " + exitValue, exitThrowable);
+        synchronized (RunServer.this) {
+          RunServer.this.exitValue = exitValue;
+          RunServer.this.exitThrowable = exitThrowable;
+          RunServer.this.notifyAll();
         }
       }
     };
@@ -51,6 +49,7 @@ public class RunServer {
           Assert.fail("server terminated while running with exit code = " + exitValue, exitThrowable);
         }
         Reporter.log("server finished", true);
+        break;
       }
       catch (InterruptedException e) {
         // interrupting the main thread in the debugger logs and clears the collected statistics

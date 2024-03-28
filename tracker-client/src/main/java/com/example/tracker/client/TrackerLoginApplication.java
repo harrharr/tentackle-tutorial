@@ -5,6 +5,7 @@
 package com.example.tracker.client;
 
 import org.tentackle.fx.FxFactory;
+import org.tentackle.fx.FxUtilities;
 import org.tentackle.fx.rdc.app.LoginApplication;
 import org.tentackle.fx.rdc.login.Login;
 
@@ -17,8 +18,10 @@ public class TrackerLoginApplication extends LoginApplication {
 
   @Override
   protected Login loadLoginController() {
-    URL cssUrl = TrackerLoginApplication.class.getResource("/com/example/tracker/client/Login.css");
-    Login loginController = FxFactory.getInstance().createController(Login.class, null, null, cssUrl);
+    Login loginController = FxFactory.getInstance().createController(
+      Login.class, null, null,
+      getClass().getResource(FxUtilities.getInstance().isDarkMode() ?
+          "/com/example/tracker/client/Login-dark.css" : "/com/example/tracker/client/Login.css"));
     loginController.setInactivityTimeout(30);
     return loginController;
   }
