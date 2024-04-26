@@ -9,7 +9,6 @@ import com.example.tracker.pdo.MessageType;
 import com.example.tracker.pdo.md.OrgUnit;
 import com.example.tracker.pdo.td.Message;
 import com.example.tracker.pdo.td.persist.MessagePersistence;
-import com.example.tracker.persist.AbstractPersistentTransactionData;
 import com.example.tracker.persist.td.rmi.MessageRemoteDelegate;
 
 import org.tentackle.common.Freezable;

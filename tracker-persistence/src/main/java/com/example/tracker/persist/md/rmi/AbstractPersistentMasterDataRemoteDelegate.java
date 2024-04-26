@@ -5,7 +5,7 @@
 package com.example.tracker.persist.md.rmi;
 
 import com.example.tracker.pdo.MasterData;
-import com.example.tracker.persist.AbstractPersistentMasterData;
+import com.example.tracker.persist.md.AbstractPersistentMasterData;
 
 import org.tentackle.persist.rmi.AbstractPersistentObjectRemoteDelegate;
 
@@ -17,4 +17,3 @@ public interface AbstractPersistentMasterDataRemoteDelegate<T extends MasterData
        extends AbstractPersistentObjectRemoteDelegate<T,P> {
 
 }
-

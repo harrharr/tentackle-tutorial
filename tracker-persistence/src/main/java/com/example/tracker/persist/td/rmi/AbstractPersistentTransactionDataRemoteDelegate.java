@@ -5,7 +5,7 @@
 package com.example.tracker.persist.td.rmi;
 
 import com.example.tracker.pdo.TransactionData;
-import com.example.tracker.persist.AbstractPersistentTransactionData;
+import com.example.tracker.persist.td.AbstractPersistentTransactionData;
 
 import org.tentackle.persist.rmi.AbstractPersistentObjectRemoteDelegate;
 

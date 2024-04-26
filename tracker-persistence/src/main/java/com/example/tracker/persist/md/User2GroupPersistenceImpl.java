@@ -8,7 +8,6 @@ import com.example.tracker.pdo.md.User;
 import com.example.tracker.pdo.md.User2Group;
 import com.example.tracker.pdo.md.UserGroup;
 import com.example.tracker.pdo.md.persist.User2GroupPersistence;
-import com.example.tracker.persist.AbstractPersistentMasterData;
 import com.example.tracker.persist.md.rmi.User2GroupRemoteDelegate;
 
 import org.tentackle.dbms.PreparedStatementWrapper;

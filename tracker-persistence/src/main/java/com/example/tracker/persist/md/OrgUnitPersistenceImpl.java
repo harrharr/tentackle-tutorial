@@ -9,7 +9,6 @@ import com.example.tracker.pdo.md.User;
 import com.example.tracker.pdo.md.UserGroup;
 import com.example.tracker.pdo.md.persist.OrgUnitPersistence;
 import com.example.tracker.pdo.td.Message;
-import com.example.tracker.persist.AbstractPersistentMasterData;
 import com.example.tracker.persist.md.rmi.OrgUnitRemoteDelegate;
 
 import org.tentackle.common.StringHelper;
