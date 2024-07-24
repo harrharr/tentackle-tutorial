@@ -443,7 +443,7 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
 
     @SuppressWarnings("unchecked")
     private static <X extends OrgUnit<X>> PdoCache<X> createCache() {
-      PdoCache<X> cache = (PdoCache<X>) Pdo.createPdoCache(OrgUnit.class, true, true, false);
+      PdoCache<X> cache = (PdoCache<X>) Pdo.createCache(OrgUnit.class, true, true, false);
       Pdo.listen(cache::expire, User.class, UserGroup.class);
       return cache;
     }

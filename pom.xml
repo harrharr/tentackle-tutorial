@@ -34,7 +34,7 @@
     <wurbelizer.version>21.6.2.0</wurbelizer.version>
     <wurbel.wurbelDir>${rootBasedir}/target/wurbel</wurbel.wurbelDir>
 
-    <tentackle.version>21.16.0.0</tentackle.version>
+    <tentackle.version>21.16.1.0</tentackle.version>
     <tentackle.serviceDir>${project.build.directory}/generated-resources</tentackle.serviceDir>
     <tentackle.testServiceDir>${project.build.directory}/generated-test-resources</tentackle.testServiceDir>
     <tentackle.manifestDirectory>${project.build.directory}/generated-resources/manifest</tentackle.manifestDirectory>
@@ -43,7 +43,7 @@
     <tentackle.modelDefaults>remote, bind, size, autoselect, tracked, root, rootid, rootclassid</tentackle.modelDefaults>
 
     <postgres.version>42.7.3</postgres.version>
-    <h2.version>2.2.224</h2.version>
+    <h2.version>2.3.230</h2.version>
     <dbUrl>jdbc:postgresql://localhost/tracker</dbUrl>
     <dbUser>tracker</dbUser>
     <dbPasswd>tracker</dbPasswd>
@@ -75,7 +75,7 @@
       <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
-        <version>7.10.1</version>
+        <version>7.10.2</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -436,7 +436,7 @@
               <dependency>    <!-- necessary for fx-rdc processors because deps are not recognized here -->
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-controls</artifactId>
-                <version>22.0.1</version>
+                <version>22.0.2</version>
               </dependency>
             </annotationProcessorPaths>
           </configuration>
@@ -456,7 +456,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.2.5</version>
+          <version>3.3.1</version>
           <configuration>
             <argLine>-Duser.language=en -Duser.region=US</argLine>
           </configuration>
@@ -478,7 +478,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.6.3</version>
+          <version>3.8.0</version>
           <dependencies>
             <dependency>
               <groupId>org.ow2.asm</groupId>
