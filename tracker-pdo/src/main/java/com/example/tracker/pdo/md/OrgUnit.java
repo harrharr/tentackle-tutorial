@@ -51,9 +51,9 @@ import org.tentackle.session.TableName;
  *
  * @param <T> the orgunit type
  */
-@TableName(value =/**/"md.orgunit"/**/, // @wurblet < Inject --string $tablename
-           mapSchema =/**/false/**/,    // @wurblet < Inject $mapSchema
-           prefix =/**/""/**/)          // @wurblet < Inject --string $tablePrefix
+@TableName(value =/*@*/"md.orgunit"/*@*/, // @wurblet < Inject --string $tablename
+           mapSchema =/*@*/false/*@*/,    // @wurblet < Inject $mapSchema
+           prefix =/*@*/""/*@*/)          // @wurblet < Inject --string $tablePrefix
 @Singular("Organizational Unit")
 @Plural("Organizational Units")
 public interface OrgUnit<T extends OrgUnit<T>> extends MasterData<T>, OrgUnitPersistence<T>, OrgUnitDomain<T> {

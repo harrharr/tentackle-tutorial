@@ -187,7 +187,7 @@ public class UserGroupPersistenceImpl extends OrgUnitPersistenceImpl<UserGroup, 
    * @return the sql code
    */
   public String createDeleteSqlUserGroup() {
-    return Backend.SQL_DELETE + Backend.SQL_FROM + CLASSVARIABLES.getTableName() +
+    return Backend.SQL_DELETE_FROM + CLASSVARIABLES.getTableName() +
            Backend.SQL_WHERE + CN_ID + Backend.SQL_EQUAL_PAR;
   }
 

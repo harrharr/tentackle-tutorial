@@ -64,10 +64,10 @@ import org.tentackle.session.TableName;
  * <p>
  * Events logged as messages.
  */
-@TableName(value =/**/"td.message"/**/, // @wurblet < Inject --string $tablename
-           mapSchema =/**/false/**/,    // @wurblet < Inject $mapSchema
-           prefix =/**/""/**/)          // @wurblet < Inject --string $tablePrefix
-@ClassId(/**/2001/**/)                  // @wurblet < Inject $classid
+@TableName(value =/*@*/"td.message"/*@*/, // @wurblet < Inject --string $tablename
+           mapSchema =/*@*/false/*@*/,    // @wurblet < Inject $mapSchema
+           prefix =/*@*/""/*@*/)          // @wurblet < Inject --string $tablePrefix
+@ClassId(/*@*/2001/*@*/)                  // @wurblet < Inject $classid
 @Singular("Message")
 @Plural("Messages")
 public interface Message extends TransactionData<Message>, MessagePersistence, MessageDomain {

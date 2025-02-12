@@ -52,10 +52,10 @@ import org.tentackle.session.TableName;
  * <p>
  * Group of users to define security roles
  */
-@TableName(value =/**/"md.usergroups"/**/, // @wurblet < Inject --string $tablename
-           mapSchema =/**/false/**/,      // @wurblet < Inject $mapSchema
-           prefix =/**/""/**/)            // @wurblet < Inject --string $tablePrefix
-@ClassId(/**/1002/**/)                    // @wurblet < Inject $classid
+@TableName(value =/*@*/"md.usergroups"/*@*/, // @wurblet < Inject --string $tablename
+           mapSchema =/*@*/false/*@*/,      // @wurblet < Inject $mapSchema
+           prefix =/*@*/""/*@*/)            // @wurblet < Inject --string $tablePrefix
+@ClassId(/*@*/1002/*@*/)                    // @wurblet < Inject $classid
 @Singular("UserGroup")
 @Plural("UserGroups")
 public interface UserGroup extends OrgUnit<UserGroup>, UserGroupPersistence, UserGroupDomain {
