@@ -5,13 +5,13 @@
 /**
  * Persistence implementation module.
  */
-module com.example.tracker.persist {
+open module com.example.tracker.persist {
   exports com.example.tracker.persist;
   exports com.example.tracker.persist.md;
-  exports com.example.tracker.persist.md.rmi;
-  exports com.example.tracker.persist.rmi;
+  exports com.example.tracker.persist.md.trip;
+  exports com.example.tracker.persist.trip;
   exports com.example.tracker.persist.td;
-  exports com.example.tracker.persist.td.rmi;
+  exports com.example.tracker.persist.td.trip;
 
   requires transitive com.example.tracker.pdo;
   requires transitive org.tentackle.persistence;

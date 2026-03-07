@@ -85,14 +85,18 @@
           </execution>
         </executions>
         <configuration>
+          <storetype>JKS</storetype>
           <keystore>${cert.dir}/keystore.jks</keystore>
           <file>${cert.file}</file>
           <storepass>${cert.password}</storepass>
+          <keypass>${cert.password}</keypass>
           <alias>${cert.alias}</alias>
           <dname>${cert.dname}</dname>
           <keyalg>RSA</keyalg>
+          <sigalg>SHA256WithRSA</sigalg>
           <keysize>2048</keysize>
           <validity>3650</validity>
+          <verbose>true</verbose>
         </configuration>
       </plugin>
       <plugin>

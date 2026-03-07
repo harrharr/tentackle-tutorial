@@ -11,6 +11,7 @@ open module com.example.tracker.gui {
 
   requires transitive com.example.tracker.pdo;
   requires transitive org.tentackle.fx.rdc;
+  requires org.tentackle.fx.atlanta;
 
   provides org.tentackle.common.ModuleHook with com.example.tracker.gui.service.Hook;
 }

@@ -8,7 +8,7 @@ import com.example.tracker.pdo.md.User;
 import com.example.tracker.pdo.md.User2Group;
 import com.example.tracker.pdo.md.UserGroup;
 import com.example.tracker.pdo.md.persist.User2GroupPersistence;
-import com.example.tracker.persist.md.rmi.User2GroupRemoteDelegate;
+import com.example.tracker.persist.md.trip.User2GroupRemoteDelegate;
 
 import org.tentackle.dbms.PreparedStatementWrapper;
 import org.tentackle.dbms.ResultSetWrapper;
@@ -17,12 +17,10 @@ import org.tentackle.misc.TrackedList;
 import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.PersistentObjectService;
 import org.tentackle.persist.PersistentObjectClassVariables;
-import org.tentackle.session.PersistenceException;
 import org.tentackle.session.Session;
 import org.tentackle.sql.Backend;
 
 import java.io.Serial;
-import java.rmi.RemoteException;
 
 /**
  * Persistence implementation for User2Group.
@@ -249,10 +247,10 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
     setUserGroupId(userGroup == null ? 0 : userGroup.getId());
   }
 
-  // selects composite list of User2Group nmLinks via User2Group#userId (NmLinks)
+  // selects the component list of User2Group nmLinks via User2Group#userId
   // @wurblet selectByUserId PdoSelectList --tracked userId
 
-  // selects composite list of User2Group nmLinks via User2Group#userGroupId (NmLinks)
+  // selects the component list of User2Group nmLinks via User2Group#userGroupId
   // @wurblet selectByUserGroupId PdoSelectList --tracked userGroupId
 
   //</editor-fold>//GEN-END:relations
@@ -262,14 +260,9 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
   @Override
   public TrackedList<User2Group> selectByUserId(long userId) {
     if (getSession().isRemote())  {
-      try {
-        TrackedList<User2Group> list = getRemoteDelegate().selectByUserId(getDomainContext(), userId);
-        configureRemoteObjects(getDomainContext(), list);
-        return list;
-      }
-      catch (RemoteException e) {
-        throw PersistenceException.createFromRemoteException(this, e);
-      }
+      TrackedList<User2Group> list = getRemoteDelegate().selectByUserId(getDomainContext(), userId);
+      configureRemoteObjects(getDomainContext(), list);
+      return list;
     }
     PreparedStatementWrapper st = getPreparedStatement(SELECT_BY_USER_ID_STMT,
       b -> {
@@ -296,14 +289,9 @@ public class User2GroupPersistenceImpl extends AbstractPersistentMasterData<User
   @Override
   public TrackedList<User2Group> selectByUserGroupId(long userGroupId) {
     if (getSession().isRemote())  {
-      try {
-        TrackedList<User2Group> list = getRemoteDelegate().selectByUserGroupId(getDomainContext(), userGroupId);
-        configureRemoteObjects(getDomainContext(), list);
-        return list;
-      }
-      catch (RemoteException e) {
-        throw PersistenceException.createFromRemoteException(this, e);
-      }
+      TrackedList<User2Group> list = getRemoteDelegate().selectByUserGroupId(getDomainContext(), userGroupId);
+      configureRemoteObjects(getDomainContext(), list);
+      return list;
     }
     PreparedStatementWrapper st = getPreparedStatement(SELECT_BY_USER_GROUP_ID_STMT,
       b -> {

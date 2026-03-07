@@ -10,7 +10,7 @@ package com.example.tracker.gui;
 public class GuiConstants {
 
   /**
-   * The application specific menu items group.
+   * The application-specific menu items group.
    */
   public static final String ITEM_GROUP = "Tracker";
 

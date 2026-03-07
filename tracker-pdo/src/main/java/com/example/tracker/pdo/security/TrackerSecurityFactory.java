@@ -10,7 +10,7 @@ import org.tentackle.security.SecurityFactory;
 import org.tentackle.security.SecurityManager;
 
 /**
- * Application specific security factory.
+ * Application-specific security factory.
  */
 @Service(SecurityFactory.class)
 public class TrackerSecurityFactory extends DefaultSecurityFactory {

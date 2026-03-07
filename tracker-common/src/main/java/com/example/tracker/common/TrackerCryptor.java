@@ -8,7 +8,7 @@ import org.tentackle.common.Cryptor;
 import org.tentackle.common.Service;
 
 /**
- * Application specific encryption and decryption.
+ * Application-specific encryption and decryption.
  */
 @Service(Cryptor.class)
 public class TrackerCryptor extends Cryptor {
@@ -41,7 +41,7 @@ public class TrackerCryptor extends Cryptor {
   }
 
   /**
-   * Creates the application specific {@link Cryptor}.
+   * Creates the application-specific {@link Cryptor}.
    */
   public TrackerCryptor() {
     super(getSalt(), getPassphrase());

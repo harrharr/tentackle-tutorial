@@ -8,12 +8,12 @@ import org.tentackle.bind.Bindable;
 import org.tentackle.common.Service;
 import org.tentackle.common.ServiceFactory;
 import org.tentackle.prefs.CompositePreferences;
-import org.tentackle.prefs.PersistedPreferencesFactory;
 
 
 interface TrackerPreferencesHolder {
   TrackerPreferences INSTANCE = ServiceFactory.createService(TrackerPreferences.class);
 }
+
 
 /**
  * Preferences for Tracker.
@@ -28,7 +28,7 @@ public class TrackerPreferences extends CompositePreferences {
 
 
   public TrackerPreferences() {
-    super(PersistedPreferencesFactory.getInstance().isSystemOnly());
+    super(true);
   }
 
   /**

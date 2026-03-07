@@ -7,7 +7,7 @@
  */
 module com.example.tracker.server {
   exports com.example.tracker.server;
-  exports com.example.tracker.server.rmi;
+  exports com.example.tracker.server.trip;
 
   requires transitive com.example.tracker.persist;
   requires com.example.tracker.domain;

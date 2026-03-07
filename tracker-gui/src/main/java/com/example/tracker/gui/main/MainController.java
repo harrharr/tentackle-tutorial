@@ -8,6 +8,7 @@ import com.example.tracker.common.TrackerDomainContext;
 import com.example.tracker.gui.TrackerGraphicProvider;
 import com.example.tracker.gui.about.AboutView;
 import com.example.tracker.gui.password.ChangePasswordView;
+import com.example.tracker.gui.theme.ChangeThemeView;
 import com.example.tracker.gui.prefs.PreferencesDialog;
 import com.example.tracker.pdo.md.User;
 import com.example.tracker.pdo.md.UserGroup;
@@ -28,6 +29,7 @@ import org.tentackle.fx.Fx;
 import org.tentackle.fx.FxControllerService;
 import org.tentackle.fx.FxRuntimeException;
 import org.tentackle.fx.FxUtilities;
+import org.tentackle.fx.ThemeUtilities;
 import org.tentackle.fx.component.FxButton;
 import org.tentackle.fx.rdc.Rdc;
 import org.tentackle.fx.rdc.admin.SessionsView;
@@ -36,7 +38,6 @@ import org.tentackle.pdo.AdminExtension;
 import org.tentackle.pdo.DomainContextProvider;
 import org.tentackle.pdo.PdoUtilities;
 import org.tentackle.pdo.PersistentDomainObject;
-import org.tentackle.prefs.PersistedPreferencesFactory;
 import org.tentackle.security.SecurityFactory;
 import org.tentackle.security.pdo.Security;
 
@@ -61,6 +62,9 @@ public class MainController extends AbstractFxController implements DomainContex
 
   @FXML
   private MenuItem preferencesItem;
+
+  @FXML
+  private MenuItem themeItem;
 
   @FXML
   private MenuItem passwordItem;
@@ -102,51 +106,56 @@ public class MainController extends AbstractFxController implements DomainContex
   public void initialize() {
 
     loadCenterImage();
-    FxUtilities.getInstance().darkModeProperty().subscribe(this::loadCenterImage);
+    ThemeUtilities.getInstance().darkModeProperty().subscribe(this::loadCenterImage);
 
     securityManagerItem.setGraphic(Fx.createGraphic("security"));
-    securityManagerItem.setDisable(!SecurityDialogFactory.getInstance().isDialogAllowed(getDomainContext()));
-    securityManagerItem.setOnAction(e ->
-            SecurityDialogFactory.getInstance().showDialog(on(Security.class).getClassId(), getDomainContext()));
+    securityManagerItem.setOnAction(_ ->
+            SecurityDialogFactory.getInstance().showDialog(getView(), on(Security.class).getClassId(), getDomainContext()));
 
     sessionsItem.setGraphic(Fx.createGraphic("session"));
-    sessionsItem.setDisable(!SecurityFactory.getInstance().getSecurityManager().evaluate(
-        getDomainContext(), SecurityFactory.getInstance().getExecutePermission(), AdminExtension.class).isAccepted());
-    sessionsItem.setOnAction(e -> manageSessions());
+    sessionsItem.setOnAction(_ -> manageSessions());
 
     preferencesItem.setGraphic(Fx.createGraphic("preferences"));
-    preferencesItem.setDisable(
-            !PersistedPreferencesFactory.getInstance().isSystemOnly() ||
-            !SecurityFactory.getInstance().getSecurityManager().evaluate(
-                getDomainContext(), SecurityFactory.getInstance().getExecutePermission(), PreferencesDialog.class).isAccepted());
-    preferencesItem.setOnAction(e -> PreferencesDialog.show());
+    preferencesItem.setOnAction(_ -> PreferencesDialog.show(getView()));
+
+    themeItem.setGraphic(Fx.createGraphic("theme"));
+    themeItem.setOnAction(e -> ChangeThemeView.showDialog(Fx.getStage(getView())));
 
     passwordItem.setGraphic(Fx.createGraphic("password"));
-    passwordItem.setOnAction(e -> ChangePasswordView.showDialog(getView(), PdoUtilities.getInstance().getUser(getDomainContext()), false));
+    passwordItem.setOnAction(_ -> ChangePasswordView.showDialog(getView(), PdoUtilities.getInstance().getUser(getDomainContext()), false));
 
     exitItem.setGraphic(Fx.createGraphic("exit"));
-    exitItem.setOnAction(e -> exit());
+    exitItem.setOnAction(_ -> exit());
 
     editUserItem.setGraphic(Fx.createGraphic(TrackerGraphicProvider.REALM, "user"));
-    editUserItem.setOnAction(e -> edit(User.class));
+    editUserItem.setOnAction(_ -> edit(User.class));
 
     editUserGroupItem.setGraphic(Fx.createGraphic(TrackerGraphicProvider.REALM, "usergroup"));
-    editUserGroupItem.setOnAction(e -> edit(UserGroup.class));
+    editUserGroupItem.setOnAction(_ -> edit(UserGroup.class));
 
     searchUserItem.setGraphic(Fx.createGraphic(TrackerGraphicProvider.REALM, "user"));
-    searchUserItem.setOnAction(e -> search(User.class));
+    searchUserItem.setOnAction(_ -> search(User.class));
 
     searchUserGroupItem.setGraphic(Fx.createGraphic(TrackerGraphicProvider.REALM, "usergroup"));
-    searchUserGroupItem.setOnAction(e -> search(UserGroup.class));
+    searchUserGroupItem.setOnAction(_ -> search(UserGroup.class));
 
     searchMessageItem.setGraphic(Fx.createGraphic(TrackerGraphicProvider.REALM, "message"));
-    searchMessageItem.setOnAction(e -> search(Message.class));
+    searchMessageItem.setOnAction(_ -> search(Message.class));
 
     helpItem.setGraphic(Fx.createGraphic("help"));
-    helpItem.setOnAction(e -> help());
+    helpItem.setOnAction(_ -> help());
 
     aboutItem.setGraphic(Fx.createGraphic("about"));
-    aboutItem.setOnAction(e -> AboutView.show(getView()));
+    aboutItem.setOnAction(_ -> AboutView.show(getView()));
+  }
+
+  @Override
+  public void configure() {
+    securityManagerItem.setDisable(!SecurityDialogFactory.getInstance().isDialogAllowed(getDomainContext()));
+    sessionsItem.setDisable(!SecurityFactory.getInstance().getSecurityManager().evaluate(
+      getDomainContext(), SecurityFactory.getInstance().getExecutePermission(), AdminExtension.class).isAccepted());
+    preferencesItem.setDisable(!SecurityFactory.getInstance().getSecurityManager().evaluate(
+      getDomainContext(), SecurityFactory.getInstance().getExecutePermission(), PreferencesDialog.class).isAccepted());
   }
 
   /**
@@ -188,7 +197,7 @@ public class MainController extends AbstractFxController implements DomainContex
    * Manages server sessions.
    */
   private void manageSessions() {
-    Stage stage = Fx.createStage(Modality.APPLICATION_MODAL);
+    Stage stage = Fx.createStage(Modality.APPLICATION_MODAL, getView());
     SessionsView controller = Fx.load(SessionsView.class);
     FxButton closeButton = Fx.create(Button.class);
     closeButton.setText(resources.getString("close"));
@@ -204,7 +213,7 @@ public class MainController extends AbstractFxController implements DomainContex
   private void loadCenterImage() {
     // just to show something nice (to be replaced by some application relevant stuff)
     try (InputStream is = getClass().getResourceAsStream(
-      FxUtilities.getInstance().isDarkMode() ?
+      ThemeUtilities.getInstance().isDarkMode() ?
         "/com/example/tracker/gui/images/tentackle-dark.png" : "/com/example/tracker/gui/images/tentackle.png")) {
       borderPane.setCenter(new ImageView(new Image(is)));
     }

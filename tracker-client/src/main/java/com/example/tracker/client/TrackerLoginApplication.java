@@ -5,14 +5,12 @@
 package com.example.tracker.client;
 
 import org.tentackle.fx.FxFactory;
-import org.tentackle.fx.FxUtilities;
+import org.tentackle.fx.ThemeUtilities;
 import org.tentackle.fx.rdc.app.LoginApplication;
 import org.tentackle.fx.rdc.login.Login;
 
-import java.net.URL;
-
 /**
- * Login FX application with specific CSS configuration.
+ * The login FX-application with application-specific CSS configuration.
  */
 public class TrackerLoginApplication extends LoginApplication {
 
@@ -20,7 +18,7 @@ public class TrackerLoginApplication extends LoginApplication {
   protected Login loadLoginController() {
     Login loginController = FxFactory.getInstance().createController(
       Login.class, null, null,
-      getClass().getResource(FxUtilities.getInstance().isDarkMode() ?
+      getClass().getResource(ThemeUtilities.getInstance().isDarkMode() ?
           "/com/example/tracker/client/Login-dark.css" : "/com/example/tracker/client/Login.css"));
     loginController.setInactivityTimeout(30);
     return loginController;

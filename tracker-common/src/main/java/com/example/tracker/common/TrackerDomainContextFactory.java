@@ -11,10 +11,15 @@ import org.tentackle.pdo.DomainContextFactory;
 import org.tentackle.session.Session;
 
 /**
- * Application specific domain context factory.
+ * Application-specific domain context factory.
  */
 @Service(DomainContextFactory.class)
 public class TrackerDomainContextFactory extends DefaultDomainContextFactory {
+
+  @Override
+  public DomainContext create() {
+    return new TrackerDomainContext();
+  }
 
   @Override
   public DomainContext create(Session session) {

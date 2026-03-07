@@ -9,4 +9,4 @@ COMMENT ON TABLE migration IS 'migration history';
 COMMENT ON COLUMN migration.version IS 'deployment date';
 COMMENT ON COLUMN migration.since IS 'deployment date';
 COMMENT ON COLUMN migration.comment IS 'additional comments';
-INSERT INTO migration (version, since, comment) VALUES ('1.0-SNAPSHOT', '2025-06-18 18:13:31', 'Project Start');
+INSERT INTO migration (version, since, comment) VALUES ('1.0-SNAPSHOT', '2026-03-07 15:50:56', 'Project Start');

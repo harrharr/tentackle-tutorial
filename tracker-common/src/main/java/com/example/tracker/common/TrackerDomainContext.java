@@ -10,7 +10,7 @@ import org.tentackle.session.Session;
 import java.io.Serial;
 
 /**
- * Application specific domain context.
+ * Application-specific domain context.
  */
 public class TrackerDomainContext extends DefaultDomainContext {
 
@@ -34,6 +34,13 @@ public class TrackerDomainContext extends DefaultDomainContext {
    */
   public TrackerDomainContext(Session session) {
     super(session);
+  }
+
+  /**
+   * Creates a mutable domain context with a thread-local session.
+   */
+  public TrackerDomainContext() {
+    super();
   }
 
   @Override

@@ -82,44 +82,44 @@ public interface MessagePersistence extends PersistentObject<Message> {
 
 
   /**
-   * Gets the attribute messageNumber.
+   * Gets the attribute 'messageNumber'.
    *
-   * @return message number
+   * @return the message number
    */
-  @Persistent(ordinal=2, comment="message number")
+  @Persistent(ordinal=2, comment="the message number")
   @NotNull
   @Bindable(options="MAXCOLS=10")
   @DomainKey
   String getMessageNumber();
 
   /**
-   * Sets the attribute messageNumber.
+   * Sets the attribute 'messageNumber'.
    *
-   * @param messageNumber message number
+   * @param messageNumber the message number
    */
   @Bindable
   void setMessageNumber(String messageNumber);
 
   /**
-   * Gets the attribute when.
+   * Gets the attribute 'when'.
    *
-   * @return timestamp of message
+   * @return the timestamp of message
    */
-  @Persistent(ordinal=3, comment="timestamp of message")
+  @Persistent(ordinal=3, comment="the timestamp of message")
   @NotNull
   @Bindable(options="AUTOSELECT")
   Timestamp getWhen();
 
   /**
-   * Sets the attribute when.
+   * Sets the attribute 'when'.
    *
-   * @param when timestamp of message
+   * @param when the timestamp of message
    */
   @Bindable
   void setWhen(Timestamp when);
 
   /**
-   * Gets the attribute messageType.
+   * Gets the attribute 'messageType'.
    *
    * @return the message type
    */
@@ -129,7 +129,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
   MessageType getMessageType();
 
   /**
-   * Sets the attribute messageType.
+   * Sets the attribute 'messageType'.
    *
    * @param messageType the message type
    */
@@ -137,92 +137,92 @@ public interface MessagePersistence extends PersistentObject<Message> {
   void setMessageType(MessageType messageType);
 
   /**
-   * Gets the attribute refersToClassId.
+   * Gets the attribute 'refersToClassId'.
    *
-   * @return class id if message refers to a PDO
+   * @return the class id if message refers to a PDO
    */
-  @Persistent(ordinal=5, comment="class id if message refers to a PDO")
+  @Persistent(ordinal=5, comment="the class id if message refers to a PDO")
   @Bindable(options="AUTOSELECT")
   Integer getRefersToClassId();
 
   /**
-   * Sets the attribute refersToClassId.
+   * Sets the attribute 'refersToClassId'.
    *
-   * @param refersToClassId class id if message refers to a PDO
+   * @param refersToClassId the class id if message refers to a PDO
    */
   @Bindable
   void setRefersToClassId(Integer refersToClassId);
 
   /**
-   * Gets the attribute refersToPdoId.
+   * Gets the attribute 'refersToPdoId'.
    *
-   * @return object id if message refers to a PDO
+   * @return the object id if message refers to a PDO
    */
-  @Persistent(ordinal=6, comment="object id if message refers to a PDO")
+  @Persistent(ordinal=6, comment="the object id if message refers to a PDO")
   @Bindable(options="AUTOSELECT")
   Long getRefersToPdoId();
 
   /**
-   * Sets the attribute refersToPdoId.
+   * Sets the attribute 'refersToPdoId'.
    *
-   * @param refersToPdoId object id if message refers to a PDO
+   * @param refersToPdoId the object id if message refers to a PDO
    */
   @Bindable
   void setRefersToPdoId(Long refersToPdoId);
 
   /**
-   * Gets the attribute refersToText.
+   * Gets the attribute 'refersToText'.
    *
-   * @return refers text or toString of refersToPdo
+   * @return the refers text or toString of refersToPdo
    */
-  @Persistent(ordinal=7, comment="refers text or toString of refersToPdo")
+  @Persistent(ordinal=7, comment="the refers text or toString of refersToPdo")
   @Bindable(options="MAXCOLS=30")
   String getRefersToText();
 
   /**
-   * Sets the attribute refersToText.
+   * Sets the attribute 'refersToText'.
    *
-   * @param refersToText refers text or toString of refersToPdo
+   * @param refersToText the refers text or toString of refersToPdo
    */
   @Bindable
   void setRefersToText(String refersToText);
 
   /**
-   * Gets the attribute orgUnitId.
+   * Gets the attribute 'orgUnitId'.
    *
-   * @return ID of the responsible orgunit
+   * @return the ID of the responsible orgunit
    */
-  @Persistent(ordinal=8, comment="ID of the responsible orgunit")
+  @Persistent(ordinal=8, comment="the ID of the responsible orgunit")
   @Bindable(options="AUTOSELECT")
   Long getOrgUnitId();
 
   /**
-   * Sets the attribute orgUnitId.
+   * Sets the attribute 'orgUnitId'.
    *
-   * @param orgUnitId ID of the responsible orgunit
+   * @param orgUnitId the ID of the responsible orgunit
    */
   @Bindable
   void setOrgUnitId(Long orgUnitId);
 
   /**
-   * Gets the attribute text.
+   * Gets the attribute 'text'.
    *
-   * @return message text
+   * @return the message text
    */
-  @Persistent(ordinal=9, comment="message text")
+  @Persistent(ordinal=9, comment="the message text")
   @Bindable(options="MAXCOLS=1024")
   String getText();
 
   /**
-   * Sets the attribute text.
+   * Sets the attribute 'text'.
    *
-   * @param text message text
+   * @param text the message text
    */
   @Bindable
   void setText(String text);
 
   /**
-   * Selects Message by its unique domain key.
+   * Selects the Message by its unique domain key.
    *
    * @param messageNumber message number
    * @return the Message, null if no such PDO
@@ -238,18 +238,18 @@ public interface MessagePersistence extends PersistentObject<Message> {
 
 
   /**
-   * Gets OrgUnit orgUnit via orgUnitId.
+   * Gets the OrgUnit orgUnit via orgUnitId.
    *
-   * @return orgUnit OrgUnit
+   * @return the orgUnit
    */
   @Bindable
-  @Persistent(ordinal=0, comment="OrgUnit", component=false)
+  @Persistent(ordinal=0, comment="the orgUnit", component=false)
   OrgUnit<?> getOrgUnit();
 
   /**
-   * Sets OrgUnit orgUnit via orgUnitId.
+   * Sets the OrgUnit orgUnit via orgUnitId.
    *
-   * @param orgUnit OrgUnit
+   * @param orgUnit the orgUnit
    */
   @Bindable(options="AUTOSELECT")
   void setOrgUnit(OrgUnit<?> orgUnit);

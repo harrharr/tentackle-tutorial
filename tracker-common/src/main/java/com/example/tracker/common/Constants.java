@@ -5,7 +5,7 @@
 package com.example.tracker.common;
 
 /**
- * Application specific constants.
+ * Application-specific constants.
  */
 public class Constants {
 

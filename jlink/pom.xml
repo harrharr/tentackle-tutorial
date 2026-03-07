@@ -31,6 +31,9 @@
     <cert.dir>${project.build.directory}/jks</cert.dir>
     <cert.file>${project.parent.basedir}/server/target/server.cer</cert.file>
     <cert.alias>server</cert.alias>
+    <dbService>trips://localhost:8888/TrackerServer</dbService>
+    <updateService>tripe://localhost:8890/TrackerUpdate</updateService>
+    <daemon.password>daemon</daemon.password>
   </properties>
 
   <build>
@@ -73,6 +76,11 @@
               <input>${cert.password}</input>
               <converter>@org.tentackle.common.Cryptor</converter>
               <property>encryptedCertPasswd</property>
+            </propertyDescriptor>
+            <propertyDescriptor>
+              <input>${daemon.password}</input>
+              <converter>@org.tentackle.common.Cryptor</converter>
+              <property>encryptedDaemonPasswd</property>
             </propertyDescriptor>
           </propertyDescriptors>
         </configuration>

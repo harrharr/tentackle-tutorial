@@ -37,7 +37,7 @@ import org.tentackle.session.TableName;
  *
  * ## relations
  * User2Group:
- *    relation = composite list,
+ *    relation = component list,
  *    name = nmLinks,
  *    method = UserGroupId,
  *    nm = User Users

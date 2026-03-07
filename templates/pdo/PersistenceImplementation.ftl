@@ -13,9 +13,6 @@ import ${remotePackage}.${remoteInterface};
 </#if>
 
 import java.io.Serial;
-<#if remoteEnabled == "true">
-import java.rmi.RemoteException;
-</#if>
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -138,7 +135,7 @@ public class ${persistenceImplementation}
   // @wurblet relations PdoRelations
 
 <#if profile == "masterdata" && pdoExtends == "" && pdoInheritance != "EMBEDDED">
-  // @wurblet cache PdoCache --preload
+  // @wurblet cache PdoCache
 
 </#if>
 }

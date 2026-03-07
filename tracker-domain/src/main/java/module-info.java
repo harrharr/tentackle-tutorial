@@ -5,7 +5,7 @@
 /**
  * Domain logic implementation module.
  */
-module com.example.tracker.domain {
+open module com.example.tracker.domain {
   exports com.example.tracker.domain;
   exports com.example.tracker.domain.md;
   exports com.example.tracker.domain.td;

@@ -16,7 +16,6 @@ import org.tentackle.ns.pdo.NumberRange;
 import org.tentackle.pdo.Pdo;
 import org.tentackle.pdo.testng.AbstractPdoTest;
 import org.tentackle.session.Session;
-import org.tentackle.session.SessionInfo;
 
 
 /**
@@ -32,9 +31,7 @@ public class FillDatabase extends AbstractPdoTest {
 
   @Override
   protected Session openSession() {
-    SessionInfo sessionInfo = Pdo.createSessionInfo("server");
-    sessionInfo.applyProperties();
-    Session session = Pdo.createSession(sessionInfo);
+    Session session = Pdo.createSession(Pdo.createSessionInfo("server"));
     session.makeCurrent();
     return session;
   }

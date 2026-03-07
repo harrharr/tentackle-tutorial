@@ -13,22 +13,23 @@ import org.tentackle.fx.Fx;
 import org.tentackle.fx.FxControllerService;
 import org.tentackle.fx.FxFactory;
 import org.tentackle.fx.FxUtilities;
+import org.tentackle.fx.ThemeUtilities;
 import org.tentackle.fx.NotificationBuilder;
 import org.tentackle.fx.component.FxLabel;
 
 /**
- * Controller for showing an about popup.
+ * Controller for showing an "about" popup window.
  */
 @FxControllerService(css = FxControllerService.RESOURCES_NONE)
 public class AboutView extends AbstractFxController {
 
   /**
-   * Shows the about popup.
+   * Shows the "about" popup window.
    *
    * @param owner the popup owner
    */
   public static void show(Object owner) {
-    Popup popup = new Popup();
+    Popup popup = FxFactory.getInstance().createNotificationPopup();
     Parent notification =
       FxFactory.getInstance()
                .createNotificationBuilder()
@@ -37,7 +38,7 @@ public class AboutView extends AbstractFxController {
                .duration(5000)
                .fadeOut(1500)
                .hide(popup::hide)
-               .css(AboutView.class.getResource(FxUtilities.getInstance().isDarkMode() ? "AboutView-dark.css" : "AboutView.css"))
+               .css(AboutView.class.getResource(ThemeUtilities.getInstance().isDarkMode() ? "AboutView-dark.css" : "AboutView.css"))
                .build();
     FxUtilities.getInstance().showNotification(owner, popup, notification, null);
   }

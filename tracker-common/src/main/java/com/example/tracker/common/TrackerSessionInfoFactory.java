@@ -10,7 +10,7 @@ import org.tentackle.session.SessionInfo;
 import org.tentackle.session.SessionInfoFactory;
 
 /**
- * Application specific session info factory.
+ * Application-specific session info factory.
  */
 @Service(SessionInfoFactory.class)
 public class TrackerSessionInfoFactory implements SessionInfoFactory {

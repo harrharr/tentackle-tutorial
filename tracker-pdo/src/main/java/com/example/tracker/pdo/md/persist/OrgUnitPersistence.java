@@ -54,43 +54,43 @@ public interface OrgUnitPersistence<T extends OrgUnit<T>> extends PersistentObje
 
 
   /**
-   * Gets the attribute name.
+   * Gets the attribute 'name'.
    *
-   * @return short name
+   * @return the short name
    */
-  @Persistent(ordinal=5, comment="short name")
+  @Persistent(ordinal=5, comment="the short name")
   @NotNull(message="{ @('please enter the name') }")
   @Bindable(options="UC,MAXCOLS=20")
   @DomainKey
   String getName();
 
   /**
-   * Sets the attribute name.
+   * Sets the attribute 'name'.
    *
-   * @param name short name
+   * @param name the short name
    */
   @Bindable
   void setName(String name);
 
   /**
-   * Gets the attribute comment.
+   * Gets the attribute 'comment'.
    *
-   * @return optional comment
+   * @return the optional comment
    */
-  @Persistent(ordinal=6, comment="optional comment")
+  @Persistent(ordinal=6, comment="the optional comment")
   @Bindable(options="MAXCOLS=256")
   String getComment();
 
   /**
-   * Sets the attribute comment.
+   * Sets the attribute 'comment'.
    *
-   * @param comment optional comment
+   * @param comment the optional comment
    */
   @Bindable
   void setComment(String comment);
 
   /**
-   * Selects OrgUnit by its unique domain key.
+   * Selects the OrgUnit by its unique domain key.
    *
    * @param name short name
    * @return the OrgUnit, null if no such PDO

@@ -63,7 +63,7 @@ public class TrackerFxClient extends UpdatableDesktopApplication<MainController>
     TrackerPreferences.getInstance().getSystemPrefs().addPreferenceChangeListener(evt -> {
       switch (evt.getKey()) {
         case TrackerPreferences.HELP_URL -> configureHelpURL();
-        // other application specific preference changes go here...
+        // other application-specific preference changes go here...
       }
     });
     configureHelpURL();

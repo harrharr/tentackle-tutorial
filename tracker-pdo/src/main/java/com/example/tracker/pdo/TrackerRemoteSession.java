@@ -5,7 +5,7 @@
 package com.example.tracker.pdo;
 
 /**
- * Application specific remote session.
+ * Application-specific remote session.
  */
 public interface TrackerRemoteSession {
 

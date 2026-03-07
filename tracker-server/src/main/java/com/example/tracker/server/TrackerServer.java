@@ -6,8 +6,8 @@ package com.example.tracker.server;
 
 import com.example.tracker.common.Version;
 import com.example.tracker.pdo.md.User;
-import com.example.tracker.server.rmi.TrackerRemoteDbConnectionImpl;
-import com.example.tracker.server.rmi.UpdateServiceImpl;
+import com.example.tracker.server.trip.TrackerRemoteDbConnectionImpl;
+import com.example.tracker.server.trip.UpdateServiceImpl;
 
 import org.tentackle.log.Logger;
 import org.tentackle.pdo.DomainContext;
@@ -46,7 +46,7 @@ public class TrackerServer extends ServerApplication {
     String updateService = getProperty("updateService");
     String updateURL = getProperty("updateURL");
     if (updateService != null && updateURL != null) {
-      ServerUpdateUtilities.getInstance().exportUpdateService(updateService, updateURL, UpdateServiceImpl.class);
+      ServerUpdateUtilities.getInstance().startUpdateService(updateService, updateURL, UpdateServiceImpl.class);
       LOGGER.info("update service for version {0} started at {1}", Version.RELEASE, updateService);
     }
   }

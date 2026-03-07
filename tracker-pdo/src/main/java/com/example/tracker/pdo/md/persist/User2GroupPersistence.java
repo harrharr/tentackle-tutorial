@@ -52,35 +52,35 @@ public interface User2GroupPersistence extends PersistentObject<User2Group> {
 
 
   /**
-   * Gets the attribute userGroupId.
+   * Gets the attribute 'userGroupId'.
    *
-   * @return user group ID
+   * @return the user group ID
    */
-  @Persistent(ordinal=0, comment="user group ID")
+  @Persistent(ordinal=0, comment="the user group ID")
   @Bindable(options="AUTOSELECT")
   long getUserGroupId();
 
   /**
-   * Sets the attribute userGroupId.
+   * Sets the attribute 'userGroupId'.
    *
-   * @param userGroupId user group ID
+   * @param userGroupId the user group ID
    */
   @Bindable
   void setUserGroupId(long userGroupId);
 
   /**
-   * Gets the attribute userId.
+   * Gets the attribute 'userId'.
    *
-   * @return user ID
+   * @return the user ID
    */
-  @Persistent(ordinal=1, comment="user ID")
+  @Persistent(ordinal=1, comment="the user ID")
   @Bindable(options="AUTOSELECT")
   long getUserId();
 
   /**
-   * Sets the attribute userId.
+   * Sets the attribute 'userId'.
    *
-   * @param userId user ID
+   * @param userId the user ID
    */
   @Bindable
   void setUserId(long userId);
@@ -94,52 +94,52 @@ public interface User2GroupPersistence extends PersistentObject<User2Group> {
 
 
   /**
-   * Gets User user via userId.
+   * Gets the User user via userId.
    *
-   * @return user User
+   * @return the user
    */
   @Bindable
-  @Persistent(ordinal=0, comment="User", component=false, parent=true)
+  @Persistent(ordinal=0, comment="the user", component=false, parent=true)
   User getUser();
 
   /**
-   * Sets User user via userId.
+   * Sets the User user via userId.
    *
-   * @param user User
+   * @param user the user
    */
   @Bindable(options="AUTOSELECT")
   void setUser(User user);
 
   /**
-   * Gets UserGroup userGroup via userGroupId.
+   * Gets the UserGroup userGroup via userGroupId.
    *
-   * @return userGroup UserGroup
+   * @return the userGroup
    */
   @Bindable
-  @Persistent(ordinal=1, comment="UserGroup", component=false, parent=true)
+  @Persistent(ordinal=1, comment="the userGroup", component=false, parent=true)
   UserGroup getUserGroup();
 
   /**
-   * Sets UserGroup userGroup via userGroupId.
+   * Sets the UserGroup userGroup via userGroupId.
    *
-   * @param userGroup UserGroup
+   * @param userGroup the userGroup
    */
   @Bindable(options="AUTOSELECT")
   void setUserGroup(UserGroup userGroup);
 
   /**
-   * Selects composite list of User2Group nmLinks via User2Group#userId (NmLinks).
+   * Selects the component list of User2Group nmLinks via User2Group#userId.
    *
-   * @param userId user ID
-   * @return NmLinks
+   * @param userId the user ID
+   * @return the nmLinks
    */
   TrackedList<User2Group> selectByUserId(long userId);
 
   /**
-   * Selects composite list of User2Group nmLinks via User2Group#userGroupId (NmLinks).
+   * Selects the component list of User2Group nmLinks via User2Group#userGroupId.
    *
-   * @param userGroupId user group ID
-   * @return NmLinks
+   * @param userGroupId the user group ID
+   * @return the nmLinks
    */
   TrackedList<User2Group> selectByUserGroupId(long userGroupId);
 

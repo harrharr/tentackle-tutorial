@@ -11,7 +11,7 @@ import java.io.Serial;
 import java.util.Locale;
 
 /**
- * Application specific session info.
+ * Application-specific session info.
  */
 public class TrackerSessionInfo extends DefaultSessionInfo {
 
@@ -20,7 +20,7 @@ public class TrackerSessionInfo extends DefaultSessionInfo {
 
 
   /**
-   * Create session info from a username, password and
+   * Create session info from a username, password, and
    * property file holding the connection parameters.
    *
    * @param username is the name of the user, null if {@code System.getProperty("user.name")}
@@ -32,7 +32,7 @@ public class TrackerSessionInfo extends DefaultSessionInfo {
   }
 
   /**
-   * Create session info from a property file holding the connection parameters.
+   * Create the session info from a property file holding the connection parameters.
    *
    * @param propertiesName name of the session properties, null if {@code "backend"}
    */
