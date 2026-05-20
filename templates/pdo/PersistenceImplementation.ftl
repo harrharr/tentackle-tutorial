@@ -41,6 +41,7 @@ import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.PersistentObjectService;
 import org.tentackle.pdo.Pdo;
 import org.tentackle.pdo.PdoCache;
+import org.tentackle.pdo.PersistentDomainObject;
 import org.tentackle.session.Persistent;
 import org.tentackle.session.PersistenceException;
 import org.tentackle.session.Session;
@@ -134,7 +135,7 @@ public class ${persistenceImplementation}
 
   // @wurblet relations PdoRelations
 
-<#if profile == "masterdata" && pdoExtends == "" && pdoInheritance != "EMBEDDED">
+<#if cacheEnabled == "true">
   // @wurblet cache PdoCache
 
 </#if>
