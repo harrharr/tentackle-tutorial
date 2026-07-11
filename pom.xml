@@ -34,7 +34,7 @@
     <wurbelizer.version>25.6.5.0</wurbelizer.version>
     <wurbel.wurbelDir>${rootBasedir}/target/wurbel</wurbel.wurbelDir>
 
-    <tentackle.version>25.18.1.0</tentackle.version>
+    <tentackle.version>25.18.2.0</tentackle.version>
     <tentackle.serviceDir>${project.build.directory}/generated-resources</tentackle.serviceDir>
     <tentackle.testServiceDir>${project.build.directory}/generated-test-resources</tentackle.testServiceDir>
     <tentackle.manifestDirectory>${project.build.directory}/generated-resources/manifest</tentackle.manifestDirectory>
@@ -42,7 +42,7 @@
     <tentackle.sqlDir>${wurbel.wurbelDir}/sql</tentackle.sqlDir>
     <tentackle.modelDefaults>remote, bind, size, autoselect, tracked, root, rootid, rootclassid</tentackle.modelDefaults>
 
-    <postgres.version>42.7.11</postgres.version>
+    <postgres.version>42.7.13</postgres.version>
     <h2.version>2.4.240</h2.version>
     <dbUrl>jdbc:postgresql://localhost/tracker</dbUrl>
     <dbUser>tracker</dbUser>
@@ -456,7 +456,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.5.5</version>
+          <version>3.5.6</version>
           <configuration>
             <argLine>-Duser.language=en -Duser.region=US</argLine>
           </configuration>
@@ -464,7 +464,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.10</version> <!-- Use newer version of ASM -->
+              <version>9.10.1</version> <!-- Use newer version of ASM -->
             </dependency>
           </dependencies>
         </plugin>
@@ -483,7 +483,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.10</version>
+              <version>9.10.1</version>
             </dependency>
           </dependencies>
         </plugin>
