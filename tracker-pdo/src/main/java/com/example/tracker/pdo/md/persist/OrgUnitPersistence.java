@@ -60,7 +60,7 @@ public interface OrgUnitPersistence<T extends OrgUnit<T>> extends PersistentObje
    */
   @Persistent(ordinal=5, comment="the short name")
   @NotNull(message="{ @('please enter the name') }")
-  @Bindable(options="UC,MAXCOLS=20")
+  @Bindable(options="UC,MAXCOLS=20", ordinal=5)
   @DomainKey
   String getName();
 
@@ -69,7 +69,7 @@ public interface OrgUnitPersistence<T extends OrgUnit<T>> extends PersistentObje
    *
    * @param name the short name
    */
-  @Bindable
+  @Bindable(ordinal=5)
   void setName(String name);
 
   /**
@@ -78,7 +78,7 @@ public interface OrgUnitPersistence<T extends OrgUnit<T>> extends PersistentObje
    * @return the optional comment
    */
   @Persistent(ordinal=6, comment="the optional comment")
-  @Bindable(options="MAXCOLS=256")
+  @Bindable(options="MAXCOLS=256", ordinal=6)
   String getComment();
 
   /**
@@ -86,7 +86,7 @@ public interface OrgUnitPersistence<T extends OrgUnit<T>> extends PersistentObje
    *
    * @param comment the optional comment
    */
-  @Bindable
+  @Bindable(ordinal=6)
   void setComment(String comment);
 
   /**

@@ -6,7 +6,6 @@ package com.example.tracker.gui.usergroup;
 
 import com.example.tracker.pdo.md.User;
 import com.example.tracker.pdo.md.UserGroup;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -17,6 +16,7 @@ import javafx.stage.Modality;
 import org.tentackle.bind.Bindable;
 import org.tentackle.fx.Fx;
 import org.tentackle.fx.FxControllerService;
+import org.tentackle.fx.FxUtilities;
 import org.tentackle.fx.component.FxTableView;
 import org.tentackle.fx.component.FxTextArea;
 import org.tentackle.fx.component.FxTextField;
@@ -29,7 +29,6 @@ import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.Pdo;
 import org.tentackle.pdo.PersistentDomainObject;
 
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -98,10 +97,10 @@ public class UserGroupEditor extends PdoEditor<UserGroup> {
     popup.loadPreferences();
   }
 
-  @SuppressWarnings("unchecked")
   private void addUser(User user) {
     if (!groupUsersNode.getItems().contains(user)) {
-      ((List<User>) ((SortedList<User>) groupUsersNode.getItems()).getSource()).add(user);
+      // the items are wrapped in transformation lists (sorted, filtered) -> modify the root source
+      FxUtilities.getInstance().getRootSource(groupUsersNode.getItems()).add(user);
       groupUsersNode.triggerViewModified();
     }
   }
@@ -126,7 +125,7 @@ public class UserGroupEditor extends PdoEditor<UserGroup> {
         removeMenuItem.setText(resources.getString("remove user from group"));
         removeMenuItem.disableProperty().bind(row.emptyProperty());
         removeMenuItem.setOnAction(e -> {
-          ((SortedList<User>) groupUsersNode.getItems()).getSource().remove(row.getItem());
+          FxUtilities.getInstance().getRootSource(groupUsersNode.getItems()).remove(row.getItem());
           groupUsersNode.triggerViewModified();
         });
         contextMenu.getItems().add(removeMenuItem);

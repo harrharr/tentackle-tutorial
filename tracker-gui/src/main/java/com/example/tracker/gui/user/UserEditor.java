@@ -7,7 +7,6 @@ package com.example.tracker.gui.user;
 import com.example.tracker.gui.password.ChangePasswordView;
 import com.example.tracker.pdo.md.User;
 import com.example.tracker.pdo.md.UserGroup;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -18,6 +17,7 @@ import javafx.stage.Modality;
 import org.tentackle.bind.Bindable;
 import org.tentackle.fx.Fx;
 import org.tentackle.fx.FxControllerService;
+import org.tentackle.fx.FxUtilities;
 import org.tentackle.fx.component.FxButton;
 import org.tentackle.fx.component.FxCheckBox;
 import org.tentackle.fx.component.FxTableView;
@@ -32,7 +32,6 @@ import org.tentackle.pdo.DomainContext;
 import org.tentackle.pdo.Pdo;
 import org.tentackle.pdo.PersistentDomainObject;
 
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -125,10 +124,10 @@ public class UserEditor extends PdoEditor<User> {
   }
 
 
-  @SuppressWarnings("unchecked")
   private void addUserGroup(UserGroup group) {
     if (!userUserGroupsNode.getItems().contains(group)) {
-      ((List<UserGroup>) ((SortedList<UserGroup>) userUserGroupsNode.getItems()).getSource()).add(group);
+      // the items are wrapped in transformation lists (sorted, filtered) -> modify the root source
+      FxUtilities.getInstance().getRootSource(userUserGroupsNode.getItems()).add(group);
       userUserGroupsNode.triggerViewModified();
     }
   }
@@ -153,7 +152,7 @@ public class UserEditor extends PdoEditor<User> {
         removeMenuItem.setText(resources.getString("remove group from user"));
         removeMenuItem.disableProperty().bind(row.emptyProperty());
         removeMenuItem.setOnAction(e -> {
-          ((SortedList<UserGroup>) userUserGroupsNode.getItems()).getSource().remove(row.getItem());
+          FxUtilities.getInstance().getRootSource(userUserGroupsNode.getItems()).remove(row.getItem());
           userUserGroupsNode.triggerViewModified();
         });
         contextMenu.getItems().add(removeMenuItem);

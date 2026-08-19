@@ -40,7 +40,8 @@
           </execution>
         </executions>
         <configuration>
-          <keystore>${cert.dir}/truststore.jks</keystore>
+          <storetype>PKCS12</storetype>
+          <keystore>${cert.dir}/truststore.p12</keystore>
           <file>${cert.file}</file>
           <storepass>${cert.password}</storepass>
           <alias>${cert.alias}</alias>

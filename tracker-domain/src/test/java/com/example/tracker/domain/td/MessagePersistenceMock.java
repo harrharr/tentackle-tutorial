@@ -107,6 +107,11 @@ public class MessagePersistenceMock extends MockPersistentObject<Message, Messag
 
 
   @Override
+  public boolean isRootEntity() {
+    return true;
+  }
+
+  @Override
   public String getMessageNumber()    {
     return messageNumber;
   }
@@ -188,6 +193,11 @@ public class MessagePersistenceMock extends MockPersistentObject<Message, Messag
     this.text = text;
   }
 
+  @Override
+  public Message selectByUniqueDomainKey(String messageNumber) {
+    throw new UnsupportedOperationException(UNSUPPORTED);
+  }
+
   //</editor-fold>//GEN-END:methods
 
 
@@ -216,11 +226,6 @@ public class MessagePersistenceMock extends MockPersistentObject<Message, Messag
   @Override
   public String nextMessageNumber() {
     return "1000";
-  }
-
-  @Override
-  public Message selectByUniqueDomainKey(String messageNumber) {
-    return null;
   }
 
   @Override

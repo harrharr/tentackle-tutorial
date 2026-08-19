@@ -62,7 +62,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    * @return true if login is allowed
    */
   @Persistent(ordinal=10, comment="true if login is allowed")
-  @Bindable
+  @Bindable(ordinal=10)
   boolean isLoginAllowed();
 
   /**
@@ -70,7 +70,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @param loginAllowed true if login is allowed
    */
-  @Bindable
+  @Bindable(ordinal=10)
   void setLoginAllowed(boolean loginAllowed);
 
   /**
@@ -79,7 +79,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    * @return true if user is allowed to change its own password
    */
   @Persistent(ordinal=11, comment="true if user is allowed to change its own password")
-  @Bindable
+  @Bindable(ordinal=11)
   boolean isPasswordChangeable();
 
   /**
@@ -87,7 +87,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @param passwordChangeable true if user is allowed to change its own password
    */
-  @Bindable
+  @Bindable(ordinal=11)
   void setPasswordChangeable(boolean passwordChangeable);
 
   /**
@@ -96,7 +96,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    * @return true if user is allowed to maintain its own preferences
    */
   @Persistent(ordinal=12, comment="true if user is allowed to maintain its own preferences")
-  @Bindable
+  @Bindable(ordinal=12)
   boolean isChangingPreferencesAllowed();
 
   /**
@@ -104,7 +104,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @param changingPreferencesAllowed true if user is allowed to maintain its own preferences
    */
-  @Bindable
+  @Bindable(ordinal=12)
   void setChangingPreferencesAllowed(boolean changingPreferencesAllowed);
 
   /**
@@ -113,7 +113,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    * @return true if user is restricted to system preferences only
    */
   @Persistent(ordinal=13, comment="true if user is restricted to system preferences only")
-  @Bindable
+  @Bindable(ordinal=13)
   boolean isSystemPreferencesOnly();
 
   /**
@@ -121,7 +121,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @param systemPreferencesOnly true if user is restricted to system preferences only
    */
-  @Bindable
+  @Bindable(ordinal=13)
   void setSystemPreferencesOnly(boolean systemPreferencesOnly);
 
   //</editor-fold>//GEN-END:methods

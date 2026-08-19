@@ -85,8 +85,8 @@
           </execution>
         </executions>
         <configuration>
-          <storetype>JKS</storetype>
-          <keystore>${cert.dir}/keystore.jks</keystore>
+          <storetype>PKCS12</storetype>
+          <keystore>${cert.dir}/keystore.p12</keystore>
           <file>${cert.file}</file>
           <storepass>${cert.password}</storepass>
           <keypass>${cert.password}</keypass>

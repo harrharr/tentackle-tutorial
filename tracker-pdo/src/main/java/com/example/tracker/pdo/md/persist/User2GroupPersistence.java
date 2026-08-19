@@ -57,7 +57,7 @@ public interface User2GroupPersistence extends PersistentObject<User2Group> {
    * @return the user group ID
    */
   @Persistent(ordinal=0, comment="the user group ID")
-  @Bindable(options="AUTOSELECT")
+  @Bindable(options="AUTOSELECT", ordinal=0)
   long getUserGroupId();
 
   /**
@@ -65,7 +65,7 @@ public interface User2GroupPersistence extends PersistentObject<User2Group> {
    *
    * @param userGroupId the user group ID
    */
-  @Bindable
+  @Bindable(ordinal=0)
   void setUserGroupId(long userGroupId);
 
   /**
@@ -74,7 +74,7 @@ public interface User2GroupPersistence extends PersistentObject<User2Group> {
    * @return the user ID
    */
   @Persistent(ordinal=1, comment="the user ID")
-  @Bindable(options="AUTOSELECT")
+  @Bindable(options="AUTOSELECT", ordinal=1)
   long getUserId();
 
   /**
@@ -82,7 +82,7 @@ public interface User2GroupPersistence extends PersistentObject<User2Group> {
    *
    * @param userId the user ID
    */
-  @Bindable
+  @Bindable(ordinal=1)
   void setUserId(long userId);
 
   //</editor-fold>//GEN-END:methods
@@ -107,7 +107,7 @@ public interface User2GroupPersistence extends PersistentObject<User2Group> {
    *
    * @param user the user
    */
-  @Bindable(options="AUTOSELECT")
+  @Bindable
   void setUser(User user);
 
   /**
@@ -124,7 +124,7 @@ public interface User2GroupPersistence extends PersistentObject<User2Group> {
    *
    * @param userGroup the userGroup
    */
-  @Bindable(options="AUTOSELECT")
+  @Bindable
   void setUserGroup(UserGroup userGroup);
 
   /**

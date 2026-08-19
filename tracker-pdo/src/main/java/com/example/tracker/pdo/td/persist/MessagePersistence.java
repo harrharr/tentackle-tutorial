@@ -88,7 +88,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    */
   @Persistent(ordinal=2, comment="the message number")
   @NotNull
-  @Bindable(options="MAXCOLS=10")
+  @Bindable(options="MAXCOLS=10", ordinal=2)
   @DomainKey
   String getMessageNumber();
 
@@ -97,7 +97,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    *
    * @param messageNumber the message number
    */
-  @Bindable
+  @Bindable(ordinal=2)
   void setMessageNumber(String messageNumber);
 
   /**
@@ -107,7 +107,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    */
   @Persistent(ordinal=3, comment="the timestamp of message")
   @NotNull
-  @Bindable(options="AUTOSELECT")
+  @Bindable(options="AUTOSELECT", ordinal=3)
   Timestamp getWhen();
 
   /**
@@ -115,7 +115,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    *
    * @param when the timestamp of message
    */
-  @Bindable
+  @Bindable(ordinal=3)
   void setWhen(Timestamp when);
 
   /**
@@ -125,7 +125,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    */
   @Persistent(ordinal=4, comment="the message type")
   @NotNull
-  @Bindable(options="MAXCOLS=30")
+  @Bindable(options="MAXCOLS=30", ordinal=4)
   MessageType getMessageType();
 
   /**
@@ -133,7 +133,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    *
    * @param messageType the message type
    */
-  @Bindable
+  @Bindable(ordinal=4)
   void setMessageType(MessageType messageType);
 
   /**
@@ -142,7 +142,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    * @return the class id if message refers to a PDO
    */
   @Persistent(ordinal=5, comment="the class id if message refers to a PDO")
-  @Bindable(options="AUTOSELECT")
+  @Bindable(options="AUTOSELECT", ordinal=5)
   Integer getRefersToClassId();
 
   /**
@@ -150,7 +150,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    *
    * @param refersToClassId the class id if message refers to a PDO
    */
-  @Bindable
+  @Bindable(ordinal=5)
   void setRefersToClassId(Integer refersToClassId);
 
   /**
@@ -159,7 +159,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    * @return the object id if message refers to a PDO
    */
   @Persistent(ordinal=6, comment="the object id if message refers to a PDO")
-  @Bindable(options="AUTOSELECT")
+  @Bindable(options="AUTOSELECT", ordinal=6)
   Long getRefersToPdoId();
 
   /**
@@ -167,7 +167,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    *
    * @param refersToPdoId the object id if message refers to a PDO
    */
-  @Bindable
+  @Bindable(ordinal=6)
   void setRefersToPdoId(Long refersToPdoId);
 
   /**
@@ -176,7 +176,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    * @return the refers text or toString of refersToPdo
    */
   @Persistent(ordinal=7, comment="the refers text or toString of refersToPdo")
-  @Bindable(options="MAXCOLS=30")
+  @Bindable(options="MAXCOLS=30", ordinal=7)
   String getRefersToText();
 
   /**
@@ -184,7 +184,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    *
    * @param refersToText the refers text or toString of refersToPdo
    */
-  @Bindable
+  @Bindable(ordinal=7)
   void setRefersToText(String refersToText);
 
   /**
@@ -193,7 +193,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    * @return the ID of the responsible orgunit
    */
   @Persistent(ordinal=8, comment="the ID of the responsible orgunit")
-  @Bindable(options="AUTOSELECT")
+  @Bindable(options="AUTOSELECT", ordinal=8)
   Long getOrgUnitId();
 
   /**
@@ -201,7 +201,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    *
    * @param orgUnitId the ID of the responsible orgunit
    */
-  @Bindable
+  @Bindable(ordinal=8)
   void setOrgUnitId(Long orgUnitId);
 
   /**
@@ -210,7 +210,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    * @return the message text
    */
   @Persistent(ordinal=9, comment="the message text")
-  @Bindable(options="MAXCOLS=1024")
+  @Bindable(options="MAXCOLS=1024", ordinal=9)
   String getText();
 
   /**
@@ -218,7 +218,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    *
    * @param text the message text
    */
-  @Bindable
+  @Bindable(ordinal=9)
   void setText(String text);
 
   /**
@@ -251,7 +251,7 @@ public interface MessagePersistence extends PersistentObject<Message> {
    *
    * @param orgUnit the orgUnit
    */
-  @Bindable(options="AUTOSELECT")
+  @Bindable
   void setOrgUnit(OrgUnit<?> orgUnit);
 
   //</editor-fold>//GEN-END:relations
