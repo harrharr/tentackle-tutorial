@@ -82,6 +82,11 @@
               <converter>@org.tentackle.common.Cryptor</converter>
               <property>encryptedDaemonPasswd</property>
             </propertyDescriptor>
+            <propertyDescriptor>
+              <input>${googleClientSecret}</input>
+              <converter>@org.tentackle.common.Cryptor</converter>
+              <property>encryptedGoogleSecret</property>
+            </propertyDescriptor>
           </propertyDescriptors>
         </configuration>
         <dependencies>

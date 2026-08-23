@@ -7,6 +7,7 @@
  */
 module com.example.tracker.common {
   exports com.example.tracker.common;
+  exports com.example.tracker.common.json;
 
   requires transitive org.tentackle.pdo;
 

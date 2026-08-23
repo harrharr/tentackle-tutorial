@@ -65,6 +65,7 @@ public class FillDatabase extends AbstractPdoTest {
     User user = on(User.class);
     user.setName("GONZO");
     user.setComment("Gonzo the Great");
+    user.setEmail("gonzo@example.com");
     user.setLoginAllowed(true);
     user.setPasswordChangeable(true);
     user.setChangingPreferencesAllowed(true);
@@ -76,6 +77,7 @@ public class FillDatabase extends AbstractPdoTest {
     user = on(User.class);
     user.setName("KERMIT");
     user.setComment("Kermit the Frog");
+    user.setEmail("kermit@example.com");
     user.setLoginAllowed(true);
     user.setPasswordChangeable(true);
     user.setChangingPreferencesAllowed(false);

@@ -33,12 +33,14 @@ import org.tentackle.session.TableName;
  * ## attributes
  * [cached]
  * String(64)   password                      password        hashed password [MUTE]
+ * String(128)  email                         email           e-mail address used for single sign-on
  * boolean      loginAllowed                  login_allowed   true if login is allowed
  * boolean      passwordChangeable            passwd_chgbl    true if user is allowed to change its own password
  * boolean      changingPreferencesAllowed	  prefs_chgbl     true if user is allowed to maintain its own preferences
  * boolean      systemPreferencesOnly         prefs_system    true if user is restricted to system preferences only
  *
  * ## indexes
+ * unique index email := email
  *
  * ## relations
  * User2Group:

@@ -25,6 +25,9 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
   /** relation name for 'component list of User2Group nmLinks via User2Group#userId'. */
   String RN_NMLINKS = "nmLinks";
 
+  /** attribute name for database column 'email'. */
+  String AN_EMAIL = "email";
+
   /** attribute name for database column 'login_allowed'. */
   String AN_LOGINALLOWED = "loginAllowed";
 
@@ -48,6 +51,9 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
   /** maximum number of characters for 'password'. */
   int CL_PASSWORD = 64;
 
+  /** maximum number of characters for 'email'. */
+  int CL_EMAIL = 128;
+
   //</editor-fold>//GEN-END:columnLengths
 
 
@@ -57,12 +63,29 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
 
 
   /**
+   * Gets the attribute 'email'.
+   *
+   * @return the e-mail address used for single sign-on
+   */
+  @Persistent(ordinal=10, comment="the e-mail address used for single sign-on")
+  @Bindable(options="MAXCOLS=128", ordinal=10)
+  String getEmail();
+
+  /**
+   * Sets the attribute 'email'.
+   *
+   * @param email the e-mail address used for single sign-on
+   */
+  @Bindable(ordinal=10)
+  void setEmail(String email);
+
+  /**
    * Gets the attribute 'loginAllowed'.
    *
    * @return true if login is allowed
    */
-  @Persistent(ordinal=10, comment="true if login is allowed")
-  @Bindable(ordinal=10)
+  @Persistent(ordinal=11, comment="true if login is allowed")
+  @Bindable(ordinal=11)
   boolean isLoginAllowed();
 
   /**
@@ -70,7 +93,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @param loginAllowed true if login is allowed
    */
-  @Bindable(ordinal=10)
+  @Bindable(ordinal=11)
   void setLoginAllowed(boolean loginAllowed);
 
   /**
@@ -78,8 +101,8 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @return true if user is allowed to change its own password
    */
-  @Persistent(ordinal=11, comment="true if user is allowed to change its own password")
-  @Bindable(ordinal=11)
+  @Persistent(ordinal=12, comment="true if user is allowed to change its own password")
+  @Bindable(ordinal=12)
   boolean isPasswordChangeable();
 
   /**
@@ -87,7 +110,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @param passwordChangeable true if user is allowed to change its own password
    */
-  @Bindable(ordinal=11)
+  @Bindable(ordinal=12)
   void setPasswordChangeable(boolean passwordChangeable);
 
   /**
@@ -95,8 +118,8 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @return true if user is allowed to maintain its own preferences
    */
-  @Persistent(ordinal=12, comment="true if user is allowed to maintain its own preferences")
-  @Bindable(ordinal=12)
+  @Persistent(ordinal=13, comment="true if user is allowed to maintain its own preferences")
+  @Bindable(ordinal=13)
   boolean isChangingPreferencesAllowed();
 
   /**
@@ -104,7 +127,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @param changingPreferencesAllowed true if user is allowed to maintain its own preferences
    */
-  @Bindable(ordinal=12)
+  @Bindable(ordinal=13)
   void setChangingPreferencesAllowed(boolean changingPreferencesAllowed);
 
   /**
@@ -112,8 +135,8 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @return true if user is restricted to system preferences only
    */
-  @Persistent(ordinal=13, comment="true if user is restricted to system preferences only")
-  @Bindable(ordinal=13)
+  @Persistent(ordinal=14, comment="true if user is restricted to system preferences only")
+  @Bindable(ordinal=14)
   boolean isSystemPreferencesOnly();
 
   /**
@@ -121,7 +144,7 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
    *
    * @param systemPreferencesOnly true if user is restricted to system preferences only
    */
-  @Bindable(ordinal=13)
+  @Bindable(ordinal=14)
   void setSystemPreferencesOnly(boolean systemPreferencesOnly);
 
   //</editor-fold>//GEN-END:methods
@@ -160,6 +183,16 @@ public interface UserPersistence extends OrgUnitPersistence<User> {
 
   //</editor-fold>//GEN-END:relations
 
+
+  /**
+   * Selects the user by its e-mail address.
+   * <p>
+   * E-mail addresses are stored in lowercase, see the single sign-on user resolver.
+   *
+   * @param email the lowercase e-mail address
+   * @return the user, null if no such user
+   */
+  User selectByEmail(String email);
 
   /**
    * Selects the password from the database.

@@ -7,11 +7,14 @@
  */
 module com.example.tracker.client {
   exports com.example.tracker.client;
+  exports com.example.tracker.client.auth;   // the credentials provider is instantiated reflectively
 
   requires transitive com.example.tracker.gui;
   requires com.example.tracker.persist;
   requires com.example.tracker.domain;
   requires transitive org.tentackle.fx.rdc.update;
+  requires java.net.http;
+  requires jdk.httpserver;
 
   provides org.tentackle.common.ModuleHook with com.example.tracker.client.service.Hook;
 }

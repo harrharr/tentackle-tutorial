@@ -47,6 +47,9 @@ public class UserEditor extends PdoEditor<User> {
   private FxTextField userNameField;
 
   @FXML
+  private FxTextField userEmailField;
+
+  @FXML
   private FxTextArea userCommentField;
 
   @FXML

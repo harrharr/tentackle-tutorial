@@ -51,6 +51,13 @@
     <updateService>trip://localhost:8890/TrackerUpdate</updateService>
     <updateURL>http://localhost/tracker/downloads</updateURL>
 
+    <!-- single sign-on with Google, see the authentication chapter of the Tentackle documentation.
+         Create an OAuth 2.0 client of type "desktop app" in the Google Cloud Console and enter its
+         credentials here. Leave googleHostedDomain empty to allow accounts of any Google domain. -->
+    <googleClientId>CHANGEME</googleClientId>
+    <googleClientSecret>CHANGEME</googleClientSecret>
+    <googleHostedDomain></googleHostedDomain>
+
   </properties>
 
   <dependencyManagement>

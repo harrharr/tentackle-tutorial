@@ -13,6 +13,7 @@ module com.example.tracker.server {
   requires transitive com.example.tracker.persist;
   requires com.example.tracker.domain;
   requires transitive org.tentackle.update;
+  requires java.net.http;
 
   provides org.tentackle.common.ModuleHook with com.example.tracker.server.service.Hook;
 }
