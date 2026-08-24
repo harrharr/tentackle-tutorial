@@ -92,6 +92,14 @@ public class FillDatabase extends AbstractPdoTest {
     user = user.persist();
     user.updatePasswordHash(user.hash(new char[] {'d', 'a', 'e', 'm', 'o', 'n'}));
 
+    user = on(User.class);
+    user.setName("JPRO");
+    user.setComment("The JPro Web Tier");
+    user.setLoginAllowed(true);
+    user.setSystemPreferencesOnly(true);
+    user = user.persist();
+    user.updatePasswordHash(user.hash(new char[] {'j', 'p', 'r', 'o'}));
+
     LOGGER.info("users created");
   }
 

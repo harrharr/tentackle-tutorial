@@ -17,6 +17,7 @@
     <module>tracker-persistence</module>
     <module>tracker-gui</module>
     <module>tracker-client</module>
+    <module>tracker-jpro</module>
     <module>tracker-server</module>
     <module>tracker-daemon</module>
     <!-- jlink images are built with profile "jlink" only, see jlink/pom.xml -->

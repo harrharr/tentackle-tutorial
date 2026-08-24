@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.example</groupId>
+    <artifactId>tracker</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>tracker-jpro</artifactId>
+  <packaging>jar</packaging>
+  <name>Tracker JPro Web Client</name>
+  <description>Multi-user server-side FX UI for Tracker, rendered in the browser by JPro</description>
+
+  <properties>
+    <rootBasedir>${project.parent.basedir}</rootBasedir>
+    <jpro.version>2026.3.1</jpro.version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>jpro</id>
+      <name>JPro - sandec repository</name>
+      <url>https://sandec.jfrog.io/artifactory/repo</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jpro</id>
+      <name>JPro - sandec repository</name>
+      <url>https://sandec.jfrog.io/artifactory/repo</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>com.example</groupId>
+      <artifactId>tracker-gui</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.example</groupId>
+      <artifactId>tracker-persistence</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.example</groupId>
+      <artifactId>tracker-domain</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <!-- multi-user server application with a web session key cache -->
+      <groupId>org.tentackle</groupId>
+      <artifactId>tentackle-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.tentackle</groupId>
+      <artifactId>tentackle-script-groovy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.tentackle</groupId>
+      <artifactId>tentackle-log-log4j2v</artifactId>
+    </dependency>
+
+    <dependency>
+      <!-- provided at runtime by the JPro server -->
+      <groupId>one.jpro</groupId>
+      <artifactId>jpro-webapi</artifactId>
+      <version>${jpro.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <resources>
+      <!-- same SceneBuilder convention as tracker-gui: controller, fxml, css and properties share a folder -->
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>${tentackle.serviceDir}</directory>
+      </resource>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.fxml</include>
+          <include>**/*.css</include>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>one.jpro</groupId>
+        <artifactId>jpro-maven-plugin</artifactId>
+        <version>${jpro.version}</version>
+        <configuration>
+          <mainClassName>com.example.tracker.jpro.TrackerJProApplication</mainClassName>
+          <!--
+            Module path, like the rest of the tutorial. On the classpath, Tentackle's @Service
+            lookup resolves by jar order, and two jars provide
+            META-INF/services/org.tentackle.dbms.DbClassVariablesFactory (tentackle-database and
+            tentackle-persistence), so the wrong one wins and PDO creation fails with a
+            ClassCastException. Module dependency order resolves it deterministically.
+          -->
+          <useModuleSystem>true</useModuleSystem>
+          <visible>false</visible>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

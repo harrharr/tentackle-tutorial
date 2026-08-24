@@ -39,6 +39,7 @@ import org.tentackle.fx.rdc.admin.SessionsView;
 import org.tentackle.fx.rdc.security.SecurityDialogFactory;
 import org.tentackle.pdo.AdminExtension;
 import org.tentackle.pdo.DomainContextProvider;
+import org.tentackle.pdo.Pdo;
 import org.tentackle.pdo.PdoUtilities;
 import org.tentackle.pdo.PersistentDomainObject;
 import org.tentackle.security.SecurityFactory;
@@ -103,9 +104,25 @@ public class MainController extends AbstractFxController implements DomainContex
   private ResourceBundle resources;
 
 
+  private TrackerDomainContext context;
+
   @Override
   public TrackerDomainContext getDomainContext() {
-    return (TrackerDomainContext) Application.getInstance().getDomainContext();
+    if (context == null) {
+      if (Application.getInstance().isServer()) {
+        /*
+         * Multi-user server application (JPro web client): the application's own context belongs to
+         * the technical user. Use a context with a thread-local session instead, which resolves to
+         * the user this thread is currently working for. If the binding is ever missing, this fails
+         * loudly instead of silently serving another user's data.
+         */
+        context = (TrackerDomainContext) Pdo.createDomainContext();
+      }
+      else {
+        context = (TrackerDomainContext) Application.getInstance().getDomainContext();
+      }
+    }
+    return context;
   }
 
   @FXML

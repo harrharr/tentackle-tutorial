@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import org.tentackle.fx.component.FxButton?>
+<?import org.tentackle.fx.component.FxPasswordField?>
+<?import org.tentackle.fx.component.FxTextField?>
+
+<GridPane xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tracker.jpro.Login">
+  <columnConstraints>
+    <ColumnConstraints hgrow="ALWAYS" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="20.0" vgrow="ALWAYS" />
+    <RowConstraints vgrow="NEVER" />
+    <RowConstraints minHeight="20.0" vgrow="NEVER" />
+    <RowConstraints minHeight="20.0" vgrow="NEVER" />
+    <RowConstraints minHeight="20.0" vgrow="ALWAYS" />
+  </rowConstraints>
+  <children>
+    <GridPane fx:id="loginPane" hgap="5.0" vgap="5.0" GridPane.rowIndex="1">
+      <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+        <ColumnConstraints minWidth="10.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints vgrow="NEVER" />
+        <RowConstraints vgrow="NEVER" />
+        <RowConstraints vgrow="NEVER" />
+      </rowConstraints>
+      <children>
+        <Label text="%username:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+        <Label text="%password:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+        <FxTextField fx:id="usernameField" promptText="%username" GridPane.columnIndex="2" />
+        <FxPasswordField fx:id="passwordField" promptText="%password" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <HBox spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+          <children>
+            <FxButton fx:id="loginButton" mnemonicParsing="false" text="%login" />
+          </children>
+          <GridPane.margin>
+            <Insets top="20.0" />
+          </GridPane.margin>
+        </HBox>
+      </children>
+      <GridPane.margin>
+        <Insets bottom="10.0" left="30.0" right="30.0" top="30.0" />
+      </GridPane.margin>
+    </GridPane>
+    <Label fx:id="messageLabel" maxWidth="1.7976931348623157E308" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+      <GridPane.margin>
+        <Insets left="10.0" right="10.0" />
+      </GridPane.margin>
+    </Label>
+    <ProgressBar fx:id="progressBar" prefWidth="400.0" progress="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+      <GridPane.margin>
+        <Insets left="10.0" right="10.0" />
+      </GridPane.margin>
+    </ProgressBar>
+  </children>
+</GridPane>
