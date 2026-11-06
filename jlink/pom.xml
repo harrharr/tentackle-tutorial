@@ -26,13 +26,13 @@
 
   <properties>
     <rootBasedir>${project.parent.basedir}</rootBasedir>
-    <cert.dname>cn=TrackerServer, ou=Tracker, o=Example, c=US</cert.dname>
+    <cert.dname>cn=${serverHost}, ou=Tracker, o=Example, c=US</cert.dname>
     <cert.password>didoedeldu</cert.password>
     <cert.dir>${project.build.directory}/pkcs12</cert.dir>
     <cert.file>${project.parent.basedir}/server/target/server.cer</cert.file>
     <cert.alias>server</cert.alias>
-    <dbService>trips://localhost:8888/TrackerServer</dbService>
-    <updateService>tripe://localhost:8890/TrackerUpdate</updateService>
+    <dbService>trips://${serverHost}:8888/TrackerServer</dbService>
+    <updateService>tripe://${serverHost}:8890/TrackerUpdate</updateService>
     <daemon.password>daemon</daemon.password>
   </properties>
 

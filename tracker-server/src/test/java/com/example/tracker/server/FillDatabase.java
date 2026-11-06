@@ -19,7 +19,10 @@ import org.tentackle.session.Session;
 
 
 /**
- * Fill database with test data.
+ * Fills the database with the initial data: the number pool for message numbers,
+ * the {@code ADMINS} group and the users {@code GONZO}, {@code KERMIT} and {@code DAEMON}.<br>
+ * Runs against the database configured in {@code server.properties} and commits.
+ * Invoked via {@code mvn -Pinitdb test} (TestNG group {@value TestConstants#GROUP_INITDB}).
  */
 public class FillDatabase extends AbstractPdoTest {
 

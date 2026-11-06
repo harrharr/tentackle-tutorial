@@ -7,7 +7,8 @@ package com.example.tracker.persist.trip;
 import org.tentackle.dbms.trip.RemoteDbConnection;
 
 /**
- * Interface for the appliction specific connection.
+ * Application-specific remote connection.<br>
+ * Implemented on the server by {@code TrackerRemoteDbConnectionImpl}.
  */
 public interface TrackerConnection extends RemoteDbConnection {
 

@@ -50,7 +50,7 @@ import org.tentackle.session.TableName;
 /**
  * User Group.
  * <p>
- * Group of users to define security roles
+ * Group of users to define security roles.
  */
 @TableName(value =/*@*/"md.usergroups"/*@*/, // @wurblet < Inject --string $tablename
            mapSchema =/*@*/false/*@*/,      // @wurblet < Inject $mapSchema

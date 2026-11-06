@@ -56,7 +56,7 @@ public class OrgUnitPersistenceImpl<T extends OrgUnit<T>, P extends OrgUnitPersi
             PersistentObjectClassVariables.create(
                     OrgUnit.class,
                     OrgUnitPersistenceImpl.class,
-                    "ou",
+                    "o",
                     null,
                     null);
 

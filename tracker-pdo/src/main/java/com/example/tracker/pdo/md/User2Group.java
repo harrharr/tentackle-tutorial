@@ -28,6 +28,7 @@ import org.tentackle.session.TableName;
  * name := $classname
  * table := $tablename
  * id := $classid
+ * alias := u2g
  * integrity := $integrity
  *
  * ## attributes[-bind, -autoselect, -size]
@@ -53,7 +54,7 @@ import org.tentackle.session.TableName;
 /**
  * User to Group N:M Link.
  * <p>
- * NM-relation link between user and usergroup
+ * N:M relation link between a user and a user group.
  */
 @TableName(value =/*@*/"md.user2group"/*@*/, // @wurblet < Inject --string $tablename
            mapSchema =/*@*/false/*@*/,       // @wurblet < Inject $mapSchema

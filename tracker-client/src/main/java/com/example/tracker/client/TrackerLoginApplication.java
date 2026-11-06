@@ -4,6 +4,8 @@
 
 package com.example.tracker.client;
 
+import com.example.tracker.gui.GuiHelper;
+
 import org.tentackle.fx.FxFactory;
 import org.tentackle.fx.ThemeUtilities;
 import org.tentackle.fx.rdc.app.LoginApplication;
@@ -21,6 +23,7 @@ public class TrackerLoginApplication extends LoginApplication {
       getClass().getResource(ThemeUtilities.getInstance().isDarkMode() ?
           "/com/example/tracker/client/Login-dark.css" : "/com/example/tracker/client/Login.css"));
     loginController.setInactivityTimeout(30);
+    GuiHelper.configureInputAlerts();
     return loginController;
   }
 

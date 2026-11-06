@@ -92,6 +92,10 @@
           <keypass>${cert.password}</keypass>
           <alias>${cert.alias}</alias>
           <dname>${cert.dname}</dname>
+          <exts>
+            <!-- clients verify the host name against it -->
+            <ext>san=dns:${serverHost}</ext>
+          </exts>
           <keyalg>RSA</keyalg>
           <sigalg>SHA256WithRSA</sigalg>
           <keysize>2048</keysize>

@@ -5,6 +5,7 @@
 package com.example.tracker.gui.theme;
 
 import com.example.tracker.gui.GuiBundle;
+import com.example.tracker.gui.GuiHelper;
 
 import org.tentackle.app.Application;
 import org.tentackle.bind.Bindable;
@@ -13,6 +14,7 @@ import org.tentackle.fx.Fx;
 import org.tentackle.fx.FxControllerService;
 import org.tentackle.fx.ThemeUtilities;
 import org.tentackle.fx.component.FxButton;
+import org.tentackle.fx.component.FxCheckBox;
 import org.tentackle.fx.component.FxChoiceBox;
 
 import javafx.application.ColorScheme;
@@ -25,8 +27,6 @@ import java.util.ResourceBundle;
 
 /**
  * Controller for changing the user's theme.
- *
- * @author harald
  */
 @FxControllerService
 public class ChangeThemeView extends AbstractFxController {
@@ -48,6 +48,11 @@ public class ChangeThemeView extends AbstractFxController {
 
   @Bindable
   private String mode;
+  @Bindable
+  private boolean visualAlert;
+  @Bindable
+  private boolean audibleAlert;
+
   private String automaticMode;
   private String darkMode;
   private String lightMode;
@@ -59,6 +64,10 @@ public class ChangeThemeView extends AbstractFxController {
   private FxChoiceBox<String> modeField;
   @FXML
   private FxChoiceBox<String> themeField;
+  @FXML
+  private FxCheckBox visualAlertField;
+  @FXML
+  private FxCheckBox audibleAlertField;
   @FXML
   private FxButton saveButton;
   @FXML
@@ -96,6 +105,10 @@ public class ChangeThemeView extends AbstractFxController {
 
     theme = ThemeUtilities.getInstance().getThemeName();
     themeField.getItems().addAll(ThemeUtilities.getInstance().getSupportedThemes());
+
+    visualAlert = GuiHelper.isVisualAlertEnabled();
+    audibleAlert = GuiHelper.isAudibleAlertEnabled();
+
     getContainer().updateView();
   }
 
@@ -113,6 +126,10 @@ public class ChangeThemeView extends AbstractFxController {
       themePreferences = themePreferences.withDarkMode(Platform.getPreferences().getColorScheme() == ColorScheme.DARK);
     }
     ThemeUtilities.getInstance().applyThemePreferences(themePreferences);
+
+    GuiHelper.setVisualInputAlertEnabled(visualAlert);
+    GuiHelper.setAudibleInputAlertEnabled(audibleAlert);
+    GuiHelper.configureInputAlerts();
     close();
   }
 

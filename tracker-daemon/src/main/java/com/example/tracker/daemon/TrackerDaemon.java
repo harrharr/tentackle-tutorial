@@ -22,14 +22,14 @@ import org.tentackle.prefs.PersistedPreferencesFactory;
 public class TrackerDaemon extends ConsoleApplication {
 
   /**
-   * the logger for this class.
+   * The logger for this class.
    */
   private static final Logger LOGGER = Logger.get();
 
   private long latestMessageId;
 
   /**
-   * Creates the server.
+   * Creates the daemon.
    */
   public TrackerDaemon() {
     super("TrackerDaemon", Version.RELEASE);

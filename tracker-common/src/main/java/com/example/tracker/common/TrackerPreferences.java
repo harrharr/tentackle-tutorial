@@ -22,11 +22,14 @@ interface TrackerPreferencesHolder {
 public class TrackerPreferences extends CompositePreferences {
 
 
-  /** online help prefix. */
+  /** key of the online help URL. */
   public static final String HELP_URL = "helpURL";
 
 
-
+  /**
+   * Creates the preferences.<br>
+   * Refers to the system preferences only.
+   */
   public TrackerPreferences() {
     super(true);
   }
