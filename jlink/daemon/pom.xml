@@ -15,6 +15,10 @@
 
   <properties>
     <rootBasedir>${project.parent.parent.basedir}</rootBasedir>
+    <!-- the user the client certificate is issued to -->
+    <client.cert.user>DAEMON</client.cert.user>
+    <!-- the password of the client keystore: configured encrypted in backend.properties, since the daemon runs unattended -->
+    <client.cert.password>daemon</client.cert.password>
   </properties>
 
   <dependencies>
@@ -28,26 +32,139 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.tentackle</groupId>
+        <artifactId>tentackle-maven-plugin</artifactId>
+        <configuration>
+          <propertyDescriptors combine.children="append">
+            <!-- the client keystore password, configured in backend.properties -->
+            <propertyDescriptor>
+              <input>${client.cert.password}</input>
+              <converter>@org.tentackle.common.Cryptor</converter>
+              <property>encryptedClientCertPasswd</property>
+            </propertyDescriptor>
+          </propertyDescriptors>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>keytool-maven-plugin</artifactId>
         <executions>
+          <!--
+            The client certificate: a key pair whose certificate is signed by the tutorial CA
+            of the server module, so that the server accepts it (clientauth=need).
+            The server maps its CN onto the user (see TrackerCertificateAuthenticationProvider).
+          -->
           <execution>
+            <id>client-keypair</id>
+            <goals>
+              <goal>clean</goal>
+              <goal>generateKeyPair</goal>
+              <goal>generateCertificateRequest</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <storetype>PKCS12</storetype>
+              <keystore>${cert.dir}/keystore.p12</keystore>
+              <file>${client.cert.csr}</file>
+              <storepass>${client.cert.password}</storepass>
+              <keypass>${client.cert.password}</keypass>
+              <alias>${client.cert.alias}</alias>
+              <dname>${client.cert.dname}</dname>
+              <keyalg>RSA</keyalg>
+              <sigalg>SHA256WithRSA</sigalg>
+              <keysize>2048</keysize>
+            </configuration>
+          </execution>
+          <!-- the CA signs the certificate request -->
+          <execution>
+            <id>client-sign</id>
+            <goals>
+              <goal>generateCertificate</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <storetype>PKCS12</storetype>
+              <keystore>${ca.keystore}</keystore>
+              <storepass>${ca.password}</storepass>
+              <keypass>${ca.password}</keypass>
+              <alias>${ca.alias}</alias>
+              <infile>${client.cert.csr}</infile>
+              <outfile>${client.cert.file}</outfile>
+              <exts>
+                <!-- keytool-maven-plugin does not support eku: without it, the certificate is valid for client authentication -->
+                <ext>ku:c=digitalSignature</ext>
+              </exts>
+              <sigalg>SHA256WithRSA</sigalg>
+              <validity>3650</validity>
+            </configuration>
+          </execution>
+          <!-- the CA certificate must be known to import the signed certificate as the key's chain -->
+          <execution>
+            <id>client-import-ca</id>
+            <goals>
+              <goal>importCertificate</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <storetype>PKCS12</storetype>
+              <keystore>${cert.dir}/keystore.p12</keystore>
+              <file>${ca.file}</file>
+              <storepass>${client.cert.password}</storepass>
+              <alias>${ca.alias}</alias>
+              <noprompt>true</noprompt>
+              <trustcacerts>true</trustcacerts>
+            </configuration>
+          </execution>
+          <!-- replace the self-signed certificate by the chain [client, CA] -->
+          <execution>
+            <id>client-import-reply</id>
+            <goals>
+              <goal>importCertificate</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <storetype>PKCS12</storetype>
+              <keystore>${cert.dir}/keystore.p12</keystore>
+              <file>${client.cert.file}</file>
+              <storepass>${client.cert.password}</storepass>
+              <keypass>${client.cert.password}</keypass>
+              <alias>${client.cert.alias}</alias>
+              <noprompt>true</noprompt>
+            </configuration>
+          </execution>
+          <!-- the keystore holds the key entry only -->
+          <execution>
+            <id>client-remove-ca</id>
+            <goals>
+              <goal>deleteAlias</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <storetype>PKCS12</storetype>
+              <keystore>${cert.dir}/keystore.p12</keystore>
+              <storepass>${client.cert.password}</storepass>
+              <alias>${ca.alias}</alias>
+            </configuration>
+          </execution>
+          <!-- the truststore holds the server's certificate -->
+          <execution>
+            <id>truststore</id>
             <goals>
               <goal>clean</goal>
               <goal>importCertificate</goal>
             </goals>
             <phase>generate-resources</phase>
+            <configuration>
+              <storetype>PKCS12</storetype>
+              <keystore>${cert.dir}/truststore.p12</keystore>
+              <file>${cert.file}</file>
+              <storepass>${cert.password}</storepass>
+              <alias>${cert.alias}</alias>
+              <noprompt>true</noprompt>
+              <trustcacerts>true</trustcacerts>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <storetype>PKCS12</storetype>
-          <keystore>${cert.dir}/truststore.p12</keystore>
-          <file>${cert.file}</file>
-          <storepass>${cert.password}</storepass>
-          <alias>${cert.alias}</alias>
-          <noprompt>true</noprompt>
-          <trustcacerts>true</trustcacerts>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.tentackle</groupId>

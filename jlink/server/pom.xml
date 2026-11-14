@@ -75,33 +75,88 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>keytool-maven-plugin</artifactId>
         <executions>
+          <!-- the server's key pair and its self-signed certificate, imported by the clients' truststores -->
           <execution>
+            <id>server-keystore</id>
             <goals>
               <goal>clean</goal>
               <goal>generateKeyPair</goal>
               <goal>exportCertificate</goal>
             </goals>
             <phase>generate-resources</phase>
+            <configuration>
+              <storetype>PKCS12</storetype>
+              <keystore>${cert.dir}/keystore.p12</keystore>
+              <file>${cert.file}</file>
+              <storepass>${cert.password}</storepass>
+              <keypass>${cert.password}</keypass>
+              <alias>${cert.alias}</alias>
+              <dname>${cert.dname}</dname>
+              <exts>
+                <!-- clients verify the host name against it -->
+                <ext>san=dns:${serverHost}</ext>
+              </exts>
+              <keyalg>RSA</keyalg>
+              <sigalg>SHA256WithRSA</sigalg>
+              <keysize>2048</keysize>
+              <validity>3650</validity>
+              <verbose>true</verbose>
+            </configuration>
+          </execution>
+          <!--
+            The tutorial CA signing the client certificates (see the client and daemon modules).
+            Its keystore lives in target/ca and is NOT packaged into the image.
+            A real deployment keeps its CA outside the build.
+          -->
+          <execution>
+            <id>ca-keystore</id>
+            <goals>
+              <goal>clean</goal>
+              <goal>generateKeyPair</goal>
+              <goal>exportCertificate</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <storetype>PKCS12</storetype>
+              <keystore>${ca.keystore}</keystore>
+              <file>${ca.file}</file>
+              <storepass>${ca.password}</storepass>
+              <keypass>${ca.password}</keypass>
+              <alias>${ca.alias}</alias>
+              <dname>${ca.dname}</dname>
+              <exts>
+                <!-- keytool-maven-plugin syntax: name[:c]=value -->
+                <ext>bc:c=ca:true,pathlen:0</ext>
+                <ext>ku:c=keyCertSign,cRLSign</ext>
+              </exts>
+              <keyalg>RSA</keyalg>
+              <sigalg>SHA256WithRSA</sigalg>
+              <keysize>2048</keysize>
+              <validity>3650</validity>
+            </configuration>
+          </execution>
+          <!--
+            The server's truststore holds only the tutorial CA: client certificates
+            are accepted if, and only if, they were issued by it (clientauth=need, see backend.properties).
+          -->
+          <execution>
+            <id>server-truststore</id>
+            <goals>
+              <goal>clean</goal>
+              <goal>importCertificate</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <storetype>PKCS12</storetype>
+              <keystore>${cert.dir}/truststore.p12</keystore>
+              <file>${ca.file}</file>
+              <storepass>${cert.password}</storepass>
+              <alias>${ca.alias}</alias>
+              <noprompt>true</noprompt>
+              <trustcacerts>true</trustcacerts>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <storetype>PKCS12</storetype>
-          <keystore>${cert.dir}/keystore.p12</keystore>
-          <file>${cert.file}</file>
-          <storepass>${cert.password}</storepass>
-          <keypass>${cert.password}</keypass>
-          <alias>${cert.alias}</alias>
-          <dname>${cert.dname}</dname>
-          <exts>
-            <!-- clients verify the host name against it -->
-            <ext>san=dns:${serverHost}</ext>
-          </exts>
-          <keyalg>RSA</keyalg>
-          <sigalg>SHA256WithRSA</sigalg>
-          <keysize>2048</keysize>
-          <validity>3650</validity>
-          <verbose>true</verbose>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.tentackle</groupId>

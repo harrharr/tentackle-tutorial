@@ -26,6 +26,9 @@ import java.util.Objects;
  * This is the application's username/password login: look up the user, compare the hashed password
  * and check that the user is allowed to log in at all.
  * <p>
+ * Users logging in by their TLS client certificate are handled by
+ * {@link TrackerCertificateAuthenticationProvider} instead.
+ * <p>
  * To add single sign-on, write another {@code @Service(AuthenticationProvider.class)} that verifies
  * a token and leaves the user id at zero, plus a {@code @Service(UserResolver.class)} mapping the
  * token's subject onto a {@link User}. Both mechanisms then coexist, which is what service accounts
