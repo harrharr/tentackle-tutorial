@@ -6,6 +6,7 @@ package com.example.tracker.common;
 
 import org.tentackle.common.EncryptedProperties;
 import org.tentackle.session.DefaultSessionInfo;
+import org.tentackle.trip.TripPreAuth;
 
 import java.io.Serial;
 import java.util.Locale;
@@ -13,6 +14,7 @@ import java.util.Locale;
 /**
  * Application-specific session info.
  */
+@TripPreAuth("login")
 public class TrackerSessionInfo extends DefaultSessionInfo {
 
   @Serial
