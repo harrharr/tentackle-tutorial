@@ -25,7 +25,7 @@
 
   <properties>
     <rootBasedir>${project.basedir}</rootBasedir>
-    <project.build.outputTimestamp>2026-11-11T10:00:00Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-11-24T18:00:00Z</project.build.outputTimestamp>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -33,8 +33,8 @@
     <wurbelizer.version>25.7.0.0</wurbelizer.version>
     <wurbel.wurbelDir>${rootBasedir}/target/wurbel</wurbel.wurbelDir>
 
-    <tentackle.version>25.20.1.0</tentackle.version>
-    <tentackle.plugin.version>25.20.1.0</tentackle.plugin.version>
+    <tentackle.version>25.21.0.0</tentackle.version>
+    <tentackle.plugin.version>25.21.0.0</tentackle.plugin.version>
     <tentackle.serviceDir>${project.build.directory}/generated-resources</tentackle.serviceDir>
     <tentackle.testServiceDir>${project.build.directory}/generated-test-resources</tentackle.testServiceDir>
     <tentackle.manifestDirectory>${project.build.directory}/generated-resources/manifest</tentackle.manifestDirectory>
@@ -42,7 +42,7 @@
     <tentackle.sqlDir>${wurbel.wurbelDir}/sql</tentackle.sqlDir>
     <tentackle.modelDefaults>remote, bind, size, autoselect, tracked, root, rootid, rootclassid</tentackle.modelDefaults>
 
-    <postgres.version>42.7.14</postgres.version>
+    <postgres.version>42.7.15</postgres.version>
     <h2.version>2.5.252</h2.version>
     <serverHost>localhost</serverHost>
     <dbUrl>jdbc:postgresql://${serverHost}/tracker</dbUrl>
@@ -447,7 +447,7 @@
               <dependency>    <!-- necessary for fx-rdc processors because deps are not recognized here -->
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-controls</artifactId>
-                <version>27.0.1</version>
+                <version>27.0.1.1</version>
               </dependency>
             </annotationProcessorPaths>
           </configuration>
